@@ -28,6 +28,60 @@
   <style>
     * { font-family: 'DM Sans', sans-serif; }
     .cait-gradient { background: linear-gradient(90.04deg, #31ADF5 0%, #B380BC 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    /* Income step form styles */
+    .i2-cait-msg{display:flex;gap:10px;margin-bottom:16px}
+    .i2-cait-av{width:26px;height:26px;border-radius:50%;background:#EEEDFE;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .i2-cait-dot{width:8px;height:8px;border-radius:50%;background:#534AB7}
+    .i2-cait-bub{background:#fafbfc;border-radius:0 10px 10px 10px;padding:10px 14px;font-size:13px;color:#181d29;line-height:1.6;max-width:520px}
+    .i2-ticker{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+    .i2-tc{border-radius:10px;padding:14px;text-align:center}
+    .i2-tc.formula{background:#EEEDFE;border:0.5px solid #AFA9EC}
+    .i2-tc.income{background:#E1F5EE;border:0.5px solid #5DCAA5}
+    .i2-tc-label{font-size:11px;font-weight:500;margin-bottom:4px}
+    .i2-tc.formula .i2-tc-label{color:#534AB7}
+    .i2-tc.income .i2-tc-label{color:#0F6E56}
+    .i2-tc-amount{font-size:26px;font-weight:500;margin-bottom:2px}
+    .i2-tc.formula .i2-tc-amount{color:#3C3489}
+    .i2-tc.income .i2-tc-amount{color:#085041}
+    .i2-tc-note{font-size:11px}
+    .i2-tc.formula .i2-tc-note{color:#7F77DD}
+    .i2-tc.income .i2-tc-note{color:#1D9E75}
+    .i2-rec-badge{font-size:10px;font-weight:500;color:#fff;background:#1D9E75;border-radius:4px;padding:2px 6px;display:inline-block;margin-bottom:4px}
+    .i2-sec{border:0.5px solid #e2e4eb;border-radius:12px;margin-bottom:8px;overflow:hidden}
+    .i2-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;background:#fff;user-select:none}
+    .i2-sec-hdr:hover{background:#fafbfc}
+    .i2-sec-hdr-l{display:flex;align-items:center;gap:10px}
+    .i2-sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .i2-sec-title{font-size:13px;font-weight:500;color:#181d29}
+    .i2-sec-sub{font-size:12px;color:#676d7a}
+    .i2-sec-r{display:flex;align-items:center;gap:8px}
+    .i2-sec-total{font-size:13px;font-weight:500;color:#181d29}
+    .i2-status{font-size:10px;font-weight:500;border-radius:4px;padding:2px 7px}
+    .i2-s-prefilled{color:#0C447C;background:#E6F1FB;border:0.5px solid #85B7EB}
+    .i2-s-complete{color:#0F6E56;background:#E1F5EE;border:0.5px solid #5DCAA5}
+    .i2-s-pending{color:#633806;background:#FAEEDA;border:0.5px solid #EF9F27}
+    .i2-chev{width:16px;height:16px;transition:transform 0.2s;flex-shrink:0}
+    .i2-chev.open{transform:rotate(180deg)}
+    .i2-sec-body{padding:14px 16px;border-top:0.5px solid #e2e4eb;background:#fff}
+    .i2-tip{display:flex;gap:8px;background:#EEEDFE22;border:0.5px solid #AFA9EC;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#676d7a;line-height:1.5}
+    .i2-tip-av{width:18px;height:18px;border-radius:50%;background:#EEEDFE;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .i2-tip-dot{width:5px;height:5px;border-radius:50%;background:#534AB7}
+    .i2-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
+    .i2-fg{display:flex;flex-direction:column;gap:4px}
+    .i2-fg.full{grid-column:1/-1}
+    .i2-lbl{font-size:12px;color:#676d7a;display:flex;align-items:center;gap:5px}
+    .i2-pre-tag{font-size:10px;color:#0C447C;background:#E6F1FB;border-radius:3px;padding:1px 5px}
+    .i2-est-tag{font-size:10px;color:#633806;background:#FAEEDA;border-radius:3px;padding:1px 5px}
+    .i2-inp-wrap{position:relative}
+    .i2-inp-wrap input{height:34px;border:0.5px solid #e2e4eb;border-radius:8px;padding:0 10px 0 22px;font-size:13px;color:#181d29;background:#fff;width:100%;outline:none;font-family:'DM Sans',sans-serif}
+    .i2-inp-wrap input:focus{border-color:#534AB7;box-shadow:0 0 0 2px #534AB722}
+    .i2-inp-wrap input.is-template{border-color:#EF9F27;background:#FAEEDA22}
+    .i2-inp-wrap input.is-prefilled{background:#fafbfc;color:#676d7a}
+    .i2-inp-wrap .i2-dollar{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:13px;color:#9ca3af;pointer-events:none}
+    .i2-inp-note{font-size:11px;color:#854F0B;margin-top:2px}
+    .i2-sec-footer{display:flex;justify-content:flex-end;margin-top:12px}
+    .i2-done-btn{font-size:12px;font-weight:500;color:#fff;background:#534AB7;border:none;border-radius:8px;padding:6px 14px;cursor:pointer}
+    .i2-done-btn:hover{background:#3C3489}
   </style>
 </head>
 <body class="bg-white min-h-screen">
@@ -382,147 +436,156 @@
       </div>
     </div>`,
 
-    // Step 2 — Income & expenses (full embedded form)
-    `<div class="flex flex-col gap-4">
-      <!-- Official form banner — Helper component -->
-      <div class="flex items-start gap-2 bg-surface-base border border-border-base rounded-lg pl-2 pr-4 py-2">
-        <svg class="shrink-0 mt-0.5" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 9v5M10 7h.01" stroke="#181d29" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="flex flex-col gap-1">
-          <div>
-            <p class="text-sm font-bold text-gray-900 leading-snug">Official Loan Rehabilitation form</p>
-            <p class="text-sm text-gray-900 leading-snug">Embedded here so you don't have to go anywhere else.</p>
-          </div>
-          <a href="https://studentaid.gov/manage-loans/default/rehabilitation" target="_blank" class="flex items-center gap-1 text-sm text-brand-primary">
-            Learn more on StudentAid.gov
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 2.5H3a1 1 0 00-1 1v7.5a1 1 0 001 1h7.5a1 1 0 001-1V9M8 2.5h3.5m0 0v3.5m0-3.5L6 8" stroke="#265ddc" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
+    // Step 2 — Income & expenses (collapsible form)
+    `<div>
+      <div class="i2-cait-msg">
+        <div class="i2-cait-av"><div class="i2-cait-dot"></div></div>
+        <div class="i2-cait-bub">I've pre-filled what I know about you from your account. For expenses, I've added <strong>estimated amounts</strong> based on typical costs for your area — these are just a starting point. Review each section and adjust anything that doesn't match your situation. The more accurate you are, the lower your payment could be.</div>
+      </div>
+
+      <div class="i2-ticker">
+        <div class="i2-tc formula">
+          <div class="i2-tc-label">15% formula payment</div>
+          <div class="i2-tc-amount" id="t-formula">$198</div>
+          <div class="i2-tc-note">Based on your income alone</div>
+        </div>
+        <div class="i2-tc income">
+          <div class="i2-rec-badge">Recommended</div>
+          <div class="i2-tc-label">Income-based payment</div>
+          <div class="i2-tc-amount" id="t-income">$50</div>
+          <div class="i2-tc-note">Based on income minus expenses</div>
         </div>
       </div>
 
-      <!-- Section 1: Borrower Info -->
-      <div class="border border-border-base rounded-xl overflow-hidden">
-        <div class="bg-neutral-light px-4 py-2.5 flex items-center justify-between">
-          <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Section 1 — Borrower Information</p>
-          <span class="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full">Pre-filled</span>
+      <!-- Basic info -->
+      <div class="i2-sec" id="sec-basic">
+        <div class="i2-sec-hdr" onclick="i2toggle('basic')">
+          <div class="i2-sec-hdr-l">
+            <div class="i2-sec-icon" style="background:#E6F1FB"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#185FA5" stroke-width="1.2"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#185FA5" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <div><div class="i2-sec-title">Basic information</div><div class="i2-sec-sub">Pre-filled from your account</div></div>
+          </div>
+          <div class="i2-sec-r">
+            <span class="i2-status i2-s-prefilled" id="basic-status">Pre-filled</span>
+            <svg class="i2-chev open" id="chev-basic" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
         </div>
-        <div class="p-4 flex flex-col gap-3">
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-medium text-neutral-disabled mb-1">Last name</label>
-              <input type="text" value="Suchde" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-neutral-disabled mb-1">First name</label>
-              <input type="text" value="Sheetal" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
-            </div>
+        <div class="i2-sec-body" id="body-basic">
+          <div class="i2-grid">
+            <div class="i2-fg"><label class="i2-lbl">Name <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input class="is-prefilled" value="Sheetal Suchde" readonly></div></div>
+            <div class="i2-fg"><label class="i2-lbl">SSN <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input class="is-prefilled" value="•••-••-6789" readonly></div></div>
+            <div class="i2-fg full"><label class="i2-lbl">Address <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input class="is-prefilled" value="123 Main St, Austin, TX 78701" readonly></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Primary phone <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input class="is-prefilled" value="(512) 555-0142" readonly></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Family size <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input id="fsize" value="1" oninput="i2recalc()"></div></div>
           </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-medium text-neutral-disabled mb-1">SSN</label>
-              <input type="text" value="•••–••–6789" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none font-mono tracking-wider" readonly />
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-neutral-disabled mb-1">Date of birth</label>
-              <input type="text" value="••/••/1992" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-neutral-disabled mb-1">Address</label>
-            <input type="text" value="123 Main St, Austin, TX 78701" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-medium text-neutral-disabled mb-1">Phone</label>
-              <input type="text" value="(512) 555-0142" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-neutral-disabled mb-1">Family size</label>
-              <input type="number" value="1" min="1" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-brand-primary transition-colors" />
-            </div>
-          </div>
+          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('basic')">Confirm ✓</button></div>
         </div>
       </div>
 
-      <!-- Section 2: Monthly Income -->
-      <div class="border border-border-base rounded-xl overflow-hidden">
-        <div class="bg-neutral-light px-4 py-2.5">
-          <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Section 2 — Monthly Income</p>
-          <p class="text-xs text-neutral-disabled mt-0.5">Enter your gross monthly amounts (before taxes)</p>
-        </div>
-        <div class="p-4 flex flex-col gap-2.5">
-          ${[
-            ['inc-1','Employment wages (you)',6000],
-            ['inc-2','Spouse / partner employment wages',''],
-            ['inc-3','Child support or alimony received',''],
-            ['inc-4','Social Security benefits',''],
-            ["inc-5","Worker's compensation",''],
-            ['inc-6','Public assistance (TANF, SNAP, etc.)',''],
-            ['inc-7','Other income',500],
-          ].map(([id,label,val])=>`
-          <div class="flex items-center gap-3">
-            <label class="flex-1 text-sm text-gray-800">${label}</label>
-            <div class="flex items-center border border-border-base rounded-lg px-3 py-2 w-32 focus-within:border-brand-primary transition-colors">
-              <span class="text-neutral-disabled text-sm mr-1">$</span>
-              <input id="${id}" type="number" min="0" placeholder="0" value="${val}" oninput="calcTotals()" class="w-full outline-none text-sm text-gray-900 bg-transparent text-right" />
-            </div>
-          </div>`).join('')}
-          <div class="flex items-center gap-3 border-t border-border-base pt-3 mt-1">
-            <p class="flex-1 text-sm font-semibold text-gray-900">Total monthly income</p>
-            <div class="flex items-center bg-brand-light border border-blue-20 rounded-lg px-3 py-2 w-32">
-              <span class="text-brand-primary text-sm mr-1">$</span>
-              <span id="inc-total" class="flex-1 text-sm font-bold text-brand-primary text-right">0</span>
-            </div>
+      <!-- Income -->
+      <div class="i2-sec" id="sec-income">
+        <div class="i2-sec-hdr" onclick="i2toggle('income')">
+          <div class="i2-sec-hdr-l">
+            <div class="i2-sec-icon" style="background:#E1F5EE"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1.5" stroke="#0F6E56" stroke-width="1.2"/><path d="M5 7h4M7 5v4" stroke="#0F6E56" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+            <div><div class="i2-sec-title">Monthly income</div><div class="i2-sec-sub">All sources before taxes</div></div>
           </div>
+          <div class="i2-sec-r">
+            <span class="i2-sec-total" id="inc-display">$3,200</span>
+            <span class="i2-status i2-s-pending" id="income-status">Review</span>
+            <svg class="i2-chev" id="chev-income" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="i2-sec-body" id="body-income" style="display:none">
+          <div class="i2-tip"><div class="i2-tip-av"><div class="i2-tip-dot"></div></div><div>Include all income sources. Being accurate protects you if income is verified. Include spouse income only if they contribute to your household.</div></div>
+          <div class="i2-grid">
+            <div class="i2-fg"><label class="i2-lbl">Employment income</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-emp" value="3200" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Spouse employment income</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-spouse" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Child support received</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-child" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Social Security benefits</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-ss" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Worker's compensation</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-wc" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Public assistance</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-pa" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Other income</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-other" value="0" oninput="i2recalc()"></div></div>
+          </div>
+          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('income')">Confirm ✓</button></div>
         </div>
       </div>
 
-      <!-- Section 3: Monthly Expenses -->
-      <div class="border border-border-base rounded-xl overflow-hidden">
-        <div class="bg-neutral-light px-4 py-2.5">
-          <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Section 3 — Monthly Expenses</p>
-          <p class="text-xs text-neutral-disabled mt-0.5">Enter reasonable and necessary monthly amounts</p>
+      <!-- Housing -->
+      <div class="i2-sec" id="sec-housing">
+        <div class="i2-sec-hdr" onclick="i2toggle('housing')">
+          <div class="i2-sec-hdr-l">
+            <div class="i2-sec-icon" style="background:#FAEEDA"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L7 2l5 5" stroke="#854F0B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="7" width="6" height="5" rx="0.5" stroke="#854F0B" stroke-width="1.2"/></svg></div>
+            <div><div class="i2-sec-title">Housing &amp; utilities</div><div class="i2-sec-sub">Rent, mortgage, utilities, communication</div></div>
+          </div>
+          <div class="i2-sec-r">
+            <span class="i2-sec-total" id="hous-display">$1,395</span>
+            <span class="i2-status i2-s-pending" id="housing-status">Review</span>
+            <svg class="i2-chev" id="chev-housing" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
         </div>
-        <div class="p-4 flex flex-col gap-2.5">
-          ${[
-            ['exp-1','Food and household supplies',400],
-            ['exp-2','Housing (rent or mortgage)',1200],
-            ['exp-3','Utilities (electricity, gas, water)',150],
-            ['exp-4','Basic phone / communication',80],
-            ['exp-5','Medical and dental expenses',50],
-            ['exp-6','Health, auto & life insurance',200],
-            ['exp-7','Transportation (gas, fares, etc.)',200],
-            ['exp-8','Child or dependent care',''],
-            ['exp-9','Child or spousal support paid',''],
-            ['exp-10','Federal student loan payments',''],
-            ['exp-11','Private student loan payments',''],
-            ['exp-12','Other necessary expenses',220],
-          ].map(([id,label,val])=>`
-          <div class="flex items-center gap-3">
-            <label class="flex-1 text-sm text-gray-800">${label}</label>
-            <div class="flex items-center border border-border-base rounded-lg px-3 py-2 w-32 focus-within:border-brand-primary transition-colors">
-              <span class="text-neutral-disabled text-sm mr-1">$</span>
-              <input id="${id}" type="number" min="0" placeholder="0" value="${val}" oninput="calcTotals()" class="w-full outline-none text-sm text-gray-900 bg-transparent text-right" />
-            </div>
-          </div>`).join('')}
-          <div>
-            <label class="block text-xs font-medium text-neutral-disabled mb-1 mt-1">Number of vehicles owned</label>
-            <input type="number" min="0" max="10" placeholder="0" class="w-20 border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-brand-primary transition-colors" />
+        <div class="i2-sec-body" id="body-housing" style="display:none">
+          <div class="i2-tip"><div class="i2-tip-av"><div class="i2-tip-dot"></div></div><div>Estimated based on typical Austin costs for a single-person household. Adjust to match your actual bills — higher expenses here can lower your payment.</div></div>
+          <div class="i2-grid">
+            <div class="i2-fg"><label class="i2-lbl">Rent / mortgage <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-rent" value="1200" oninput="i2recalc()"></div><div class="i2-inp-note">Avg Austin 1BR ~$1,200–$1,500</div></div>
+            <div class="i2-fg"><label class="i2-lbl">Utilities <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-util" value="130" oninput="i2recalc()"></div><div class="i2-inp-note">Gas, electric, water</div></div>
+            <div class="i2-fg"><label class="i2-lbl">Basic communication <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-comm" value="80" oninput="i2recalc()"></div><div class="i2-inp-note">Phone, internet, basic cable</div></div>
+            <div class="i2-fg"><label class="i2-lbl">Renter's insurance</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-rins" value="15" oninput="i2recalc()"></div></div>
           </div>
-          <div class="flex items-center gap-3 border-t border-border-base pt-3 mt-1">
-            <p class="flex-1 text-sm font-semibold text-gray-900">Total monthly expenses</p>
-            <div class="flex items-center bg-brand-light border border-blue-20 rounded-lg px-3 py-2 w-32">
-              <span class="text-brand-primary text-sm mr-1">$</span>
-              <span id="exp-total" class="flex-1 text-sm font-bold text-brand-primary text-right">0</span>
-            </div>
-          </div>
+          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('housing')">Confirm ✓</button></div>
         </div>
       </div>
 
-      <!-- Discretionary income preview -->
-      <div id="payment-preview" class="hidden bg-brand-light border border-blue-20 rounded-xl p-4">
-        <p class="text-xs text-brand-primary font-medium mb-1">Estimated rehabilitation payment</p>
-        <p id="payment-amount" class="text-2xl font-bold text-brand-primary">$35 / month</p>
-        <p class="text-xs text-neutral-disabled mt-1">Based on 15% of your discretionary income ÷ 12</p>
+      <!-- Transport -->
+      <div class="i2-sec" id="sec-transport">
+        <div class="i2-sec-hdr" onclick="i2toggle('transport')">
+          <div class="i2-sec-hdr-l">
+            <div class="i2-sec-icon" style="background:#EEEDFE"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="6" rx="1.5" stroke="#534AB7" stroke-width="1.2"/><circle cx="4.5" cy="10.5" r="1" stroke="#534AB7" stroke-width="1"/><circle cx="9.5" cy="10.5" r="1" stroke="#534AB7" stroke-width="1"/><path d="M2 7h10" stroke="#534AB7" stroke-width="1"/></svg></div>
+            <div><div class="i2-sec-title">Transportation</div><div class="i2-sec-sub">Car payments, fuel, insurance, transit</div></div>
+          </div>
+          <div class="i2-sec-r">
+            <span class="i2-sec-total" id="trans-display">$555</span>
+            <span class="i2-status i2-s-pending" id="transport-status">Review</span>
+            <svg class="i2-chev" id="chev-transport" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="i2-sec-body" id="body-transport" style="display:none">
+          <div class="i2-tip"><div class="i2-tip-av"><div class="i2-tip-dot"></div></div><div>Include car payments, fuel, maintenance, insurance, parking, tolls, or transit passes. Only include vehicles you're actively using.</div></div>
+          <div class="i2-grid">
+            <div class="i2-fg"><label class="i2-lbl">Car payment(s)</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-car" value="300" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Fuel &amp; maintenance <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-fuel" value="100" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Auto insurance</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-autoins" value="150" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Public transit</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-transit" value="5" oninput="i2recalc()"></div></div>
+          </div>
+          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('transport')">Confirm ✓</button></div>
+        </div>
+      </div>
+
+      <!-- Other expenses -->
+      <div class="i2-sec" id="sec-other">
+        <div class="i2-sec-hdr" onclick="i2toggle('other')">
+          <div class="i2-sec-hdr-l">
+            <div class="i2-sec-icon" style="background:#F1EFE8"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div><div class="i2-sec-title">Other expenses</div><div class="i2-sec-sub">Food, medical, childcare, loan payments</div></div>
+          </div>
+          <div class="i2-sec-r">
+            <span class="i2-sec-total" id="other-display">$500</span>
+            <span class="i2-status i2-s-pending" id="other-status">Review</span>
+            <svg class="i2-chev" id="chev-other" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="i2-sec-body" id="body-other" style="display:none">
+          <div class="i2-tip"><div class="i2-tip-av"><div class="i2-tip-dot"></div></div><div>Food, medical, and childcare expenses directly reduce your payment calculation. Don't leave these blank. For student loan payments, only include loans <em>other</em> than the one you're rehabilitating.</div></div>
+          <div class="i2-grid">
+            <div class="i2-fg"><label class="i2-lbl">Food <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-food" value="350" oninput="i2recalc()"></div><div class="i2-inp-note">USDA moderate plan, single adult</div></div>
+            <div class="i2-fg"><label class="i2-lbl">Medical/dental out-of-pocket</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-med" value="50" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Health/dental insurance</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-hins" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Child/dependent care</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-child" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Required child/spousal support</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-support" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Other federal loan payments</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-fedloan" value="100" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Private loan payments</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-privloan" value="0" oninput="i2recalc()"></div></div>
+            <div class="i2-fg"><label class="i2-lbl">Other necessary expenses</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-misc" value="0" oninput="i2recalc()"></div></div>
+          </div>
+          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('other')">Confirm ✓</button></div>
+        </div>
       </div>
     </div>`,
 
@@ -579,7 +642,7 @@
     btnBack.classList.toggle('hidden', currentStep === 0);
     btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll in rehabilitation →' : currentStep === 0 ? 'Start Rehabilitation' : currentStep === 1 ? 'Calculate my payment' : 'Next';
     counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
-    if (currentStep === 1) setTimeout(calcTotals, 0);
+    if (currentStep === 1) setTimeout(i2recalc, 0);
     if (currentStep === 2) {
       const el = document.getElementById('review-payment-amount');
       if (el) el.innerHTML = '$' + calculatedPayment.toLocaleString() + '<span class="text-2xl font-semibold">/mo</span>';
@@ -614,6 +677,53 @@
       amountEl.textContent = '$' + payment.toLocaleString() + ' / month';
       preview.classList.remove('hidden');
     }
+  }
+
+  const i2sections = ['basic','income','housing','transport','other'];
+  function i2toggle(id) {
+    const body = document.getElementById('body-'+id);
+    const chev = document.getElementById('chev-'+id);
+    if (!body) return;
+    const isOpen = body.style.display !== 'none';
+    body.style.display = isOpen ? 'none' : 'block';
+    chev.classList.toggle('open', !isOpen);
+  }
+  function i2markDone(id) {
+    const status = document.getElementById(id+'-status');
+    if (status) { status.textContent = '✓ Confirmed'; status.className = 'i2-status i2-s-complete'; }
+    const body = document.getElementById('body-'+id);
+    const chev = document.getElementById('chev-'+id);
+    if (body) body.style.display = 'none';
+    if (chev) chev.classList.remove('open');
+    const idx = i2sections.indexOf(id);
+    if (idx >= 0 && idx < i2sections.length - 1) {
+      const next = i2sections[idx + 1];
+      const nb = document.getElementById('body-'+next);
+      const nc = document.getElementById('chev-'+next);
+      if (nb) nb.style.display = 'block';
+      if (nc) nc.classList.add('open');
+    }
+  }
+  function i2v(id) { const el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; }
+  function i2recalc() {
+    const inc = i2v('i-emp')+i2v('i-spouse')+i2v('i-child')+i2v('i-ss')+i2v('i-wc')+i2v('i-pa')+i2v('i-other');
+    const hous = i2v('e-rent')+i2v('e-util')+i2v('e-comm')+i2v('e-rins');
+    const trans = i2v('e-car')+i2v('e-fuel')+i2v('e-autoins')+i2v('e-transit');
+    const other = i2v('e-food')+i2v('e-med')+i2v('e-hins')+i2v('e-child')+i2v('e-support')+i2v('e-fedloan')+i2v('e-privloan')+i2v('e-misc');
+    const exp = hous + trans + other;
+    const fmt = n => '$'+Math.round(n).toLocaleString();
+    const s = id => { const el = document.getElementById(id); if (el) el.textContent = fmt(eval(id.replace('hous-display','hous').replace('trans-display','trans').replace('other-display','other').replace('inc-display','inc')));};
+    const idEl = document.getElementById('inc-display'); if (idEl) idEl.textContent = fmt(inc);
+    const hdEl = document.getElementById('hous-display'); if (hdEl) hdEl.textContent = fmt(hous);
+    const tdEl = document.getElementById('trans-display'); if (tdEl) tdEl.textContent = fmt(trans);
+    const odEl = document.getElementById('other-display'); if (odEl) odEl.textContent = fmt(other);
+    const poverty = 15060;
+    const formula = Math.max(5, Math.round((inc * 12 - poverty * 1.5) * 0.15 / 12));
+    const disposable = inc - exp;
+    const incomeBased = Math.max(5, Math.round(disposable * 0.1));
+    calculatedPayment = incomeBased;
+    const tfEl = document.getElementById('t-formula'); if (tfEl) tfEl.textContent = fmt(formula);
+    const tiEl = document.getElementById('t-income'); if (tiEl) tiEl.textContent = fmt(incomeBased);
   }
 
   function showHomeScreen() {
