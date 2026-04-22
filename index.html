@@ -412,7 +412,7 @@
     const btnNext = document.getElementById('btn-next');
     const counter = document.getElementById('step-counter');
     btnBack.classList.toggle('hidden', currentStep === 0);
-    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll now' : 'See my options →';
+    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll now' : currentStep === 1 ? 'Next' : 'See my options →';
     counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
   }
 
