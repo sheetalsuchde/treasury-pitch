@@ -509,26 +509,47 @@
       </div>
     </div>`,
 
-    // Step 4 — Review & enroll
+    // Step 3 — Review & enroll
     `<div class="flex flex-col gap-4">
-      <div class="bg-surface-base rounded-xl p-4">
-        <div class="flex items-center justify-between mb-3">
-          <p class="text-sm font-semibold text-gray-900">Your plan summary</p>
-          <span class="text-xs font-medium bg-green-50 text-green-700 px-2 py-0.5 rounded-full">Loan Rehabilitation</span>
+
+      <!-- Cait bubble -->
+      <div class="flex items-start gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center shrink-0 mt-0.5">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" fill="white"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
         </div>
-        ${[['Monthly payment','$35'],['Number of payments','9'],['Estimated completion','January 2026'],['Credit report impact','Default removed']].map(([l,v])=>`
-          <div class="flex items-center justify-between py-2 border-b border-neutral-light last:border-0">
-            <span class="text-sm text-neutral-disabled">${l}</span>
-            <span class="text-sm font-medium text-gray-900">${v}</span>
-          </div>`).join('')}
+        <div class="bg-surface-base rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-gray-800 leading-relaxed">
+          Here's your estimated rehabilitation payment. Once you enroll, I'll submit your Income &amp; Expense form to the Default Resolution Group on your behalf.
+        </div>
       </div>
-      <div class="bg-warning-bg border border-warning-border rounded-xl p-4 text-sm text-gray-800">
-        <span class="font-bold">Before you enroll:</span> You'll be redirected to StudentAid.gov. Have your FSA ID ready.
+
+      <!-- Payment card -->
+      <div class="rounded-2xl border border-indigo-100 p-6 text-center" style="background:#eeeef8;">
+        <p class="text-sm font-medium mb-2" style="color:#4a4aaa;">Estimated monthly payment</p>
+        <p class="font-bold mb-2 leading-none" style="color:#3a3a9a;font-size:3rem;">$5<span class="text-2xl font-semibold">/mo</span></p>
+        <p class="text-sm text-neutral-disabled">Final amount confirmed by Default Resolution Group within 5–7 days</p>
       </div>
-      <label class="flex items-start gap-3 text-sm text-neutral-disabled">
-        <input type="checkbox" class="accent-brand-primary mt-0.5 shrink-0" />
-        I understand that missing payments during rehabilitation will restart the 9-month process.
-      </label>
+
+      <!-- Next steps -->
+      <div class="bg-surface-base rounded-2xl p-5">
+        <p class="text-sm font-bold text-gray-900 mb-3">What happens after you enroll</p>
+        <ul class="flex flex-col gap-2.5">
+          ${[
+            ['#4a4aaa','Your I&E form is submitted to Default Resolution Group'],
+            ['#4a4aaa','They confirm your payment amount (5–7 business days)'],
+            ['#4a4aaa','You make your first payment to officially begin rehabilitation'],
+            ['#22c55e','After 9 payments — default removed from your credit report'],
+          ].map(([color,text])=>`
+          <li class="flex items-start gap-2.5 text-sm text-gray-800">
+            <svg class="shrink-0 mt-1.5" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="${color}"/></svg>
+            <span ${color==='#22c55e'?'style="color:#16a34a;font-weight:500;"':''}>${text}</span>
+          </li>`).join('')}
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <p class="text-xs text-neutral-disabled leading-relaxed">
+        By enrolling you authorize Candidly to submit your Income &amp; Expense information to the U.S. Dept. of Education Default Resolution Group on your behalf.
+      </p>
     </div>`,
   ];
 
@@ -539,7 +560,7 @@
     const btnNext = document.getElementById('btn-next');
     const counter = document.getElementById('step-counter');
     btnBack.classList.toggle('hidden', currentStep === 0);
-    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll now' : currentStep === 0 ? 'Start Rehabilitation' : currentStep === 1 ? 'Calculate my payment' : 'Next';
+    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll in rehabilitation →' : currentStep === 0 ? 'Start Rehabilitation' : currentStep === 1 ? 'Calculate my payment' : 'Next';
     counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
   }
 
