@@ -213,15 +213,6 @@
             <!-- Step body -->
             <div id="step-body" class="px-5 py-5 min-h-[200px]"></div>
 
-            <!-- Sticky payment preview (Income step only) -->
-            <div id="sticky-payment" class="hidden border-t border-border-base bg-brand-light px-5 py-3 flex items-center justify-between">
-              <div>
-                <p class="text-xs text-brand-primary font-medium mb-0.5">Estimated rehabilitation payment</p>
-                <p class="text-xs text-neutral-disabled">Based on 15% of your discretionary income ÷ 12</p>
-              </div>
-              <p id="sticky-payment-amount" class="text-2xl font-bold text-brand-primary">$5 / mo</p>
-            </div>
-
             <!-- Card footer -->
             <div class="flex items-center justify-between px-5 pb-5 pt-2 border-t border-neutral-light">
               <button id="btn-back" onclick="prevStep()" class="hidden px-5 py-2 border border-border-base rounded-full text-sm font-medium text-gray-900 hover:bg-neutral-light transition-colors">Back</button>
@@ -598,7 +589,6 @@
     btnBack.classList.toggle('hidden', currentStep === 0);
     btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll in rehabilitation →' : currentStep === 0 ? 'Start Rehabilitation' : currentStep === 1 ? 'Calculate my payment' : 'Next';
     counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
-    document.getElementById('sticky-payment').classList.toggle('hidden', currentStep !== 1);
     if (currentStep === 2) {
       const el = document.getElementById('review-payment-amount');
       if (el) el.innerHTML = '$' + calculatedPayment.toLocaleString() + '<span class="text-2xl font-semibold">/mo</span>';
@@ -632,9 +622,6 @@
       calculatedPayment = payment;
       amountEl.textContent = '$' + payment.toLocaleString() + ' / month';
       preview.classList.remove('hidden');
-      const sticky = document.getElementById('sticky-payment');
-      const stickyAmt = document.getElementById('sticky-payment-amount');
-      if (sticky && stickyAmt) { sticky.classList.remove('hidden'); stickyAmt.textContent = '$' + payment.toLocaleString() + ' / mo'; }
     }
   }
 
