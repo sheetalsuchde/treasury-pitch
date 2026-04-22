@@ -62,7 +62,7 @@
       <p class="text-sm font-bold text-gray-900 mb-1">Your student loan is currently in default</p>
       <p class="text-sm text-gray-700 leading-relaxed">We've identified that your federal student loan is in default. This means the full balance may be due and collections actions (like tax refund or wage garnishment) could occur if no action is taken. <a href="#" class="text-brand-primary underline font-medium">Learn more</a> about what this means</p>
     </div>
-    <button onclick="showChatScreen()" class="shrink-0 border border-black rounded-full px-4 py-1 text-sm font-medium text-black hover:bg-black hover:text-white transition-colors whitespace-nowrap mt-0.5">Get out of Default</button>
+    <button onclick="showChatScreen()" class="shrink-0 border border-black rounded-full px-4 py-1 text-sm font-medium text-black hover:bg-black hover:text-white transition-colors whitespace-nowrap mt-0.5">Start Rehabilitation</button>
     <button onclick="this.parentElement.remove()" class="shrink-0 p-1 rounded-full text-neutral-disabled hover:text-neutral-subtle mt-0.5">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 3L3 11M3 3l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
@@ -111,7 +111,7 @@
 </div>
 
 <!-- ============================================================ -->
-<!-- SCREEN 2: Chat — Get out of Default flow                    -->
+<!-- SCREEN 2: Chat — Start Rehabilitation flow                    -->
 <!-- ============================================================ -->
 <div id="screen-chat" class="hidden h-screen flex flex-col bg-surface-base overflow-hidden">
 
@@ -256,7 +256,6 @@
   /* ── Step data ── */
   const steps = [
     { label: 'Your situation',   sub: 'Loan overview' },
-    { label: 'Choose a path',    sub: 'Rehab or consolidate' },
     { label: 'Income & expenses',sub: 'Calculate payment' },
     { label: 'Review & enroll',  sub: 'Sign & submit' },
   ];
@@ -335,28 +334,32 @@
       <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
         <span class="font-bold">What happens if you don't act:</span> The Dept. of Education may offset your federal tax refund, up to 15% of your Social Security, and refer your debt for wage garnishment. You have <span class="font-bold">44 days</span> from April 21, 2025 to act before collections begin.
       </div>
-    </div>`,
-
-    // Step 2 — Choose a path
-    `<div class="flex flex-col gap-3">
-      <p class="text-sm text-neutral-disabled">Choose the option that works best for your situation.</p>
-      ${[
-        { title:'Loan Rehabilitation', desc:'Make 9 on-time monthly payments. Removes default from your credit report.', tag:'Most popular', tagCls:'bg-brand-light text-brand-primary', checked:true },
-        { title:'Repayment in Full', desc:'Pay off the full $5,284 balance to exit default immediately.', tag:'', tagCls:'', checked:false },
-      ].map((o,i) => `
-        <label class="flex items-start gap-3 p-4 border border-border-base rounded-xl cursor-pointer hover:border-brand-primary hover:bg-blue-5 transition-all">
-          <input type="radio" name="path" value="${i}" class="mt-0.5 accent-brand-primary shrink-0" ${o.checked?'checked':''} />
-          <div>
-            <div class="flex items-center gap-2 mb-0.5">
-              <span class="font-semibold text-sm text-gray-900">${o.title}</span>
-              ${o.tag ? `<span class="text-xs font-medium px-2 py-0.5 rounded-full ${o.tagCls}">${o.tag}</span>` : ''}
-            </div>
-            <p class="text-sm text-neutral-disabled">${o.desc}</p>
+      <div class="grid grid-cols-3 gap-3 pt-1">
+        <div class="bg-surface-base rounded-xl p-4">
+          <div class="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center mb-3">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2v12" stroke="#265ddc" stroke-width="1.6" stroke-linecap="round"/></svg>
           </div>
-        </label>`).join('')}
+          <p class="text-sm font-semibold text-gray-900 mb-1">Share your finances</p>
+          <p class="text-xs text-neutral-disabled leading-relaxed">We calculate a payment based on your income — as low as $5/mo</p>
+        </div>
+        <div class="bg-surface-base rounded-xl p-4">
+          <div class="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center mb-3">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#265ddc" stroke-width="1.6"/><path d="M5.5 8l1.8 1.8 3.2-3.6" stroke="#265ddc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <p class="text-sm font-semibold text-gray-900 mb-1">Make 9 payments</p>
+          <p class="text-xs text-neutral-disabled leading-relaxed">Over 10 consecutive months at your agreed monthly amount</p>
+        </div>
+        <div class="bg-surface-base rounded-xl p-4">
+          <div class="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center mb-3">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="#265ddc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <p class="text-sm font-semibold text-gray-900 mb-1">Default removed</p>
+          <p class="text-xs text-neutral-disabled leading-relaxed">Credit bureaus are notified and the default is cleared from your record</p>
+        </div>
+      </div>
     </div>`,
 
-    // Step 3 — Income & expenses
+    // Step 2 — Income & expenses
     `<div class="flex flex-col gap-4">
       <p class="text-sm text-neutral-disabled">Tell us about your income to calculate your rehabilitation payment.</p>
       <div>
@@ -412,7 +415,7 @@
     const btnNext = document.getElementById('btn-next');
     const counter = document.getElementById('step-counter');
     btnBack.classList.toggle('hidden', currentStep === 0);
-    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll now' : currentStep === 1 ? 'Next' : 'See my options →';
+    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll now' : currentStep === 0 ? 'Start Rehabilitation' : 'Next';
     counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
   }
 
