@@ -153,7 +153,8 @@
       <div class="w-full max-w-3xl flex flex-col flex-1 min-h-0">
 
         <!-- Scrollable chat history -->
-        <div class="flex-1 overflow-y-auto py-6 flex flex-col gap-6">
+        <div class="flex-1 min-h-0 overflow-y-auto">
+        <div class="py-6 flex flex-col gap-6">
 
           <!-- User message (right) -->
           <div class="flex justify-end pl-12">
@@ -189,6 +190,7 @@
               <button id="btn-next" onclick="nextStep()" class="bg-brand-primary hover:bg-brand-secondary text-white rounded-full px-5 py-2 text-base font-medium transition-colors">Submit</button>
             </div>
           </div>
+        </div>
         </div>
 
         <!-- Chat input (pinned bottom) -->
