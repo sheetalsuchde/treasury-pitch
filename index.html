@@ -113,7 +113,7 @@
 <!-- ============================================================ -->
 <!-- SCREEN 2: Chat — Get out of Default flow                    -->
 <!-- ============================================================ -->
-<div id="screen-chat" class="hidden min-h-screen flex flex-col bg-surface-base">
+<div id="screen-chat" class="hidden h-screen flex flex-col bg-surface-base overflow-hidden">
 
   <!-- Nav -->
   <nav class="flex items-center justify-between px-10 py-4 border-b border-neutral-light bg-white shrink-0">
@@ -426,11 +426,7 @@
 
   function showChatScreen() {
     document.getElementById('screen-home').classList.add('hidden');
-    const chat = document.getElementById('screen-chat');
-    chat.classList.remove('hidden');
-    chat.style.height = '100vh';
-    chat.style.display = 'flex';
-    chat.style.flexDirection = 'column';
+    document.getElementById('screen-chat').classList.remove('hidden');
     currentStep = 0;
     renderStep();
   }
