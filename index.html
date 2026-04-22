@@ -285,6 +285,7 @@
   ];
 
   let currentStep = 0;
+  let calculatedPayment = 5;
 
   /* ── Figma Stepper Component ──
      States: success = completed steps (blue filled + checkmark)
@@ -553,7 +554,7 @@
       <!-- Payment card -->
       <div class="rounded-2xl bg-brand-light p-6 text-center">
         <p class="text-sm font-medium text-gray-900 mb-2">Estimated monthly payment</p>
-        <p class="font-bold text-gray-900 mb-2 leading-none" style="font-size:3rem;">$5<span class="text-2xl font-semibold">/mo</span></p>
+        <p id="review-payment-amount" class="font-bold text-gray-900 mb-2 leading-none" style="font-size:3rem;">$5<span class="text-2xl font-semibold">/mo</span></p>
         <p class="text-sm text-neutral-disabled">Final amount confirmed by Default Resolution Group within 5–7 days</p>
       </div>
 
@@ -590,6 +591,10 @@
     btnBack.classList.toggle('hidden', currentStep === 0);
     btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll in rehabilitation →' : currentStep === 0 ? 'Start Rehabilitation' : currentStep === 1 ? 'Calculate my payment' : 'Next';
     counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
+    if (currentStep === 2) {
+      const el = document.getElementById('review-payment-amount');
+      if (el) el.innerHTML = '$' + calculatedPayment.toLocaleString() + '<span class="text-2xl font-semibold">/mo</span>';
+    }
   }
 
   function nextStep() {
@@ -616,6 +621,7 @@
     if (preview && amountEl && incTotal > 0) {
       const discretionary = Math.max(0, incTotal - expTotal);
       const payment = Math.max(5, Math.round(discretionary * 0.15 / 12));
+      calculatedPayment = payment;
       amountEl.textContent = '$' + payment.toLocaleString() + ' / month';
       preview.classList.remove('hidden');
     }
