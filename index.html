@@ -359,29 +359,148 @@
       </div>
     </div>`,
 
-    // Step 2 — Income & expenses
+    // Step 2 — Income & expenses (full embedded form)
     `<div class="flex flex-col gap-4">
-      <p class="text-sm text-neutral-disabled">Tell us about your income to calculate your rehabilitation payment.</p>
-      <div>
-        <label class="block text-sm font-medium text-gray-900 mb-1.5">Monthly gross income</label>
-        <div class="flex items-center border border-border-base rounded-xl px-4 py-3 focus-within:border-brand-primary transition-colors">
-          <span class="text-neutral-disabled mr-2">$</span>
-          <input type="number" placeholder="0.00" class="flex-1 outline-none text-sm text-gray-900 bg-transparent" />
+      <!-- Cait message bubble -->
+      <div class="flex items-start gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center shrink-0 mt-0.5">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" fill="white"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <div class="bg-surface-base rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-gray-800 leading-relaxed max-w-xs">
+          Your payment is based on income and expenses — it can be much lower than the standard rate. Fill in what applies to you. <span class="font-medium text-brand-primary">Section 1 is pre-filled</span> from your account.
         </div>
       </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-900 mb-1.5">Monthly expenses</label>
-        <div class="flex items-center border border-border-base rounded-xl px-4 py-3 focus-within:border-brand-primary transition-colors">
-          <span class="text-neutral-disabled mr-2">$</span>
-          <input type="number" placeholder="0.00" class="flex-1 outline-none text-sm text-gray-900 bg-transparent" />
+
+      <!-- Official form banner -->
+      <div class="flex items-start gap-2.5 bg-brand-light border border-blue-20 rounded-xl px-4 py-3">
+        <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#265ddc" stroke-width="1.5"/><path d="M8 7v4" stroke="#265ddc" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.75" fill="#265ddc"/></svg>
+        <p class="text-xs text-brand-primary leading-relaxed">This is the official <strong>Loan Rehabilitation: Income &amp; Expense Information</strong> form — embedded here so you don't have to go anywhere else.</p>
+      </div>
+
+      <!-- Section 1: Borrower Info -->
+      <div class="border border-border-base rounded-xl overflow-hidden">
+        <div class="bg-neutral-light px-4 py-2.5 flex items-center justify-between">
+          <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Section 1 — Borrower Information</p>
+          <span class="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full">Pre-filled</span>
+        </div>
+        <div class="p-4 flex flex-col gap-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-neutral-disabled mb-1">Last name</label>
+              <input type="text" value="Suchde" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-neutral-disabled mb-1">First name</label>
+              <input type="text" value="Sheetal" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-neutral-disabled mb-1">SSN</label>
+              <input type="text" value="•••–••–6789" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none font-mono tracking-wider" readonly />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-neutral-disabled mb-1">Date of birth</label>
+              <input type="text" value="••/••/1992" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-neutral-disabled mb-1">Address</label>
+            <input type="text" value="123 Main St, Austin, TX 78701" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-neutral-disabled mb-1">Phone</label>
+              <input type="text" value="(512) 555-0142" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 bg-gray-50 outline-none" readonly />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-neutral-disabled mb-1">Family size</label>
+              <input type="number" value="1" min="1" class="w-full border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-brand-primary transition-colors" />
+            </div>
+          </div>
         </div>
       </div>
-      <div class="bg-brand-light border border-blue-20 rounded-xl p-4 flex items-center justify-between">
-        <div>
-          <p class="text-xs text-brand-primary font-medium mb-0.5">Estimated rehabilitation payment</p>
-          <p class="text-2xl font-bold text-brand-primary">$35 / month</p>
+
+      <!-- Section 2: Monthly Income -->
+      <div class="border border-border-base rounded-xl overflow-hidden">
+        <div class="bg-neutral-light px-4 py-2.5">
+          <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Section 2 — Monthly Income</p>
+          <p class="text-xs text-neutral-disabled mt-0.5">Enter your gross monthly amounts (before taxes)</p>
         </div>
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" class="text-brand-primary opacity-50"><path d="M6 14h16M18 9l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="p-4 flex flex-col gap-2.5">
+          ${[
+            ['inc-1','Employment wages (you)'],
+            ['inc-2','Spouse / partner employment wages'],
+            ['inc-3','Child support or alimony received'],
+            ['inc-4','Social Security benefits'],
+            ["inc-5","Worker's compensation"],
+            ['inc-6','Public assistance (TANF, SNAP, etc.)'],
+            ['inc-7','Other income'],
+          ].map(([id,label])=>`
+          <div class="flex items-center gap-3">
+            <label class="flex-1 text-sm text-gray-800">${label}</label>
+            <div class="flex items-center border border-border-base rounded-lg px-3 py-2 w-32 focus-within:border-brand-primary transition-colors">
+              <span class="text-neutral-disabled text-sm mr-1">$</span>
+              <input id="${id}" type="number" min="0" placeholder="0" oninput="calcTotals()" class="w-full outline-none text-sm text-gray-900 bg-transparent text-right" />
+            </div>
+          </div>`).join('')}
+          <div class="flex items-center gap-3 border-t border-border-base pt-3 mt-1">
+            <p class="flex-1 text-sm font-semibold text-gray-900">Total monthly income</p>
+            <div class="flex items-center bg-brand-light border border-blue-20 rounded-lg px-3 py-2 w-32">
+              <span class="text-brand-primary text-sm mr-1">$</span>
+              <span id="inc-total" class="flex-1 text-sm font-bold text-brand-primary text-right">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Monthly Expenses -->
+      <div class="border border-border-base rounded-xl overflow-hidden">
+        <div class="bg-neutral-light px-4 py-2.5">
+          <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Section 3 — Monthly Expenses</p>
+          <p class="text-xs text-neutral-disabled mt-0.5">Enter reasonable and necessary monthly amounts</p>
+        </div>
+        <div class="p-4 flex flex-col gap-2.5">
+          ${[
+            ['exp-1','Food and household supplies'],
+            ['exp-2','Housing (rent or mortgage)'],
+            ['exp-3','Utilities (electricity, gas, water)'],
+            ['exp-4','Basic phone / communication'],
+            ['exp-5','Medical and dental expenses'],
+            ['exp-6','Health, auto & life insurance'],
+            ['exp-7','Transportation (gas, fares, etc.)'],
+            ['exp-8','Child or dependent care'],
+            ['exp-9','Child or spousal support paid'],
+            ['exp-10','Federal student loan payments'],
+            ['exp-11','Private student loan payments'],
+            ['exp-12','Other necessary expenses'],
+          ].map(([id,label])=>`
+          <div class="flex items-center gap-3">
+            <label class="flex-1 text-sm text-gray-800">${label}</label>
+            <div class="flex items-center border border-border-base rounded-lg px-3 py-2 w-32 focus-within:border-brand-primary transition-colors">
+              <span class="text-neutral-disabled text-sm mr-1">$</span>
+              <input id="${id}" type="number" min="0" placeholder="0" oninput="calcTotals()" class="w-full outline-none text-sm text-gray-900 bg-transparent text-right" />
+            </div>
+          </div>`).join('')}
+          <div>
+            <label class="block text-xs font-medium text-neutral-disabled mb-1 mt-1">Number of vehicles owned</label>
+            <input type="number" min="0" max="10" placeholder="0" class="w-20 border border-border-base rounded-lg px-3 py-2 text-sm text-gray-900 outline-none focus:border-brand-primary transition-colors" />
+          </div>
+          <div class="flex items-center gap-3 border-t border-border-base pt-3 mt-1">
+            <p class="flex-1 text-sm font-semibold text-gray-900">Total monthly expenses</p>
+            <div class="flex items-center bg-brand-light border border-blue-20 rounded-lg px-3 py-2 w-32">
+              <span class="text-brand-primary text-sm mr-1">$</span>
+              <span id="exp-total" class="flex-1 text-sm font-bold text-brand-primary text-right">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discretionary income preview -->
+      <div id="payment-preview" class="hidden bg-brand-light border border-blue-20 rounded-xl p-4">
+        <p class="text-xs text-brand-primary font-medium mb-1">Estimated rehabilitation payment</p>
+        <p id="payment-amount" class="text-2xl font-bold text-brand-primary">$35 / month</p>
+        <p class="text-xs text-neutral-disabled mt-1">Based on 15% of your discretionary income ÷ 12</p>
       </div>
     </div>`,
 
@@ -415,7 +534,7 @@
     const btnNext = document.getElementById('btn-next');
     const counter = document.getElementById('step-counter');
     btnBack.classList.toggle('hidden', currentStep === 0);
-    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll now' : currentStep === 0 ? 'Start Rehabilitation' : 'Next';
+    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll now' : currentStep === 0 ? 'Start Rehabilitation' : currentStep === 1 ? 'Calculate my payment' : 'Next';
     counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
   }
 
@@ -426,6 +545,26 @@
 
   function prevStep() {
     if (currentStep > 0) { currentStep--; renderStep(); }
+  }
+
+  function calcTotals() {
+    const incIds = ['inc-1','inc-2','inc-3','inc-4','inc-5','inc-6','inc-7'];
+    const expIds = ['exp-1','exp-2','exp-3','exp-4','exp-5','exp-6','exp-7','exp-8','exp-9','exp-10','exp-11','exp-12'];
+    const sum = ids => ids.reduce((t,id) => { const el = document.getElementById(id); return t + (el ? parseFloat(el.value)||0 : 0); }, 0);
+    const incTotal = sum(incIds);
+    const expTotal = sum(expIds);
+    const incEl = document.getElementById('inc-total');
+    const expEl = document.getElementById('exp-total');
+    if (incEl) incEl.textContent = incTotal.toLocaleString();
+    if (expEl) expEl.textContent = expTotal.toLocaleString();
+    const preview = document.getElementById('payment-preview');
+    const amountEl = document.getElementById('payment-amount');
+    if (preview && amountEl && incTotal > 0) {
+      const discretionary = Math.max(0, incTotal - expTotal);
+      const payment = Math.max(5, Math.round(discretionary * 0.15 / 12));
+      amountEl.textContent = '$' + payment.toLocaleString() + ' / month';
+      preview.classList.remove('hidden');
+    }
   }
 
   function showChatScreen() {
