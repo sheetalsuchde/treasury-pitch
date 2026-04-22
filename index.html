@@ -56,7 +56,8 @@
   </nav>
 
   <!-- Alert Banner -->
-  <div id="alert-banner" class="bg-warning-bg border-b border-warning-border px-6 py-4 flex items-start gap-3">
+  <div class="px-10 py-4 border-b border-neutral-light">
+  <div id="alert-banner" class="bg-warning-bg border border-warning-border rounded-2xl px-5 py-4 flex items-start gap-3">
     <svg class="shrink-0 text-amber-500 mt-0.5" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
     <div class="flex-1 min-w-0">
       <p class="text-sm font-bold text-gray-900 mb-1">Your student loan is currently in default</p>
@@ -67,14 +68,13 @@
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 3L3 11M3 3l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
   </div>
+  </div>
 
   <!-- Hero -->
   <div class="flex-1 flex flex-col items-center justify-center px-6 pt-16 pb-12">
     <!-- Cait brand row -->
     <div class="flex items-center gap-2 mb-10">
-      <div class="bg-brand-light rounded-xl p-1.5">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="6" stroke="#265ddc" stroke-width="2.2" stroke-linecap="round"/><circle cx="14" cy="14" r="2.2" fill="#265ddc"/></svg>
-      </div>
+      <div class="bg-brand-light rounded-xl p-1.5 w-10 h-10"></div>
       <span class="text-sm font-bold text-gray-900">Cait</span>
       <span class="text-sm text-neutral-disabled">- AI assistant for student debt and college planning</span>
     </div>
@@ -118,7 +118,7 @@
   <!-- Nav -->
   <nav class="flex items-center justify-between px-10 py-4 border-b border-neutral-light bg-white shrink-0">
     <div class="flex-1">
-      <button class="flex items-center gap-2 text-sm font-medium text-neutral-subtle px-2 py-1 rounded-xl hover:bg-neutral-light">
+      <button onclick="showHomeScreen()" class="flex items-center gap-2 text-sm font-medium text-neutral-subtle px-2 py-1 rounded-xl hover:bg-neutral-light">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect y="3" width="20" height="2" rx="1" fill="currentColor"/><rect y="9" width="14" height="2" rx="1" fill="currentColor"/><rect y="15" width="20" height="2" rx="1" fill="currentColor"/></svg>
         Menu
       </button>
@@ -565,6 +565,11 @@
       amountEl.textContent = '$' + payment.toLocaleString() + ' / month';
       preview.classList.remove('hidden');
     }
+  }
+
+  function showHomeScreen() {
+    document.getElementById('screen-chat').classList.add('hidden');
+    document.getElementById('screen-home').classList.remove('hidden');
   }
 
   function showChatScreen() {
