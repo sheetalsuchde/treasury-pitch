@@ -451,19 +451,19 @@
         </div>
         <div class="p-4 flex flex-col gap-2.5">
           ${[
-            ['inc-1','Employment wages (you)'],
-            ['inc-2','Spouse / partner employment wages'],
-            ['inc-3','Child support or alimony received'],
-            ['inc-4','Social Security benefits'],
-            ["inc-5","Worker's compensation"],
-            ['inc-6','Public assistance (TANF, SNAP, etc.)'],
-            ['inc-7','Other income'],
-          ].map(([id,label])=>`
+            ['inc-1','Employment wages (you)',6000],
+            ['inc-2','Spouse / partner employment wages',''],
+            ['inc-3','Child support or alimony received',''],
+            ['inc-4','Social Security benefits',''],
+            ["inc-5","Worker's compensation",''],
+            ['inc-6','Public assistance (TANF, SNAP, etc.)',''],
+            ['inc-7','Other income',500],
+          ].map(([id,label,val])=>`
           <div class="flex items-center gap-3">
             <label class="flex-1 text-sm text-gray-800">${label}</label>
             <div class="flex items-center border border-border-base rounded-lg px-3 py-2 w-32 focus-within:border-brand-primary transition-colors">
               <span class="text-neutral-disabled text-sm mr-1">$</span>
-              <input id="${id}" type="number" min="0" placeholder="0" oninput="calcTotals()" class="w-full outline-none text-sm text-gray-900 bg-transparent text-right" />
+              <input id="${id}" type="number" min="0" placeholder="0" value="${val}" oninput="calcTotals()" class="w-full outline-none text-sm text-gray-900 bg-transparent text-right" />
             </div>
           </div>`).join('')}
           <div class="flex items-center gap-3 border-t border-border-base pt-3 mt-1">
@@ -484,24 +484,24 @@
         </div>
         <div class="p-4 flex flex-col gap-2.5">
           ${[
-            ['exp-1','Food and household supplies'],
-            ['exp-2','Housing (rent or mortgage)'],
-            ['exp-3','Utilities (electricity, gas, water)'],
-            ['exp-4','Basic phone / communication'],
-            ['exp-5','Medical and dental expenses'],
-            ['exp-6','Health, auto & life insurance'],
-            ['exp-7','Transportation (gas, fares, etc.)'],
-            ['exp-8','Child or dependent care'],
-            ['exp-9','Child or spousal support paid'],
-            ['exp-10','Federal student loan payments'],
-            ['exp-11','Private student loan payments'],
-            ['exp-12','Other necessary expenses'],
-          ].map(([id,label])=>`
+            ['exp-1','Food and household supplies',400],
+            ['exp-2','Housing (rent or mortgage)',1200],
+            ['exp-3','Utilities (electricity, gas, water)',150],
+            ['exp-4','Basic phone / communication',80],
+            ['exp-5','Medical and dental expenses',50],
+            ['exp-6','Health, auto & life insurance',200],
+            ['exp-7','Transportation (gas, fares, etc.)',200],
+            ['exp-8','Child or dependent care',''],
+            ['exp-9','Child or spousal support paid',''],
+            ['exp-10','Federal student loan payments',''],
+            ['exp-11','Private student loan payments',''],
+            ['exp-12','Other necessary expenses',220],
+          ].map(([id,label,val])=>`
           <div class="flex items-center gap-3">
             <label class="flex-1 text-sm text-gray-800">${label}</label>
             <div class="flex items-center border border-border-base rounded-lg px-3 py-2 w-32 focus-within:border-brand-primary transition-colors">
               <span class="text-neutral-disabled text-sm mr-1">$</span>
-              <input id="${id}" type="number" min="0" placeholder="0" oninput="calcTotals()" class="w-full outline-none text-sm text-gray-900 bg-transparent text-right" />
+              <input id="${id}" type="number" min="0" placeholder="0" value="${val}" oninput="calcTotals()" class="w-full outline-none text-sm text-gray-900 bg-transparent text-right" />
             </div>
           </div>`).join('')}
           <div>
@@ -579,6 +579,7 @@
     btnBack.classList.toggle('hidden', currentStep === 0);
     btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll in rehabilitation →' : currentStep === 0 ? 'Start Rehabilitation' : currentStep === 1 ? 'Calculate my payment' : 'Next';
     counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
+    if (currentStep === 1) setTimeout(calcTotals, 0);
     if (currentStep === 2) {
       const el = document.getElementById('review-payment-amount');
       if (el) el.innerHTML = '$' + calculatedPayment.toLocaleString() + '<span class="text-2xl font-semibold">/mo</span>';
