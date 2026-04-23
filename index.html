@@ -1280,8 +1280,8 @@
     sec.classList.remove('ie-active','ie-locked'); sec.classList.add('ie-confirmed');
     const badge = sec.querySelector('.ie-status');
     if (badge) { badge.textContent = '✓ Confirmed'; badge.className = 'ie-status ie-s-confirmed'; }
-    // Auto-collapse confirmed section after a beat
-    setTimeout(() => sec.classList.add('ie-collapsed'), 600);
+    // Auto-collapse confirmed section before next section activates
+    setTimeout(() => sec.classList.add('ie-collapsed'), 300);
   }
 
   // Split HTML into reveal chunks: by <br><br>, then <br>, trimmed
