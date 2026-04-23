@@ -1238,15 +1238,8 @@
     if (!area) return;
     if (role === 'cait') {
       area.insertAdjacentHTML('beforeend', `
-        <div class="pr-12 flex flex-col gap-2">
-          <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center shrink-0">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" fill="white"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
-            </div>
-            <span class="text-sm font-semibold text-gray-900">Cait</span>
-            <span class="text-xs text-neutral-disabled">· AI Student Loan Assistant, Candidly</span>
-          </div>
-          <p class="text-sm text-neutral-subtle leading-relaxed">${html}</p>
+        <div class="pr-12">
+          <p class="text-sm text-[#676d7a] leading-relaxed">${html}</p>
         </div>`);
       // Push action options to the unified bottom chip bar (no inline pills)
       if (pills && pills.length) updateChatChips(pills);
