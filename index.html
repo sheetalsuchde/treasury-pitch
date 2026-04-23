@@ -430,50 +430,69 @@
       </div>
 
       <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
-        <span class="font-bold">What happens if you don't act:</span> The Dept. of Education may offset your federal tax refund, up to 15% of your Social Security, and refer your debt for wage garnishment. <span class="font-bold">July 1 is D-Day</span> — under the One Big Beautiful Bill, collections are set to escalate. You have <span class="font-bold">70 days</span> to act.
+        <span class="font-bold">What happens if you don't act:</span> The government can garnish your <span class="font-semibold">income tax refund</span>, other federal payments, and your <span class="font-semibold">wages</span> to collect this debt.
+        <span class="block mt-1.5 text-red-700 font-medium">Treasury offset may begin in 44 days — act now to protect your income.</span>
       </div>
 
       <!-- ── How Loan Rehabilitation Works ── -->
-      <div class="bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4">
+      <div class="bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4" id="how-rehab-works">
 
         <p class="text-xl font-bold text-gray-900 leading-6">How Loan Rehabilitation Works</p>
 
-        <!-- Step 1 -->
-        <div class="border border-[#f0f2f5] rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
-          <div class="flex flex-col gap-4 p-6">
-            <div class="flex flex-col gap-1 pb-2 pr-2">
-              <p class="text-xl font-bold text-gray-900 leading-6">Share Your Finances</p>
-              <p class="text-lg text-[#2a2f3d] leading-relaxed">Provide your income (AGI from Form 1040, Line 11) and household size. Cait calculates your monthly payment — no guessing needed.</p>
-            </div>
-            <div class="flex items-center gap-4">
-              <span class="bg-[#fafbfc] border border-[#f0f2f5] text-xs font-medium text-gray-900 px-2 py-0.5 rounded" style="min-height:24px;display:inline-flex;align-items:center;">≤ 15% of discretionary income</span>
-              <span class="bg-[#fafbfc] border border-[#f0f2f5] text-xs font-medium text-gray-900 px-2 py-0.5 rounded" style="min-height:24px;display:inline-flex;align-items:center;">As low as $5/mo</span>
-            </div>
-          </div>
-        </div>
+        <!-- Steps row -->
+        <div class="flex gap-3 items-stretch">
 
-        <!-- Step 2 -->
-        <div class="border border-[#f0f2f5] rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
-          <div class="flex flex-col gap-4 p-6">
-            <div class="flex flex-col gap-1 pb-2 pr-2">
-              <p class="text-xl font-bold text-gray-900 leading-6">Make 9 Monthly Payments</p>
-              <p class="text-lg text-[#2a2f3d] leading-relaxed">Pay your agreed amount each month for 9 consecutive months, within a 10-month window. Auto-pay is strongly recommended.</p>
+          <!-- Step 1 -->
+          <div class="flex-1 border border-[#f0f2f5] rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+            <div class="flex flex-col gap-3 p-4 h-full">
+              <div class="w-9 h-9 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div class="flex flex-col gap-1 flex-1">
+                <p class="text-base font-bold text-gray-900 leading-6">Share Your Finances</p>
+                <p class="text-base text-[#2a2f3d] leading-relaxed">Provide your income (AGI from Form 1040, Line 11) and household size. Cait calculates your monthly payment — no guessing needed.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="bg-[#fafbfc] border border-[#f0f2f5] text-sm font-medium text-gray-900 px-3 py-1 rounded" style="min-height:28px;display:inline-flex;align-items:center;">15% of discretionary income</span>
+                <span class="bg-[#fafbfc] border border-[#f0f2f5] text-sm font-medium text-gray-900 px-3 py-1 rounded" style="min-height:28px;display:inline-flex;align-items:center;">As low as $5/mo</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Step 3 -->
-        <div class="border border-[#f0f2f5] rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
-          <div class="flex flex-col gap-4 p-6">
-            <div class="flex flex-col gap-1 pb-2 pr-2">
-              <p class="text-xl font-bold text-gray-900 leading-6">Default Removed</p>
-              <p class="text-lg text-[#2a2f3d] leading-relaxed">After your 9th payment, your loan is officially rehabilitated. All three credit bureaus are notified and the default is permanently cleared from your credit report.</p>
-            </div>
-            <div class="flex items-center gap-4">
-              <span class="bg-[#e6faee] text-xs font-medium text-[#027a42] px-2 py-0.5 rounded" style="min-height:24px;display:inline-flex;align-items:center;">All 3 bureaus notified</span>
-              <span class="bg-[#e6faee] text-xs font-medium text-[#027a42] px-2 py-0.5 rounded" style="min-height:24px;display:inline-flex;align-items:center;">~10 months total</span>
+          <!-- Step 2 -->
+          <div class="flex-1 border border-[#f0f2f5] rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+            <div class="flex flex-col gap-3 p-4 h-full">
+              <div class="w-9 h-9 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="flex flex-col gap-1 flex-1">
+                <p class="text-base font-bold text-gray-900 leading-6">Make 9 Monthly Payments</p>
+                <p class="text-base text-[#2a2f3d] leading-relaxed">Pay your agreed amount each month for 9 consecutive months, within a 10-month window. Auto-pay is strongly recommended.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="bg-[#fafbfc] border border-[#f0f2f5] text-sm font-medium text-gray-900 px-3 py-1 rounded" style="min-height:28px;display:inline-flex;align-items:center;">9 consecutive months</span>
+                <span class="bg-[#fafbfc] border border-[#f0f2f5] text-sm font-medium text-gray-900 px-3 py-1 rounded" style="min-height:28px;display:inline-flex;align-items:center;">Auto-pay recommended</span>
+              </div>
             </div>
           </div>
+
+          <!-- Step 3 -->
+          <div class="flex-1 border border-[#f0f2f5] rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+            <div class="flex flex-col gap-3 p-4 h-full">
+              <div class="w-9 h-9 rounded-lg bg-[#ecfbf5] flex items-center justify-center shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              </div>
+              <div class="flex flex-col gap-1 flex-1">
+                <p class="text-base font-bold text-gray-900 leading-6">Default Removed</p>
+                <p class="text-base text-[#2a2f3d] leading-relaxed">After your 9th payment, your loan is officially rehabilitated. All three credit bureaus are notified and the default is permanently cleared from your credit report.</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="bg-[#e6faee] text-sm font-medium text-[#027a42] px-3 py-1 rounded" style="min-height:28px;display:inline-flex;align-items:center;">All 3 bureaus notified</span>
+                <span class="bg-[#e6faee] text-sm font-medium text-[#027a42] px-3 py-1 rounded" style="min-height:28px;display:inline-flex;align-items:center;">~10 months total</span>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -517,6 +536,7 @@
       </div>`;
     setTimeout(() => {
       const extractedAGI = 38400;
+      window._1040Uploaded = true; // flag for confirmPayment to skip re-upload prompt
       // Sync extracted value to both gross income field and hidden AGI input
       document.getElementById('form-agi').value = extractedAGI;
       const grossField = document.getElementById('form-gross-income');
@@ -610,55 +630,103 @@
         <p class="text-xs text-neutral-disabled whitespace-nowrap">Pre-filled from your Candidly profile — review and confirm</p>
       </div>
 
-      <!-- Gross Income -->
+      <!-- Annual Income section -->
       <div class="flex flex-col gap-1.5">
-        <label class="text-sm font-semibold text-gray-900">Annual Gross Income</label>
-        <p class="text-xs text-neutral-disabled">Your total income before taxes and deductions</p>
+        <p class="text-sm font-bold text-gray-900">What was your annual income?</p>
+        <p class="text-xs text-neutral-disabled">AGI — adjusted gross income is your income before taxes</p>
         <div class="relative mt-0.5">
           <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-disabled text-sm font-medium pointer-events-none">$</span>
           <input id="form-gross-income" type="number" value="38400"
             oninput="document.getElementById('form-agi').value=this.value"
+            placeholder="Adjusted Gross Income (required)"
             class="w-full border border-border-base rounded-xl pl-8 pr-4 py-2.5 text-sm text-gray-900 outline-none bg-white" />
         </div>
       </div>
 
-      <!-- Family size -->
-      <div class="flex flex-col gap-1.5">
-        <label class="text-sm font-semibold text-gray-900">Family Size</label>
-        <p class="text-xs text-neutral-disabled">Number of people in your household</p>
-        <input id="form-family" type="number" value="1" min="1"
-          class="w-full border border-border-base rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none bg-white mt-0.5" />
+      <!-- Household information section -->
+      <div class="flex flex-col gap-3">
+        <p class="text-sm font-bold text-gray-900">Household information</p>
+
+        <!-- Row 1: Family size + Dependents -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex flex-col gap-1">
+            <input id="form-family" type="number" value="1" min="1" placeholder="Family size (required)"
+              class="w-full border border-border-base rounded-xl px-3 py-2.5 text-sm text-gray-900 outline-none bg-white" />
+            <p class="text-xs text-neutral-disabled">Total number of people in your household</p>
+          </div>
+          <div class="flex flex-col gap-1">
+            <input id="form-dependents" type="number" value="0" min="0" placeholder="Number of dependents (required)"
+              class="w-full border border-border-base rounded-xl px-3 py-2.5 text-sm text-gray-900 outline-none bg-white" />
+            <p class="text-xs text-neutral-disabled">How many dependents do you claim on your taxes? Enter 0 if none.</p>
+          </div>
+        </div>
+
+        <!-- Row 2: Marital status + Tax filing status -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex flex-col gap-1">
+            <select id="form-marital" class="w-full border border-border-base rounded-xl px-3 py-2.5 text-sm text-gray-900 outline-none bg-white appearance-none">
+              <option value="" disabled selected>Current marital status</option>
+              <option value="single">Single</option>
+              <option value="married">Married</option>
+              <option value="separated">Separated</option>
+              <option value="divorced">Divorced</option>
+              <option value="widowed">Widowed</option>
+            </select>
+            <p class="text-xs text-neutral-disabled">Indicating your marital status improves the accuracy of your repayment plan.</p>
+          </div>
+          <div class="flex flex-col gap-1">
+            <select id="form-filing" class="w-full border border-border-base rounded-xl px-3 py-2.5 text-sm text-gray-900 outline-none bg-white appearance-none">
+              <option value="" disabled selected>Tax filing status</option>
+              <option value="single">Single</option>
+              <option value="married_joint">Married filing jointly</option>
+              <option value="married_separate">Married filing separately</option>
+              <option value="head">Head of household</option>
+            </select>
+            <p class="text-xs text-neutral-disabled">What was your filing status on your most recent tax return?</p>
+          </div>
+        </div>
       </div>
 
       <!-- Hidden AGI source of truth -->
       <input id="form-agi" type="hidden" value="38400" />
 
-      <!-- Form 1040 Upload -->
-      <div id="form-1040-upload-section" class="flex flex-col gap-3">
-        <div class="flex items-center justify-between">
-          <label class="text-sm font-semibold text-gray-900">Upload Form 1040</label>
-          <span class="text-[10px] font-bold text-brand-primary bg-brand-light border border-[#c5d8ff] px-2 py-0.5 rounded-full uppercase tracking-wide">Improves Acceptance</span>
-        </div>
-        <p class="text-xs text-neutral-disabled -mt-1">Upload your most recent Form 1040 to verify your income and improve your chances of acceptance.</p>
-        <label id="form-1040-dropzone" for="form-1040-file" class="cursor-pointer block">
-          <input type="file" id="form-1040-file" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handle1040Upload(event)" />
-          <div class="border-2 border-dashed border-[#c5d8ff] bg-[#f8faff] rounded-2xl px-4 py-5 text-center hover:bg-brand-light hover:border-brand-primary transition-colors">
-            <div class="w-10 h-10 rounded-xl bg-brand-light border border-[#c5d8ff] flex items-center justify-center mx-auto mb-2.5">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      <!-- Form 1040 Upload — separated section -->
+      <div class="border-t border-[#f0f2f5] pt-4 -mx-5 px-5">
+        <div id="form-1040-upload-section" class="bg-[#fafbfc] border border-[#f0f2f5] rounded-xl p-4 flex flex-col gap-3">
+
+          <!-- Section header -->
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <p class="text-sm font-bold text-gray-900">Verify with Form 1040</p>
+              <p class="text-xs text-neutral-disabled mt-0.5">Upload your most recent tax return so we can extract your AGI instantly — no manual entry needed.</p>
             </div>
-            <p class="text-sm font-semibold text-gray-900">Drop your Form 1040 here</p>
-            <p class="text-xs text-neutral-disabled mt-0.5">or click to browse &nbsp;·&nbsp; PDF, JPG, PNG accepted</p>
+            <span class="shrink-0 text-[10px] font-semibold text-[#265ddc] bg-[#eff4ff] border border-[#e5edff] px-2 py-0.5 rounded-full whitespace-nowrap" style="min-height:20px;display:inline-flex;align-items:center;">Speeds up review</span>
           </div>
-        </label>
-        <div id="form-1040-success" style="display:none" class="bg-[#ecfbf5] border border-[#b6eeda] rounded-xl px-3 py-2.5 flex items-center gap-2.5">
-          <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0d9e6e"/><path d="M5 8l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div>
-            <p class="text-xs font-semibold text-emerald-800">Income verified from Form 1040</p>
-            <p id="form-1040-extracted-val" class="text-xs text-emerald-700">Line 11: $38,400</p>
+
+          <!-- Drop zone -->
+          <label id="form-1040-dropzone" for="form-1040-file" class="cursor-pointer block">
+            <input type="file" id="form-1040-file" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="handle1040Upload(event)" />
+            <div class="border-2 border-dashed border-[#c5d8ff] bg-white rounded-xl px-4 py-4 text-center hover:bg-[#eff4ff] hover:border-[#265ddc] transition-colors">
+              <div class="w-9 h-9 rounded-lg bg-[#eff4ff] border border-[#e5edff] flex items-center justify-center mx-auto mb-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <p class="text-sm font-semibold text-gray-900">Drop your Form 1040 here</p>
+              <p class="text-xs text-neutral-disabled mt-0.5">or click to browse &nbsp;·&nbsp; PDF, JPG, PNG</p>
+            </div>
+          </label>
+
+          <!-- Success state -->
+          <div id="form-1040-success" style="display:none" class="bg-[#ecfbf5] border border-[#b6eeda] rounded-xl px-3 py-2.5 flex items-center gap-2.5">
+            <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0d9e6e"/><path d="M5 8l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>
+              <p class="text-xs font-semibold text-emerald-800">Income verified from Form 1040</p>
+              <p id="form-1040-extracted-val" class="text-xs text-emerald-700">Line 11: $38,400</p>
+            </div>
+            <button onclick="reset1040Upload()" class="ml-auto text-[10px] text-neutral-disabled hover:text-gray-900 underline shrink-0">Change</button>
           </div>
-          <button onclick="reset1040Upload()" class="ml-auto text-[10px] text-neutral-disabled hover:text-gray-900 underline shrink-0">Change</button>
+
+          <button onclick="skipFormUpload()" id="form-manual-toggle" class="text-xs text-neutral-disabled text-center hover:text-brand-primary transition-colors">I'll skip this for now →</button>
         </div>
-        <button onclick="skipFormUpload()" id="form-manual-toggle" class="text-xs text-neutral-disabled text-center hover:text-brand-primary transition-colors py-0.5">Skip for now →</button>
       </div>
 
       <!-- Calculate button -->
@@ -733,8 +801,10 @@
           <p class="text-sm font-semibold text-gray-900">Are you comfortable with <strong>$${monthly}/month</strong> for 9 months?</p>
           <div class="grid grid-cols-2 gap-2">
             <button onclick="confirmPayment(true,${monthly})" class="rounded-xl border-2 border-[#265ddc] px-3 py-2.5 text-sm font-semibold text-[#265ddc] hover:bg-brand-light transition-colors text-left leading-snug">
-              <div class="bg-[#eff4ff] rounded-[6px] flex items-center justify-center mb-1.5 shrink-0" style="width:32px;height:32px;padding:6.4px">
-                <img alt="" class="block w-full h-full max-w-none" src="https://www.figma.com/api/mcp/asset/81a03cf5-06cb-4458-8b56-8b9e89993288" />
+              <div class="bg-[#eff4ff] rounded-[6px] relative flex items-center justify-center mb-1.5 shrink-0 overflow-hidden" style="width:32px;height:32px;padding:6.4px">
+                <div class="relative shrink-0" style="width:19.2px;height:19.2px">
+                  <img alt="" class="absolute block inset-0 max-w-none w-full h-full" src="https://www.figma.com/api/mcp/asset/ebc3c8df-7ae0-49ab-be48-fba9614be917" />
+                </div>
               </div>
               Yes, I can manage this
             </button>
@@ -763,8 +833,8 @@
       section.insertAdjacentHTML('beforeend', `
         <div id="enroll-block" class="flex flex-col gap-3 border-t border-neutral-light pt-3">
 
-          <!-- Form 1040 verification prompt -->
-          <div id="enroll-1040-prompt" class="bg-[#f5f8ff] border border-[#c5d8ff] rounded-xl p-3 flex flex-col gap-2.5">
+          <!-- Form 1040 verification prompt — only shown if not already uploaded in income form -->
+          ${window._1040Uploaded ? '' : `<div id="enroll-1040-prompt" class="bg-[#f5f8ff] border border-[#c5d8ff] rounded-xl p-3 flex flex-col gap-2.5">
             <div class="flex items-center gap-2">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               <p class="text-xs font-semibold text-gray-900">Verify with Form 1040 <span class="text-[10px] font-bold text-brand-primary bg-brand-light border border-[#c5d8ff] px-1.5 py-0.5 rounded-full ml-1">Improves acceptance</span></p>
@@ -778,7 +848,7 @@
               </div>
             </label>
             <button onclick="skipEnroll1040()" class="text-[10px] text-neutral-disabled text-center hover:text-gray-900 transition-colors">Skip for now</button>
-          </div>
+          </div>`}
 
           <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 flex items-start gap-2">
             <svg class="shrink-0 mt-0.5 text-amber-500" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
