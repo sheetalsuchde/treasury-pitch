@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Candidly — Ask Cait</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"DM Sans"', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+  <style>
+    * { font-family: 'DM Sans', sans-serif; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+    /* Gradient text */
+    .cait-gradient { background: linear-gradient(90.04deg, #31ADF5 0%, #B380BC 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* Safe areas */
+    .pt-safe { padding-top: max(16px, env(safe-area-inset-top)); }
+    .pb-safe { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+
+    /* Full-screen base layer */
+    body { background: #fafbfc; overflow: hidden; height: 100dvh; }
+
+    /* Screens — stacked, slide in from right */
+    .mob-screen {
+      position: fixed; inset: 0;
+      background: #fafbfc;
+      display: flex; flex-direction: column;
+      height: 100dvh;
+    }
+    .mob-screen.slide {
+      transform: translateX(100%);
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mob-screen.slide.active { transform: translateX(0); }
+
+    /* Bottom sheet */
+    .mob-sheet {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 92dvh;
+      background: white;
+      border-radius: 22px 22px 0 0;
+      box-shadow: 0 -6px 40px rgba(0,0,0,0.13);
+      transform: translateY(100%);
+      transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+      z-index: 60;
+      display: flex; flex-direction: column;
+    }
+    .mob-sheet.open { transform: translateY(0); }
+
+    /* Sheet overlay */
+    .mob-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 50;
+    }
+    .mob-overlay.visible { opacity: 1; pointer-events: auto; }
+
+    /* Cait line reveal */
+    .cait-line { opacity: 0; }
+    @keyframes cait-line-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .cait-line.revealed { animation: cait-line-in 0.36s ease forwards; }
+
+    /* Input bar */
+    .mob-input-bar {
+      background: white;
+      border: 1px solid #e2e4eb;
+      border-radius: 999px;
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 7px 7px 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+
+    /* Chips scroll */
+    .chips-row { display: flex; gap: 8px; overflow-x: auto; padding: 0 16px 2px; scrollbar-width: none; }
+    .chips-row::-webkit-scrollbar { display: none; }
+
+    /* ── OMB Form styles ── */
+    .ie-section { border: 1px solid #e2e4eb; border-radius: 12px; overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s, opacity 0.25s; }
+    .ie-section.ie-locked { opacity: 0.65; }
+    .ie-section.ie-active { border-color: #265ddc; box-shadow: 0 0 0 3px rgba(38,93,220,0.09); }
+    .ie-section.ie-confirmed { border-color: #b6eeda; }
+    .ie-sec-hdr { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #fafbfc; border-bottom: 1px solid #f0f2f5; cursor: pointer; user-select: none; }
+    .ie-sec-hdr:active { background: #f0f2f5; }
+    .ie-section.ie-active .ie-sec-hdr { background: #f0f4ff; border-bottom-color: #dde8ff; }
+    .ie-section.ie-confirmed .ie-sec-hdr { background: #f0fbf7; border-bottom-color: #d4f5e8; }
+    .ie-section.ie-collapsed .ie-sec-body { display: none; }
+    .ie-section.ie-collapsed .ie-sec-hdr { border-bottom: none; }
+    .ie-section.ie-collapsed .ie-sec-confirm { display: none !important; }
+    .ie-sec-chev { width: 14px; height: 14px; color: #9ca3af; transition: transform 0.2s; flex-shrink: 0; }
+    .ie-section.ie-collapsed .ie-sec-chev { transform: rotate(-90deg); }
+    .ie-sec-confirm { display: none; border-top: 1px solid #e8edf5; padding: 10px 14px; background: #fafbfc; }
+    .ie-section.ie-active .ie-sec-confirm { display: flex; justify-content: flex-end; }
+    .ie-status { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; white-space: nowrap; }
+    .ie-s-pending { color: #676d7a; background: #f0f2f5; }
+    .ie-s-confirmed { color: #0d9e6e; background: #ecfbf5; }
+    .ie-label { display: block; font-size: 12px; font-weight: 600; color: #2a2f3d; margin-bottom: 3px; }
+    .ie-input { width: 100%; border: 1px solid #e2e4eb; border-radius: 12px; padding: 10px 14px; font-size: 14px; color: #181d29; background: white; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .ie-input:focus { border-color: #265ddc; box-shadow: 0 0 0 2px rgba(38,93,220,0.1); }
+    .ie-money { padding-left: 26px; }
+    .ie-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #676d7a; pointer-events: none; font-weight: 500; }
+    .ie-field-wrap { position: relative; display: flex; flex-direction: column; gap: 3px; }
+    .ie-sec-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+    .ie-total-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f0f2f5; border-radius: 12px; margin-top: 2px; }
+
+    /* Nav bar base */
+    .mob-nav { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f0f2f5; background: white; flex-shrink: 0; padding-top: max(12px, env(safe-area-inset-top)); }
+    .mob-back-btn { width: 36px; height: 36px; border-radius: 10px; border: 1px solid #e2e4eb; display: flex; align-items: center; justify-content: center; color: #676d7a; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ================================================================ -->
+<!-- SCREEN 1: HOME                                                     -->
+<!-- ================================================================ -->
+<div id="mob-home" class="mob-screen" style="z-index:10">
+
+  <!-- Top nav -->
+  <div class="flex items-center justify-between px-5 bg-white border-b border-[#f0f2f5] shrink-0" style="padding-top:max(14px,env(safe-area-inset-top));padding-bottom:12px">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-[#eff4ff] rounded-xl flex items-center justify-center">
+        <div class="w-3 h-3 rounded-full bg-[#265ddc]"></div>
+      </div>
+      <span class="text-sm font-bold text-gray-900">Candidly</span>
+    </div>
+    <button class="w-8 h-8 rounded-xl border border-[#e2e4eb] flex items-center justify-center text-[#676d7a]">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+  </div>
+
+  <!-- Hero -->
+  <div class="flex-1 flex flex-col items-center justify-center px-6 pb-4">
+    <p class="text-base font-medium text-gray-900 mb-1">Hi, Jennifer!</p>
+    <h1 class="text-[44px] font-semibold tracking-tight text-center mb-2 leading-tight">
+      <span class="text-gray-900">Ask </span><span class="cait-gradient">Cait</span>
+    </h1>
+    <p class="text-sm text-[#676d7a] mb-8 text-center">Your AI assistant for managing your student debt</p>
+
+    <!-- Prompt chips — vertical on mobile -->
+    <div class="flex flex-col gap-2.5 w-full max-w-sm">
+      <button onclick="mobShowChat()" class="bg-transparent border border-amber-300 rounded-full px-4 py-3 text-sm font-semibold text-amber-800 hover:bg-[#FFF8EB] transition-colors flex items-center gap-2">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-amber-500"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        Help me get out of default
+      </button>
+      <button class="border border-[#b3c6f7] rounded-full px-4 py-3 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors text-left">Pay off my loans faster</button>
+      <button class="border border-[#b3c6f7] rounded-full px-4 py-3 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors text-left">Lower my payment</button>
+      <button class="border border-[#b3c6f7] rounded-full px-4 py-3 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors text-left">Plan for college</button>
+    </div>
+  </div>
+
+  <!-- Input bar -->
+  <div class="px-4 bg-white border-t border-[#f0f2f5] shrink-0" style="padding-top:12px;padding-bottom:max(16px,env(safe-area-inset-bottom))">
+    <div class="mob-input-bar">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" class="shrink-0" style="color:#265ddc"><path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74z" fill="currentColor" opacity="0.75"/></svg>
+      <input type="text" placeholder="Ask anything about your loans…" class="flex-1 text-sm outline-none bg-transparent text-gray-700 placeholder-[#a0a6b2]" />
+      <button class="w-9 h-9 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- SCREEN 2: CHAT                                                     -->
+<!-- ================================================================ -->
+<div id="mob-chat" class="mob-screen slide" style="z-index:20; background:white">
+
+  <!-- Nav -->
+  <div class="mob-nav shrink-0">
+    <button onclick="mobShowHome()" class="mob-back-btn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="flex-1">
+      <p class="text-sm font-semibold text-gray-900">Cait</p>
+      <p class="text-xs text-[#676d7a]">AI Student Loan Assistant</p>
+    </div>
+  </div>
+
+  <!-- Alert banner -->
+  <div class="mx-4 mt-3 bg-[#fff8eb] border border-[#fed684] rounded-xl px-3 py-2.5 flex items-start gap-2.5 shrink-0">
+    <svg class="shrink-0 mt-0.5 text-amber-500" width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+    <div class="flex-1">
+      <p class="text-xs font-bold text-gray-900">Action required</p>
+      <p class="text-xs text-gray-800 mt-0.5 leading-relaxed">Your student loan is in default. What happens if you don't act: The government can garnish your <strong>income tax refund</strong>, other federal payments, and your <strong>wages</strong> to collect this debt. Treasury offset may begin in 44 days — act now.</p>
+    </div>
+  </div>
+
+  <!-- Chat messages -->
+  <div id="mob-chat-area" class="flex-1 overflow-y-auto px-4 py-5 flex flex-col gap-4">
+
+    <!-- User message -->
+    <div class="flex justify-end">
+      <div class="bg-[#f5f5f5] rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[78%]">
+        <p class="text-sm text-gray-700">Help me get out of Default</p>
+      </div>
+    </div>
+
+    <!-- Static Cait message -->
+    <div id="mob-static-msg" class="flex flex-col gap-2" style="max-width:88%">
+      <p class="cait-line text-sm text-[#676d7a] leading-relaxed">Hi Jennifer — your loan is currently in default. Here are the five ways to resolve a defaulted federal student loan: Administrative loan discharge, Request for review, Loan consolidation, Pay off the debt, and <strong class="font-semibold text-gray-900">Loan Rehabilitation</strong>.</p>
+    </div>
+
+  </div>
+
+  <!-- Flow card -->
+  <div id="mob-flow-card" class="shrink-0 border-t border-[#f0f2f5] bg-white px-4 pt-3 pb-2">
+    <div class="bg-[#fafbfc] rounded-2xl overflow-hidden border border-[#f0f2f5]">
+      <div class="px-4 pt-3.5 pb-3 border-b border-[#f0f2f5]">
+        <p class="text-sm font-bold text-gray-900">Your loan &amp; estimated payment</p>
+        <p class="text-xs text-[#676d7a] mt-0.5">Review your balance and choose your path.</p>
+      </div>
+      <div id="mob-step-body" class="px-4 py-3">
+        <!-- populated by JS -->
+      </div>
+      <div class="px-4 pb-4">
+        <button id="mob-btn-next" onclick="mobOpenSheet()" class="w-full bg-[#265ddc] text-white rounded-full py-3 text-sm font-medium hover:bg-[#1e4fc2] transition-colors">
+          Start Loan Rehabilitation →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chips -->
+  <div id="mob-chips" class="chips-row shrink-0 py-2"></div>
+
+  <!-- Input bar -->
+  <div class="px-4 shrink-0 bg-white" style="padding-top:8px;padding-bottom:max(14px,env(safe-area-inset-bottom))">
+    <div class="mob-input-bar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" class="shrink-0" style="color:#265ddc"><path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74z" fill="currentColor" opacity="0.75"/></svg>
+      <input type="text" placeholder="Ask Cait anything…" class="flex-1 text-sm outline-none bg-transparent text-gray-700 placeholder-[#a0a6b2]" />
+      <button class="w-8 h-8 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- OVERLAY (dims chat behind bottom sheet)                            -->
+<!-- ================================================================ -->
+<div id="mob-overlay" class="mob-overlay" onclick="mobCloseSheet()"></div>
+
+
+<!-- ================================================================ -->
+<!-- BOTTOM SHEET: Income & Payment Form                               -->
+<!-- ================================================================ -->
+<div id="mob-sheet" class="mob-sheet">
+
+  <!-- Drag handle -->
+  <div class="flex justify-center pt-3 pb-1 shrink-0">
+    <div class="w-9 h-1 bg-[#e2e4eb] rounded-full"></div>
+  </div>
+
+  <!-- Sheet header -->
+  <div class="flex items-center justify-between px-5 py-3 border-b border-[#f0f2f5] shrink-0">
+    <div>
+      <p class="text-base font-bold text-gray-900">Loan Rehabilitation</p>
+      <p class="text-xs text-[#676d7a] mt-0.5">Income &amp; Payment Setup</p>
+    </div>
+    <button onclick="mobCloseSheet()" class="mob-back-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- Scrollable body -->
+  <div id="mob-sheet-body" class="flex-1 overflow-y-auto px-4 py-4">
+    <!-- Populated by buildMobIncomeForm() -->
+  </div>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- SCREEN 3: OMB FORM (full-screen)                                  -->
+<!-- ================================================================ -->
+<div id="mob-ie" class="mob-screen slide" style="z-index:30; background:white">
+
+  <!-- Nav -->
+  <div class="mob-nav shrink-0">
+    <button onclick="mobCloseIE()" class="mob-back-btn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="flex-1 min-w-0">
+      <p class="text-sm font-semibold text-gray-900 truncate">Form OMB No. 1845-0120</p>
+      <p class="text-xs text-[#676d7a]">Income &amp; Expense Statement</p>
+    </div>
+  </div>
+
+  <!-- Cait guidance strip -->
+  <div id="mob-ie-tip" class="shrink-0 border-b border-[#dde8ff] px-4 py-2.5" style="background:#f0f4ff">
+    <div class="flex items-start gap-2.5">
+      <div class="w-5 h-5 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0 mt-0.5">
+        <div class="w-2 h-2 rounded-full bg-white"></div>
+      </div>
+      <p id="mob-ie-tip-text" class="text-xs font-medium leading-relaxed" style="color:#265ddc">Confirm your borrower information to get started.</p>
+    </div>
+  </div>
+
+  <!-- Form body -->
+  <div id="mob-ie-body" class="flex-1 overflow-y-auto px-4 py-4">
+    <!-- Populated by buildMobIEForm() -->
+  </div>
+
+  <!-- Auth + Enroll (shown after Section D confirmed) -->
+  <div id="mob-auth-block" class="hidden shrink-0 border-t border-[#e2e4eb] px-4 py-4 bg-white">
+    <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 flex items-start gap-2 mb-3">
+      <svg class="shrink-0 mt-0.5 text-amber-500" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+      <p class="text-xs text-gray-800 leading-relaxed"><strong>Note:</strong> A missed payment may reset your 9-payment clock. Set up auto-pay once confirmed.</p>
+    </div>
+    <label class="flex items-start gap-2.5 cursor-pointer mb-3">
+      <input type="checkbox" id="mob-consent-chk" onchange="mobToggleEnroll()" class="mt-0.5 w-4 h-4 accent-[#265ddc] cursor-pointer shrink-0">
+      <span id="mob-consent-text" class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf.</span>
+    </label>
+    <button id="mob-enroll-btn" onclick="mobCompleteEnrollment()" disabled
+      class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-all">
+      Confirm &amp; Enroll →
+    </button>
+  </div>
+
+</div>
+
+
+<script>
+  /* ─────────────────────────────────────────────
+     Utilities
+  ───────────────────────────────────────────── */
+  function splitLines(html) {
+    let parts = html.split(/<br\s*\/?>\s*<br\s*\/?>/i);
+    if (parts.length === 1) parts = html.split(/<br\s*\/?>/i);
+    return parts.map(p => p.trim()).filter(Boolean);
+  }
+  function revealLines(els, step = 380) {
+    els.forEach((el, i) => setTimeout(() => {
+      el.classList.add('revealed');
+      el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, i * step));
+  }
+
+  /* ─────────────────────────────────────────────
+     Screen navigation
+  ───────────────────────────────────────────── */
+  function mobShowHome() {
+    document.getElementById('mob-chat').classList.remove('active');
+    document.getElementById('mob-ie').classList.remove('active');
+  }
+
+  function mobShowChat() {
+    const chatEl = document.getElementById('mob-chat');
+    chatEl.classList.add('active');
+
+    if (!chatEl.dataset.animated) {
+      chatEl.dataset.animated = '1';
+      setTimeout(() => {
+        const lines = Array.from(document.querySelectorAll('#mob-static-msg .cait-line'));
+        revealLines(lines);
+        setTimeout(() => {
+          mobBuildStepBody();
+          mobUpdateChips('resolution');
+        }, lines.length * 380 + 400);
+      }, 350);
+    }
+  }
+
+  function mobCloseIE() {
+    document.getElementById('mob-ie').classList.remove('active');
+  }
+
+  /* ─────────────────────────────────────────────
+     Flow card (step body)
+  ───────────────────────────────────────────── */
+  function mobBuildStepBody() {
+    document.getElementById('mob-step-body').innerHTML = `
+      <div class="flex flex-col gap-0">
+        <div class="flex justify-between items-center py-2 border-b border-[#f0f2f5]">
+          <span class="text-xs text-[#676d7a]">Loan balance</span>
+          <span class="text-xs font-semibold text-gray-900">$24,312</span>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-[#f0f2f5]">
+          <span class="text-xs text-[#676d7a]">Servicer</span>
+          <span class="text-xs font-semibold text-gray-900">Dept. of Education</span>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-[#f0f2f5]">
+          <span class="text-xs text-[#676d7a]">Standard payment</span>
+          <span class="text-xs font-medium text-[#676d7a] line-through">$198/mo</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-xs text-[#676d7a]">Your est. payment</span>
+          <span class="text-sm font-bold text-[#265ddc]">$74/mo</span>
+        </div>
+      </div>`;
+  }
+
+  /* ─────────────────────────────────────────────
+     Chips
+  ───────────────────────────────────────────── */
+  const MOB_CHIPS = {
+    resolution: [
+      { label: 'How long does rehab take?', fn: null },
+      { label: 'Which option removes default from credit?', fn: null },
+      { label: 'Start my rehabilitation →', fn: 'mobOpenSheet()' },
+    ],
+    enrolled: [
+      { label: 'Set up auto-pay', fn: null },
+      { label: 'Download my agreement', fn: null },
+      { label: 'What\'s my first payment date?', fn: null },
+    ],
+  };
+
+  function mobUpdateChips(ctx) {
+    const container = document.getElementById('mob-chips');
+    if (!container) return;
+    const chips = Array.isArray(ctx) ? ctx : (MOB_CHIPS[ctx] || []);
+    container.innerHTML = chips.map(c =>
+      `<button ${c.fn ? `onclick="${c.fn}"` : ''}
+        class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-xs font-medium text-[#3a57c8] bg-white hover:bg-[#eff4ff] transition-colors whitespace-nowrap">
+        ${c.label}
+      </button>`
+    ).join('');
+  }
+
+  /* ─────────────────────────────────────────────
+     Bottom sheet — Income form
+  ───────────────────────────────────────────── */
+  function mobOpenSheet() {
+    document.getElementById('mob-sheet-body').innerHTML = buildMobIncomeForm();
+    document.getElementById('mob-sheet').classList.add('open');
+    document.getElementById('mob-overlay').classList.add('visible');
+  }
+
+  function mobCloseSheet() {
+    document.getElementById('mob-sheet').classList.remove('open');
+    document.getElementById('mob-overlay').classList.remove('visible');
+  }
+
+  function buildMobIncomeForm() {
+    return `
+    <div class="flex flex-col gap-4 pb-6">
+
+      <!-- Cait tip -->
+      <div class="bg-[#f0f4ff] border border-[#dde8ff] rounded-xl px-3.5 py-3 flex items-start gap-2.5">
+        <div class="w-5 h-5 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0 mt-0.5">
+          <div class="w-2 h-2 rounded-full bg-white"></div>
+        </div>
+        <p class="text-xs text-[#265ddc] leading-relaxed font-medium">I've pre-filled your income from your Form 1040 on file. Review and confirm to calculate your payment.</p>
+      </div>
+
+      <!-- AGI -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-[#2a2f3d]">Adjusted Gross Income (AGI)</label>
+        <div class="relative">
+          <span class="ie-prefix">$</span>
+          <input id="mob-agi" class="ie-input ie-money" value="38400" type="number" />
+        </div>
+        <p class="text-xs text-[#676d7a]">From your Form 1040, Line 11</p>
+      </div>
+
+      <!-- Household size -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-semibold text-[#2a2f3d]">Household Size</label>
+        <select id="mob-household" class="ie-input appearance-none bg-white">
+          <option value="1">1 — Just me</option>
+          <option value="2">2 people</option>
+          <option value="3">3 people</option>
+          <option value="4">4 people</option>
+        </select>
+      </div>
+
+      <!-- Verify with 1040 -->
+      <div class="border border-[#e2e4eb] rounded-xl overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-[#f0f2f5]">
+          <div class="flex items-center gap-2.5">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div>
+              <p class="text-xs font-semibold text-gray-900">Verify with Form 1040</p>
+              <p class="text-xs text-[#676d7a]">Upload to auto-extract your AGI</p>
+            </div>
+          </div>
+          <span class="text-[10px] font-semibold text-[#0d9e6e] bg-[#ecfbf5] px-2 py-0.5 rounded-full whitespace-nowrap">Speeds up review</span>
+        </div>
+        <div class="px-4 py-3">
+          <button onclick="document.getElementById('mob-1040-input').click()" class="w-full border-2 border-dashed border-[#b3c6f7] rounded-xl py-3 text-xs font-medium text-[#265ddc] hover:bg-[#eff4ff] transition-colors">
+            Tap to upload PDF or photo
+          </button>
+          <input id="mob-1040-input" type="file" accept=".pdf,image/*" class="hidden" />
+        </div>
+      </div>
+
+      <!-- Calculate CTA -->
+      <button onclick="mobCalculatePayment()" class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold hover:bg-[#1e4fc2] transition-colors mt-1">
+        Calculate my payment →
+      </button>
+
+    </div>`;
+  }
+
+  function mobCalculatePayment() {
+    const agi       = parseInt(document.getElementById('mob-agi')?.value) || 38400;
+    const household = parseInt(document.getElementById('mob-household')?.value) || 1;
+    const poverty   = { 1:14580, 2:19720, 3:24860, 4:30000 }[household] || 14580;
+    const disposable = Math.max(0, agi - poverty * 1.5);
+    const payment   = Math.max(5, Math.round((disposable / 12) * 0.1));
+
+    document.getElementById('mob-sheet-body').innerHTML = `
+    <div class="flex flex-col gap-4 pb-6">
+
+      <!-- Cait tip -->
+      <div class="bg-[#f0f4ff] border border-[#dde8ff] rounded-xl px-3.5 py-3 flex items-start gap-2.5">
+        <div class="w-5 h-5 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0 mt-0.5">
+          <div class="w-2 h-2 rounded-full bg-white"></div>
+        </div>
+        <p class="text-xs text-[#265ddc] leading-relaxed font-medium">Based on your AGI of $${agi.toLocaleString()} and household size, here's your affordable monthly payment under DOE guidelines.</p>
+      </div>
+
+      <!-- Payment summary -->
+      <div class="bg-[#fafbfc] rounded-2xl p-4 border border-[#f0f2f5] flex flex-col gap-2.5">
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-[#676d7a]">Your AGI</span>
+          <span class="text-xs font-semibold text-gray-900">$${agi.toLocaleString()}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-[#676d7a]">Standard payment</span>
+          <span class="text-xs font-medium text-[#676d7a] line-through">$198/mo</span>
+        </div>
+        <div class="border-t border-[#e2e4eb] pt-3 flex justify-between items-center">
+          <span class="text-sm font-bold text-gray-900">Your monthly payment</span>
+          <span class="text-2xl font-bold text-[#265ddc]">$${payment}<span class="text-sm font-medium">/mo</span></span>
+        </div>
+      </div>
+      <p class="text-xs text-[#676d7a] text-center -mt-1">10% of discretionary income · DOE guidelines</p>
+
+      <!-- Accept CTA -->
+      <button onclick="mobOpenIE(${payment})" class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold hover:bg-[#1e4fc2] transition-colors">
+        Accept $${payment}/mo — Complete I&amp;E Statement →
+      </button>
+      <button onclick="mobCloseSheet()" class="w-full bg-[#eff4ff] text-[#265ddc] rounded-full py-3 text-sm font-medium hover:bg-[#e0eaff] transition-colors">
+        Go back
+      </button>
+    </div>`;
+  }
+
+  /* ─────────────────────────────────────────────
+     OMB IE Form (full screen)
+  ───────────────────────────────────────────── */
+  function mobOpenIE(payment) {
+    mobCloseSheet();
+    setTimeout(() => {
+      document.getElementById('mob-ie-body').innerHTML = buildMobIEForm();
+      document.getElementById('mob-ie').classList.add('active');
+      mobIEActivate('mob-ie-sec-a');
+      if (payment) document.getElementById('mob-enroll-btn').dataset.payment = payment;
+    }, 320);
+  }
+
+  /* Activate a section */
+  function mobIEActivate(id) {
+    document.querySelectorAll('#mob-ie-body .ie-section').forEach(s => {
+      if (!s.classList.contains('ie-confirmed')) {
+        s.classList.add('ie-locked'); s.classList.remove('ie-active');
+      }
+    });
+    const sec = document.getElementById(id);
+    if (sec) {
+      sec.classList.remove('ie-locked', 'ie-confirmed', 'ie-collapsed');
+      sec.classList.add('ie-active');
+      setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 120);
+    }
+    const tips = {
+      'mob-ie-sec-a': 'Confirm your borrower information to get started.',
+      'mob-ie-sec-b': 'Verify your monthly income — pre-filled from your AGI on file.',
+      'mob-ie-sec-c': 'Review your monthly expenses and update any amounts that don\'t match.',
+      'mob-ie-sec-d': 'Your affordable payment has been calculated. Review and submit.',
+    };
+    const tipEl = document.getElementById('mob-ie-tip-text');
+    if (tipEl && tips[id]) tipEl.textContent = tips[id];
+  }
+
+  /* Confirm a section */
+  function mobIEConfirm(id) {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    sec.classList.remove('ie-active', 'ie-locked');
+    sec.classList.add('ie-confirmed');
+    const badge = sec.querySelector('.ie-status');
+    if (badge) { badge.textContent = '✓ Confirmed'; badge.className = 'ie-status ie-s-confirmed'; }
+    setTimeout(() => sec.classList.add('ie-collapsed'), 300);
+  }
+
+  /* Section step confirmations */
+  function mobIEReply(step) {
+    if (step === 1) {
+      mobIEConfirm('mob-ie-sec-a');
+      setTimeout(() => mobIEActivate('mob-ie-sec-b'), 620);
+    } else if (step === 2) {
+      mobIEConfirm('mob-ie-sec-b');
+      setTimeout(() => mobIEActivate('mob-ie-sec-c'), 620);
+    } else if (step === 3) {
+      mobIEConfirm('mob-ie-sec-c');
+      setTimeout(() => {
+        mobIEActivate('mob-ie-sec-d');
+        mobCalculateSummary();
+      }, 620);
+    }
+  }
+
+  /* Toggle section collapse */
+  function mobToggleIE(id) {
+    document.getElementById(id)?.classList.toggle('ie-collapsed');
+  }
+
+  /* Recalculate income/expense totals */
+  function mobUpdateTotals() {
+    const inc = ['mob-ie-income','mob-ie-ss','mob-ie-other-inc']
+      .reduce((s, id) => s + (parseInt(document.getElementById(id)?.value) || 0), 0);
+    const exp = ['mob-ie-rent','mob-ie-util','mob-ie-food','mob-ie-transport',
+                 'mob-ie-medical','mob-ie-health','mob-ie-personal','mob-ie-other-exp']
+      .reduce((s, id) => s + (parseInt(document.getElementById(id)?.value) || 0), 0);
+    const ti = document.getElementById('mob-ie-total-inc');
+    const te = document.getElementById('mob-ie-total-exp');
+    if (ti) ti.textContent = '$' + inc.toLocaleString();
+    if (te) te.textContent = '$' + exp.toLocaleString();
+  }
+
+  /* Populate section D summary */
+  function mobCalculateSummary() {
+    const inc = ['mob-ie-income','mob-ie-ss','mob-ie-other-inc']
+      .reduce((s, id) => s + (parseInt(document.getElementById(id)?.value) || 0), 0);
+    const exp = ['mob-ie-rent','mob-ie-util','mob-ie-food','mob-ie-transport',
+                 'mob-ie-medical','mob-ie-health','mob-ie-personal','mob-ie-other-exp']
+      .reduce((s, id) => s + (parseInt(document.getElementById(id)?.value) || 0), 0);
+    const disposable = Math.max(0, inc - exp);
+    const payment    = Math.max(5, Math.round(disposable * 0.1));
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('mob-ie-d-income', '$' + inc.toLocaleString());
+    set('mob-ie-d-exp',    '$' + exp.toLocaleString());
+    set('mob-ie-d-disp',   '$' + disposable.toLocaleString());
+    set('mob-ie-d-pay',    '$' + payment + '/mo');
+    document.getElementById('mob-enroll-btn').dataset.payment = payment;
+    const ct = document.getElementById('mob-consent-text');
+    if (ct) ct.textContent = `I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${payment}.`;
+  }
+
+  /* Confirm section D + show auth block */
+  function mobConfirmPayment() {
+    mobIEConfirm('mob-ie-sec-d');
+    const ds = document.getElementById('mob-ie-d-status');
+    if (ds) { ds.textContent = '✓ Calculated'; ds.className = 'ie-status ie-s-confirmed'; }
+    const authBlock = document.getElementById('mob-auth-block');
+    if (authBlock) {
+      authBlock.classList.remove('hidden');
+      setTimeout(() => authBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 350);
+    }
+  }
+
+  /* Consent checkbox → enable enroll button */
+  function mobToggleEnroll() {
+    const checked = document.getElementById('mob-consent-chk')?.checked;
+    const btn     = document.getElementById('mob-enroll-btn');
+    if (!btn) return;
+    btn.disabled = !checked;
+    btn.classList.toggle('opacity-40', !checked);
+    btn.classList.toggle('cursor-not-allowed', !checked);
+  }
+
+  /* Final enrollment */
+  function mobCompleteEnrollment() {
+    const payment = document.getElementById('mob-enroll-btn')?.dataset.payment || '74';
+    const btn     = document.getElementById('mob-enroll-btn');
+    if (!btn || btn.disabled) return;
+    btn.disabled  = true;
+    btn.textContent = 'Submitting…';
+
+    setTimeout(() => {
+      // Update tip strip to success
+      const tip = document.getElementById('mob-ie-tip');
+      const tipText = document.getElementById('mob-ie-tip-text');
+      if (tip)  { tip.style.background = '#f0fbf7'; tip.style.borderColor = '#d4f5e8'; }
+      if (tipText) { tipText.style.color = '#0d9e6e'; tipText.textContent = 'You\'re enrolled! Here\'s what happens next.'; }
+
+      document.getElementById('mob-auth-block').classList.add('hidden');
+      document.getElementById('mob-ie-body').innerHTML = `
+        <div class="flex flex-col items-center gap-5 py-8 text-center">
+          <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M7 14l4.5 4.5L21 8" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <p class="text-xl font-bold text-gray-900">You're enrolled in rehabilitation!</p>
+            <p class="text-sm text-[#676d7a] mt-1.5 leading-relaxed max-w-xs mx-auto">Your agreement has been submitted to the Default Resolution Group. Collections are now paused while your case is processed.</p>
+          </div>
+          <div class="bg-[#fafbfc] rounded-2xl p-5 w-full text-left border border-[#f0f2f5]">
+            <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
+            <ul class="flex flex-col gap-3 text-sm text-gray-800">
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                <span>The Default Resolution Group will confirm your <strong>$${payment}/month</strong> payment within 5–7 business days</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                <span>Make your <strong>first payment</strong> to officially start the 9-payment clock</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                <span>Set up <strong>auto-pay</strong> — a missed payment can reset your clock</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">✓</span>
+                <span style="color:#16a34a;font-weight:500">After 9 on-time payments — default permanently removed from your credit report</span>
+              </li>
+            </ul>
+          </div>
+          <p class="text-xs text-[#676d7a]">Questions? help@getcandidly.com · (866) 719-3437</p>
+        </div>`;
+    }, 1300);
+  }
+
+  /* ─────────────────────────────────────────────
+     Build OMB IE Form HTML
+  ───────────────────────────────────────────── */
+  function buildMobIEForm() {
+    return `
+    <div class="flex flex-col gap-3 pb-4">
+
+      <!-- Section A: Borrower Info -->
+      <div id="mob-ie-sec-a" class="ie-section ie-locked">
+        <div class="ie-sec-hdr" onclick="mobToggleIE('mob-ie-sec-a')">
+          <span class="text-xs font-bold text-gray-900">Borrower Information</span>
+          <div class="flex items-center gap-2">
+            <span class="ie-status ie-s-pending">Awaiting</span>
+            <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </div>
+        </div>
+        <div class="ie-sec-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="ie-field-wrap" style="grid-column:1/-1">
+            <label class="ie-label">Full Name</label>
+            <input class="ie-input" value="Jennifer Bahl" />
+          </div>
+          <div class="ie-field-wrap">
+            <label class="ie-label">SSN (Last 4)</label>
+            <input class="ie-input" value="●●●-●●-4821" />
+          </div>
+          <div class="ie-field-wrap">
+            <label class="ie-label">Phone</label>
+            <input class="ie-input" value="(512) 555-0194" />
+          </div>
+          <div class="ie-field-wrap" style="grid-column:1/-1">
+            <label class="ie-label">Home Address</label>
+            <input class="ie-input" value="1284 Oak Street, Austin TX 78701" />
+          </div>
+          <div class="ie-field-wrap" style="grid-column:1/-1">
+            <label class="ie-label">Employer / Income Source</label>
+            <input class="ie-input" value="TechCorp Inc." />
+          </div>
+        </div>
+        <div class="ie-sec-confirm">
+          <button onclick="mobIEReply(1)" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">Confirm →</button>
+        </div>
+      </div>
+
+      <!-- Section B: Monthly Income -->
+      <div id="mob-ie-sec-b" class="ie-section ie-locked ie-collapsed">
+        <div class="ie-sec-hdr" onclick="mobToggleIE('mob-ie-sec-b')">
+          <span class="text-xs font-bold text-gray-900">Monthly Gross Income</span>
+          <div class="flex items-center gap-2">
+            <span class="ie-status ie-s-pending">Pending</span>
+            <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </div>
+        </div>
+        <div class="ie-sec-body">
+          <div class="ie-field-wrap"><label class="ie-label">Wages / Take-home Pay</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-income" class="ie-input ie-money" value="3200" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Social Security / Disability</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-ss" class="ie-input ie-money" value="0" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Other Income</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-other-inc" class="ie-input ie-money" value="0" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-total-row">
+            <span class="text-xs font-bold text-gray-900">Total Monthly Income</span>
+            <span id="mob-ie-total-inc" class="text-xs font-bold text-[#265ddc]">$3,200</span>
+          </div>
+        </div>
+        <div class="ie-sec-confirm">
+          <button onclick="mobIEReply(2)" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">Confirm →</button>
+        </div>
+      </div>
+
+      <!-- Section C: Monthly Expenses -->
+      <div id="mob-ie-sec-c" class="ie-section ie-locked ie-collapsed">
+        <div class="ie-sec-hdr" onclick="mobToggleIE('mob-ie-sec-c')">
+          <span class="text-xs font-bold text-gray-900">Monthly Expenses</span>
+          <div class="flex items-center gap-2">
+            <span class="ie-status ie-s-pending">Pending</span>
+            <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </div>
+        </div>
+        <div class="ie-sec-body">
+          <div class="ie-field-wrap"><label class="ie-label">Rent / Mortgage</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-rent" class="ie-input ie-money" value="1200" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Utilities</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-util" class="ie-input ie-money" value="150" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Food &amp; Groceries</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-food" class="ie-input ie-money" value="400" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Transportation</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-transport" class="ie-input ie-money" value="350" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Medical / Dental</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-medical" class="ie-input ie-money" value="80" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Health Insurance</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-health" class="ie-input ie-money" value="120" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Personal Care</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-personal" class="ie-input ie-money" value="50" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Other Expenses</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-other-exp" class="ie-input ie-money" value="115" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-total-row">
+            <span class="text-xs font-bold text-gray-900">Total Monthly Expenses</span>
+            <span id="mob-ie-total-exp" class="text-xs font-bold text-[#265ddc]">$2,465</span>
+          </div>
+        </div>
+        <div class="ie-sec-confirm">
+          <button onclick="mobIEReply(3)" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">Confirm →</button>
+        </div>
+      </div>
+
+      <!-- Section D: Affordable Payment -->
+      <div id="mob-ie-sec-d" class="ie-section ie-locked ie-collapsed">
+        <div class="ie-sec-hdr" onclick="mobToggleIE('mob-ie-sec-d')">
+          <span class="text-xs font-bold text-gray-900">Affordable Payment</span>
+          <div class="flex items-center gap-2">
+            <span id="mob-ie-d-status" class="ie-status ie-s-pending">Pending</span>
+            <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </div>
+        </div>
+        <div class="ie-sec-body">
+          <div class="flex justify-between items-center py-1.5 border-b border-[#f0f2f5]"><span class="text-xs text-[#676d7a]">Monthly Income</span><span id="mob-ie-d-income" class="text-xs font-semibold text-gray-900">—</span></div>
+          <div class="flex justify-between items-center py-1.5 border-b border-[#f0f2f5]"><span class="text-xs text-[#676d7a]">Monthly Expenses</span><span id="mob-ie-d-exp" class="text-xs font-semibold text-gray-900">—</span></div>
+          <div class="flex justify-between items-center py-1.5 border-b border-[#f0f2f5]"><span class="text-xs text-[#676d7a]">Disposable Income</span><span id="mob-ie-d-disp" class="text-xs font-semibold text-gray-900">—</span></div>
+          <div class="flex justify-between items-center pt-2">
+            <span class="text-sm font-bold text-gray-900">Affordable Payment</span>
+            <span id="mob-ie-d-pay" class="text-xl font-bold text-[#265ddc]">—</span>
+          </div>
+          <p class="text-[10px] text-[#676d7a]">10% of disposable income per DOE guidelines</p>
+        </div>
+        <div class="ie-sec-confirm">
+          <button onclick="mobConfirmPayment()" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">Confirm →</button>
+        </div>
+      </div>
+
+    </div>`;
+  }
+</script>
+
+</body>
+</html>
