@@ -644,14 +644,13 @@
   }
 
   function buildInputScreenHTML() {
-    // Figma node 71:1746 — Text Field component tokens
-    const fieldCls  = "w-full bg-white border border-[#8f95a3] rounded-lg min-h-[40px] px-3 py-2 text-base text-[#181d29] outline-none focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors";
-    const selectCls = fieldCls + " appearance-none cursor-pointer pr-8";
-    const labelCls  = "text-xs font-medium text-[#181d29] leading-snug";
+    const inputCls = "w-full border border-[#e2e4eb] rounded-xl px-3.5 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors";
+    const selectCls = inputCls + " appearance-none cursor-pointer";
     const helperCls = "text-xs text-[#676d7a] leading-relaxed";
+    const labelCls  = "text-xs font-semibold text-[#2a2f3d] mb-0.5";
     return `
       <!-- Pre-filled notice -->
-      <div class="flex items-center gap-2 bg-[#fafbfc] border border-[#f0f2f5] rounded-lg px-3 py-2 shrink-0">
+      <div class="flex items-center gap-2 bg-[#fafbfc] border border-[#f0f2f5] rounded-xl px-3 py-2 shrink-0">
         <svg class="shrink-0" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#265ddc" stroke-width="1.2"/><path d="M4.5 7l1.8 1.8 3-3" stroke="#265ddc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <p class="text-xs text-[#676d7a] whitespace-nowrap">Pre-filled from your Candidly profile — review and confirm</p>
       </div>
@@ -662,17 +661,12 @@
           <p class="text-sm font-bold text-[#181d29]">What was your annual income?</p>
           <p class="${helperCls} mt-0.5">AGI — adjusted gross income is your income before taxes</p>
         </div>
-        <div class="flex flex-col gap-[2px]">
-          <p class="${labelCls}">Annual income</p>
-          <div class="bg-white border border-[#8f95a3] rounded-lg flex items-center gap-2 px-3 py-2 min-h-[40px] focus-within:border-[#265ddc] focus-within:ring-2 focus-within:ring-[rgba(38,93,220,0.1)] transition-colors">
-            <div class="overflow-hidden relative shrink-0 w-6 h-6 flex items-center justify-center">
-              <img alt="$" class="absolute block inset-[14.58%_32.92%_14.58%_33.5%] max-w-none" src="https://www.figma.com/api/mcp/asset/480d036b-3b2b-4c32-980e-681cbe1d6dcc" />
-            </div>
-            <input id="form-gross-income" type="number" value="38400"
-              oninput="document.getElementById('form-agi').value=this.value"
-              placeholder="0"
-              class="flex-1 min-w-0 text-base text-[#181d29] bg-transparent outline-none" />
-          </div>
+        <div class="relative">
+          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#676d7a] text-sm font-medium pointer-events-none select-none">$</span>
+          <input id="form-gross-income" type="number" value="38400"
+            oninput="document.getElementById('form-agi').value=this.value"
+            placeholder="0"
+            class="w-full border border-[#e2e4eb] rounded-xl pl-8 pr-4 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors" />
         </div>
       </div>
 
@@ -682,23 +676,23 @@
 
         <!-- Row 1: Family size + Dependents -->
         <div class="grid grid-cols-2 gap-3">
-          <div class="flex flex-col gap-[2px]">
+          <div class="flex flex-col gap-1">
             <p class="${labelCls}">Family size</p>
             <input id="form-family" type="number" value="1" min="1" placeholder="1"
-              class="${fieldCls}" />
+              class="${inputCls}" />
             <p class="${helperCls}">Total people in your household</p>
           </div>
-          <div class="flex flex-col gap-[2px]">
+          <div class="flex flex-col gap-1">
             <p class="${labelCls}">Number of dependents</p>
             <input id="form-dependents" type="number" value="0" min="0" placeholder="0"
-              class="${fieldCls}" />
+              class="${inputCls}" />
             <p class="${helperCls}">Dependents you claim on taxes</p>
           </div>
         </div>
 
         <!-- Row 2: Marital status + Tax filing status -->
         <div class="grid grid-cols-2 gap-3">
-          <div class="flex flex-col gap-[2px]">
+          <div class="flex flex-col gap-1">
             <p class="${labelCls}">Current marital status</p>
             <div class="relative">
               <select id="form-marital" class="${selectCls}">
@@ -713,7 +707,7 @@
             </div>
             <p class="${helperCls}">Improves repayment accuracy</p>
           </div>
-          <div class="flex flex-col gap-[2px]">
+          <div class="flex flex-col gap-1">
             <p class="${labelCls}">Tax filing status</p>
             <div class="relative">
               <select id="form-filing" class="${selectCls}">
