@@ -1204,32 +1204,30 @@
         if (!area) return;
         area.insertAdjacentHTML('beforeend', `
           <div class="pr-4 cait-line">
-            <div class="rounded-2xl overflow-hidden border border-[#e5edff]" style="background:linear-gradient(160deg,#f5f8ff 0%,#ffffff 60%)">
-              <!-- Top accent bar -->
-              <div class="h-1 w-full" style="background:linear-gradient(90deg,#265ddc,#7c9ef8)"></div>
-              <div class="px-5 py-5 flex flex-col gap-4">
-                <!-- Icon + heading -->
-                <div class="flex flex-col items-center text-center gap-3 pb-4 border-b border-[#e5edff]">
-                  <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
-                    <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M6 13l4.5 4.5L20 8" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </div>
-                  <div>
-                    <p class="text-lg font-bold text-[#181d29] leading-snug">You did it, Sheetal.</p>
-                    <p class="text-sm text-[#676d7a] mt-1 leading-relaxed">That wasn't easy — and you just took the most important step to get out of default.</p>
-                  </div>
+            <div class="rounded-2xl overflow-hidden border border-[#f0f2f5] bg-white">
+              <!-- Header: checkmark + title + subtitle -->
+              <div class="flex flex-col items-center text-center gap-3 px-6 pt-6 pb-5">
+                <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M7 14l4.5 4.5L21 8" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-                <!-- Body -->
-                <div class="flex flex-col gap-3 text-sm text-[#2a2f3d] leading-relaxed">
-                  <p>From here, <strong>Candidly handles everything</strong> with the Default Resolution Group. Your only job is to make <strong class="text-[#265ddc]">9 monthly payments of $${payment}</strong>.</p>
-                  <p>In 9 months, this default <strong>disappears from your credit report permanently</strong> — as if it never happened.</p>
+                <div>
+                  <p class="text-lg font-bold text-[#181d29]">You're enrolled in rehabilitation!</p>
+                  <p class="text-sm text-[#676d7a] mt-1.5 leading-relaxed max-w-xs mx-auto">Your agreement has been submitted to the Default Resolution Group. Collections actions are now paused while your case is processed.</p>
                 </div>
-                <!-- Sign-off -->
-                <div class="flex items-center gap-2.5 pt-3 border-t border-[#e5edff]">
-                  <div class="w-7 h-7 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" fill="white"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
-                  </div>
-                  <p class="text-xs text-[#676d7a]">We'll be with you every step of the way. — <strong class="text-[#265ddc]">Cait</strong></p>
-                </div>
+              </div>
+              <!-- What happens next -->
+              <div class="border-t border-[#f0f2f5] px-5 py-4 flex flex-col gap-3">
+                <p class="text-sm font-bold text-[#181d29]">What happens next</p>
+                <ul class="flex flex-col gap-3 text-sm text-[#2a2f3d]">
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>The Default Resolution Group will confirm your <strong>$${payment}/month</strong> payment within 5–7 business days</span></li>
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Make your <strong>first payment</strong> to officially start the 9-payment clock</span></li>
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span><span>Set up <strong>auto-pay</strong> — a missed payment can reset your clock</span></li>
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">✓</span><span style="color:#16a34a;font-weight:500;">After 9 on-time payments — default permanently removed from your credit report</span></li>
+                </ul>
+              </div>
+              <!-- Footer -->
+              <div class="border-t border-[#f0f2f5] px-5 py-3 text-center">
+                <p class="text-xs text-[#676d7a]">Questions? Contact us at help@getcandidly.com or (866) 719-3437</p>
               </div>
             </div>
           </div>`);
