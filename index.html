@@ -1194,6 +1194,11 @@
     ), 600);
   }
 
+  function ieConfirmPayment() {
+    const raw = document.getElementById('ie-d-payment')?.textContent?.replace(/[^0-9]/g, '');
+    ieSubmitForm(parseInt(raw) || 74);
+  }
+
   function ieSubmitForm(payment) {
     updateChatChips([]);
     ieAddMsg('user', `Submit $${payment}/month payment`);
@@ -1531,6 +1536,11 @@
               <span id="ie-d-payment" class="text-xl font-bold text-brand-primary">—</span>
             </div>
             <p class="text-[10px] text-neutral-disabled leading-relaxed">10% of disposable income per DOE guidelines</p>
+          </div>
+          <div class="ie-sec-confirm">
+            <button onclick="ieConfirmPayment()" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">
+              Confirm →
+            </button>
           </div>
         </div>
 
