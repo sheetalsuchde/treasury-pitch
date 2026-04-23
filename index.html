@@ -1198,11 +1198,47 @@
     setTimeout(() => {
       closeFormPanel();
       updateChatChips('enrolled');
-      // Closure message in chat
-      setTimeout(() => ieAddMsg('cait',
-        `You did it, Sheetal.<br><br>That wasn't easy — dealing with a defaulted loan is stressful, and you just took the most important step to get out of it.<br><br>From here, Candidly handles everything with the Default Resolution Group. Your only job is to make <strong>9 monthly payments of $${payment}</strong> — and in 9 months, this default disappears from your credit report permanently.<br><br>We'll be with you every step of the way.`,
-        []
-      ), 600);
+      // Closure hero card in chat
+      setTimeout(() => {
+        const area = document.querySelector('#chat-main .py-6.flex.flex-col.gap-6');
+        if (!area) return;
+        area.insertAdjacentHTML('beforeend', `
+          <div class="pr-4 cait-line">
+            <div class="rounded-2xl overflow-hidden border border-[#e5edff]" style="background:linear-gradient(160deg,#f5f8ff 0%,#ffffff 60%)">
+              <!-- Top accent bar -->
+              <div class="h-1 w-full" style="background:linear-gradient(90deg,#265ddc,#7c9ef8)"></div>
+              <div class="px-5 py-5 flex flex-col gap-4">
+                <!-- Icon + heading -->
+                <div class="flex flex-col items-center text-center gap-3 pb-4 border-b border-[#e5edff]">
+                  <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+                    <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M6 13l4.5 4.5L20 8" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div>
+                    <p class="text-lg font-bold text-[#181d29] leading-snug">You did it, Sheetal.</p>
+                    <p class="text-sm text-[#676d7a] mt-1 leading-relaxed">That wasn't easy — and you just took the most important step to get out of default.</p>
+                  </div>
+                </div>
+                <!-- Body -->
+                <div class="flex flex-col gap-3 text-sm text-[#2a2f3d] leading-relaxed">
+                  <p>From here, <strong>Candidly handles everything</strong> with the Default Resolution Group. Your only job is to make <strong class="text-[#265ddc]">9 monthly payments of $${payment}</strong>.</p>
+                  <p>In 9 months, this default <strong>disappears from your credit report permanently</strong> — as if it never happened.</p>
+                </div>
+                <!-- Sign-off -->
+                <div class="flex items-center gap-2.5 pt-3 border-t border-[#e5edff]">
+                  <div class="w-7 h-7 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" fill="white"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  </div>
+                  <p class="text-xs text-[#676d7a]">We'll be with you every step of the way. — <strong class="text-[#265ddc]">Cait</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>`);
+        const card = area.lastElementChild;
+        setTimeout(() => {
+          card.classList.add('revealed');
+          card.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 80);
+      }, 600);
       document.getElementById('step-body').innerHTML = `
         <div class="flex flex-col items-center gap-5 py-6 text-center">
           <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
