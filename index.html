@@ -970,6 +970,7 @@
     document.getElementById('fp-subtitle').textContent = 'Income & Expense Statement';
     document.getElementById('fp-body').innerHTML       = buildIEFormHTML();
     ieActivateSection('ie-sec-a');
+    updateChatChips([]); // clear chips while message loads
     setTimeout(() => ieAddMsg('cait',
       `I've opened <strong>Form OMB No. 1845-0120</strong> — the Income &amp; Expense Statement used by the Default Resolution Group. I've pre-filled your personal information from your Candidly profile. Please review <strong>Section A</strong> and confirm.`,
       [
@@ -981,8 +982,8 @@
   }
 
   function ieReply(step) {
-    // Remove all pill rows so old pills can't be re-clicked
-    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+    // Clear chips immediately so user can't double-click while reply loads
+    updateChatChips([]);
 
     if (step === 'faq-form') {
       ieAddMsg('user', 'What is this form?');
@@ -1218,15 +1219,6 @@
   function ieAddMsg(role, html, pills) {
     const area = document.querySelector('#chat-main .py-6.flex.flex-col.gap-6');
     if (!area) return;
-    const pillsHTML = (pills && pills.length)
-      ? `<div class="flex flex-wrap gap-2 mt-2 ie-pills">
-           ${pills.map(p =>
-             `<button onclick="${p.fn.replace(/"/g,"'")}"
-               class="bg-white border border-[#c5d8ff] text-brand-primary text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-brand-light transition-colors whitespace-nowrap">
-               ${p.label}
-             </button>`
-           ).join('')}
-         </div>` : '';
     if (role === 'cait') {
       area.insertAdjacentHTML('beforeend', `
         <div class="pr-12 flex flex-col gap-2">
@@ -1238,8 +1230,9 @@
             <span class="text-xs text-neutral-disabled">· AI Student Loan Assistant, Candidly</span>
           </div>
           <p class="text-sm text-neutral-subtle leading-relaxed">${html}</p>
-          ${pillsHTML}
         </div>`);
+      // Push action options to the unified bottom chip bar (no inline pills)
+      if (pills && pills.length) updateChatChips(pills);
     } else {
       area.insertAdjacentHTML('beforeend', `
         <div class="flex justify-end pl-12">
@@ -1416,34 +1409,36 @@
   /* ── Contextual chips ── */
   const CHAT_CHIPS = {
     resolution: [
-      { label: 'Which option removes default from my credit?', action: null },
-      { label: 'How long does loan rehab take?',               action: null },
-      { label: 'Start my rehabilitation →',                    action: 'openFormPanel()' },
+      { label: 'Which option removes default from my credit?', fn: null },
+      { label: 'How long does loan rehab take?',               fn: null },
+      { label: 'Start my rehabilitation →',                    fn: 'openFormPanel()' },
     ],
     payment: [
-      { label: 'How is discretionary income calculated?', action: null },
-      { label: 'What counts as a dependent?',             action: null },
-      { label: 'Can I use last year\'s taxes?',           action: null },
+      { label: 'How is discretionary income calculated?', fn: null },
+      { label: 'What counts as a dependent?',             fn: null },
+      { label: 'Can I use last year\'s taxes?',           fn: null },
     ],
     confirm: [
-      { label: 'What if I miss a payment?',       action: null },
-      { label: 'Can I change my payment amount?', action: null },
-      { label: 'How quickly will collections stop?', action: null },
+      { label: 'What if I miss a payment?',          fn: null },
+      { label: 'Can I change my payment amount?',    fn: null },
+      { label: 'How quickly will collections stop?', fn: null },
     ],
     enrolled: [
-      { label: 'When will default be removed from my credit?', action: null },
-      { label: 'Set up auto-pay reminders',                    action: null },
-      { label: 'What happens after 9 payments?',               action: null },
+      { label: 'When will default be removed from my credit?', fn: null },
+      { label: 'Set up auto-pay reminders',                    fn: null },
+      { label: 'What happens after 9 payments?',               fn: null },
     ],
   };
 
-  function updateChatChips(context) {
-    window._chatContext = context;
+  // Accepts a context key (string) OR a direct array of {label, fn} objects
+  function updateChatChips(contextOrChips) {
     const container = document.getElementById('chat-chips');
     if (!container) return;
-    const chips = CHAT_CHIPS[context] || [];
+    const chips = Array.isArray(contextOrChips)
+      ? contextOrChips
+      : (CHAT_CHIPS[contextOrChips] || []);
     container.innerHTML = chips.map(c => `
-      <button ${c.action ? `onclick="${c.action}"` : ''}
+      <button ${c.fn ? `onclick="${c.fn.replace(/"/g,"'")}"` : ''}
         class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors whitespace-nowrap">
         ${c.label}
       </button>`).join('');
