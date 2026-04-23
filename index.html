@@ -974,9 +974,9 @@
     setTimeout(() => ieAddMsg('cait',
       `I've opened <strong>Form OMB No. 1845-0120</strong> — the Income &amp; Expense Statement used by the Default Resolution Group. I've pre-filled your personal information from your Candidly profile. Please review <strong>Section A</strong> and confirm.`,
       [
-        { label: '✓ Looks good', fn: `ieReply(1)` },
-        { label: '✏️ Update my address', fn: `ieEditField('ie-addr',1)` },
-        { label: '❓ What is this form?', fn: `ieReply('faq-form')` }
+        { label: 'Looks good', fn: `ieReply(1)` },
+        { label: 'Update my address', fn: `ieEditField('ie-addr',1)` },
+        { label: 'What is this form?', fn: `ieReply('faq-form')` }
       ]
     ), 500);
   }
@@ -990,8 +990,8 @@
       setTimeout(() => ieAddMsg('cait',
         `Form OMB No. 1845-0120 is the <strong>Income &amp; Expense Statement</strong> required by the U.S. Dept. of Education when a standard rehabilitation payment is unaffordable. It documents your monthly income and expenses so the Default Resolution Group can calculate a lower, truly affordable payment — as low as $5/month.`,
         [
-          { label: '✓ Got it — confirm my info', fn: `ieReply(1)` },
-          { label: '✏️ Update my address', fn: `ieEditField('ie-addr',1)` }
+          { label: 'Got it — confirm my info', fn: `ieReply(1)` },
+          { label: 'Update my address', fn: `ieEditField('ie-addr',1)` }
         ]
       ), 700);
       return;
@@ -1002,9 +1002,9 @@
       setTimeout(() => ieAddMsg('cait',
         `Yes! Health insurance premiums are listed under <strong>"Health Insurance"</strong> in Section C — currently set to <strong>$120/month</strong>. This is already factored into your total expenses. If your actual premium is different, update it directly in the form or tell me the amount.`,
         [
-          { label: '✓ $120 is correct', fn: `ieReply(3)` },
-          { label: '✏️ Update health insurance', fn: `ieEditField('ie-health-ins',3)` },
-          { label: '📎 Attach insurance statement', fn: `ieAttachReceipt()` }
+          { label: '$120 is correct', fn: `ieReply(3)` },
+          { label: 'Update health insurance', fn: `ieEditField('ie-health-ins',3)` },
+          { label: 'Attach insurance statement', fn: `ieAttachReceipt()` }
         ]
       ), 700);
       return;
@@ -1016,9 +1016,9 @@
       setTimeout(() => ieAddMsg('cait',
         `Of course! Section C is open. Update any amounts directly in the form, attach receipts for documentation, or ask me about any line item.`,
         [
-          { label: '✓ Done — recalculate', fn: `ieReply(3)` },
-          { label: '📎 Attach a receipt', fn: `ieAttachReceipt()` },
-          { label: '❓ Is health insurance included?', fn: `ieReply('faq-health')` }
+          { label: 'Done — recalculate', fn: `ieReply(3)` },
+          { label: 'Attach a receipt', fn: `ieAttachReceipt()` },
+          { label: 'Is health insurance included?', fn: `ieReply('faq-health')` }
         ]
       ), 600);
       return;
@@ -1033,9 +1033,9 @@
         ieAddMsg('cait',
           `Section A confirmed ✓<br><br>Now let's verify your <strong>monthly income</strong>. Based on your AGI of $38,400, your estimated take-home pay is <strong>$3,200/month</strong>. Does this look correct?`,
           [
-            { label: '✓ Yes, that\'s correct', fn: `ieReply(2)` },
-            { label: '➕ I have additional income', fn: `ieEditField('ie-other-inc',2)` },
-            { label: '✏️ My income is different', fn: `ieEditField('ie-income',2)` }
+            { label: 'Yes, that\'s correct', fn: `ieReply(2)` },
+            { label: 'I have additional income', fn: `ieEditField('ie-other-inc',2)` },
+            { label: 'My income is different', fn: `ieEditField('ie-income',2)` }
           ]
         );
       }, 600);
@@ -1049,10 +1049,10 @@
         ieAddMsg('cait',
           `Income confirmed ✓<br><br>Now let's review your <strong>monthly expenses</strong> (Section C). I've pre-populated typical amounts as a starting point — update anything that doesn't match your actual expenses. You can also attach a receipt and I'll categorize it automatically.`,
           [
-            { label: '✓ These look right', fn: `ieReply(3)` },
-            { label: '📎 Attach a receipt', fn: `ieAttachReceipt()` },
-            { label: '❓ Is health insurance included?', fn: `ieReply('faq-health')` },
-            { label: '✏️ Update rent amount', fn: `ieEditField('ie-rent',3)` }
+            { label: 'These look right', fn: `ieReply(3)` },
+            { label: 'Attach a receipt', fn: `ieAttachReceipt()` },
+            { label: 'Is health insurance included?', fn: `ieReply('faq-health')` },
+            { label: 'Update rent amount', fn: `ieEditField('ie-rent',3)` }
           ]
         );
       }, 600);
@@ -1078,8 +1078,8 @@
         ieAddMsg('cait',
           `Based on your verified income and expenses, your <strong>affordable monthly payment is $${payment}/month</strong> — versus the standard $198. This has been calculated at 10% of your disposable income per DOE guidelines and is ready to submit.`,
           [
-            { label: `✓ Submit $${payment}/month`, fn: `ieSubmitForm(${payment})` },
-            { label: '✏️ Review my expenses again', fn: `ieReply('re-expenses')` }
+            { label: `Submit $${payment}/month`, fn: `ieSubmitForm(${payment})` },
+            { label: 'Review my expenses again', fn: `ieReply('re-expenses')` }
           ]
         );
       }, 800);
@@ -1087,7 +1087,7 @@
   }
 
   function ieEditField(fieldId, nextStep) {
-    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+    updateChatChips([]);
     const el = document.getElementById(fieldId);
     if (el) {
       el.closest('.ie-section')?.classList.remove('ie-locked');
@@ -1102,18 +1102,19 @@
       'ie-health-ins': 'I\'ve highlighted the health insurance field. Enter your monthly premium.'
     };
     ieAddMsg('cait', labels[fieldId] || 'I\'ve highlighted the field — update it directly in the form.',
-      [{ label: '✓ Updated, continue', fn: `ieReply(${nextStep})` }]);
+      [{ label: 'Updated, continue', fn: `ieReply(${nextStep})` }]);
   }
 
   function ieAttachReceipt() {
-    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
-    ieAddMsg('user', '📎 Attaching a receipt…');
+    updateChatChips([]);
+    updateChatChips([]);
+    ieAddMsg('user', 'Attaching a receipt…');
     const input = document.createElement('input');
     input.type = 'file'; input.accept = 'image/*,.pdf';
     input.onchange = (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      ieAddMsg('user', `📎 ${file.name}`);
+      ieAddMsg('user', file.name);
       setTimeout(() => ieAddMsg('cait',
         `I've reviewed your receipt. It looks like a <strong>rental/housing payment</strong>. What's the monthly amount on this receipt?`,
         [
@@ -1127,21 +1128,21 @@
   }
 
   function ieApplyReceipt(fieldId, amount, label) {
-    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+    updateChatChips([]);
     const el = document.getElementById(fieldId);
     if (el) { el.value = amount; el.dispatchEvent(new Event('input')); }
     ieAddMsg('user', `$${amount}/mo`);
     setTimeout(() => ieAddMsg('cait',
       `Updated! <strong>${label.charAt(0).toUpperCase()+label.slice(1)}</strong> is now set to <strong>$${amount}/month</strong>. The expense total has been recalculated automatically. Ready to confirm your expenses?`,
       [
-        { label: '✓ Yes, confirm expenses', fn: `ieReply(3)` },
-        { label: '📎 Attach another receipt', fn: `ieAttachReceipt()` }
+        { label: 'Yes, confirm expenses', fn: `ieReply(3)` },
+        { label: 'Attach another receipt', fn: `ieAttachReceipt()` }
       ]
     ), 600);
   }
 
   function ieSubmitForm(payment) {
-    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+    updateChatChips([]);
     ieAddMsg('user', `Submit $${payment}/month payment`);
     ieConfirmSection('ie-sec-d');
     document.getElementById('ie-d-status').innerHTML =
