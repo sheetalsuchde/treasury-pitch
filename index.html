@@ -58,20 +58,20 @@
     .ie-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#fafbfc;border-bottom:1px solid #f0f2f5}
     .ie-section.ie-active .ie-sec-hdr{background:#f0f4ff;border-bottom-color:#dde8ff}
     .ie-section.ie-confirmed .ie-sec-hdr{background:#f0fbf7;border-bottom-color:#d4f5e8}
-    .ie-sec-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+    .ie-sec-body{padding:12px;display:flex;flex-direction:column;gap:10px}
     .ie-sec-badge{width:20px;height:20px;border-radius:50%;background:#265ddc;color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .ie-section.ie-confirmed .ie-sec-badge{background:#0d9e6e}
     .ie-status{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
     .ie-status.ie-s-pending{color:#676d7a;background:#f0f2f5}
     .ie-status.ie-s-confirmed{color:#0d9e6e;background:#ecfbf5}
-    .ie-label{display:block;font-size:11px;font-weight:500;color:#676d7a;margin-bottom:3px}
-    .ie-input{width:100%;border:1px solid #e2e4eb;border-radius:8px;padding:5px 10px;font-size:12px;color:#181d29;background:white;outline:none;transition:border-color 0.15s,box-shadow 0.15s}
+    .ie-label{display:block;font-size:12px;font-weight:600;color:#2a2f3d;margin-bottom:2px}
+    .ie-input{width:100%;border:1px solid #e2e4eb;border-radius:12px;padding:10px 14px;font-size:14px;color:#181d29;background:white;outline:none;transition:border-color 0.15s,box-shadow 0.15s;min-height:40px;box-sizing:border-box}
     .ie-input:focus{border-color:#265ddc;box-shadow:0 0 0 2px rgba(38,93,220,0.1)}
-    .ie-money{padding-left:20px}
-    .ie-prefix{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#676d7a;pointer-events:none}
-    .ie-field-wrap{position:relative}
-    .ie-total-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:#f0f2f5;border-radius:8px;margin-top:2px}
-    .ie-locked .ie-input{background:#fafbfc;color:#a0a6b2}
+    .ie-money{padding-left:26px}
+    .ie-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:#676d7a;pointer-events:none;font-weight:500}
+    .ie-field-wrap{position:relative;display:flex;flex-direction:column;gap:2px}
+    .ie-total-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f0f2f5;border-radius:12px;margin-top:2px}
+    .ie-locked .ie-input{background:#fafbfc;color:#a0a6b2;border-color:#f0f2f5}
     .ie-highlight{animation:ie-pulse 1.5s ease-out}
     @keyframes ie-pulse{0%,100%{box-shadow:0 0 0 0 rgba(38,93,220,0.4)}50%{box-shadow:0 0 0 6px rgba(38,93,220,0)}}
     .i2-sec-hdr-l{display:flex;align-items:center;gap:10px}
