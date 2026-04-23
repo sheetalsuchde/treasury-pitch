@@ -173,26 +173,35 @@
     </h1>
     <p class="text-base text-neutral-subtle mb-10 text-center">Your AI assistant for managing your student debt</p>
 
-    <!-- Input + chips -->
-    <div class="w-full max-w-2xl">
-      <div class="bg-white border border-border-base rounded-2xl shadow-[0_4px_40px_rgba(0,0,0,0.05)] flex items-center gap-3 px-4 py-3 mb-3">
-        <input id="home-input" type="text" placeholder="Message Cait" class="flex-1 text-base text-gray-900 placeholder-neutral-disabled outline-none bg-transparent"
-          onkeydown="if(event.key==='Enter' && this.value.trim()) showChatScreen()" />
-        <button onclick="if(document.getElementById('home-input').value.trim()) showChatScreen()" class="shrink-0 bg-brand-primary hover:bg-brand-secondary text-white rounded-xl p-1.5 transition-colors">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 10l14-7-7 14V10H3z" fill="currentColor"/></svg>
-        </button>
-      </div>
+    <!-- Chips -->
+    <div class="flex flex-wrap items-center justify-center gap-2 mb-4">
+      <button onclick="showChatScreen()" class="bg-amber-50 border border-amber-300 rounded-full px-4 py-2 text-sm font-semibold text-amber-800 hover:bg-amber-100 transition-colors flex items-center gap-1.5">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-amber-500"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        Help me get out of default
+      </button>
+      <button class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">Pay off my loans faster</button>
+      <button class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">Lower my payment</button>
+      <button class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">Plan for college</button>
+    </div>
 
-      <!-- All chips in one unified row — urgent chip styled distinctly -->
-      <div class="flex flex-wrap items-center justify-center gap-2">
-        <button onclick="showChatScreen()" class="bg-amber-50 border border-amber-300 rounded-xl px-3 py-1.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 transition-colors flex items-center gap-1.5">
-          <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-amber-500"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-          Help me get out of default
-        </button>
-        <button class="bg-surface-base border border-blue-20 rounded-xl px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-blue-5 transition-colors">Pay off my loans faster</button>
-        <button class="bg-surface-base border border-blue-20 rounded-xl px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-blue-5 transition-colors">Lower my payment</button>
-        <button class="bg-surface-base border border-blue-20 rounded-xl px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-blue-5 transition-colors">Plan for college</button>
+    <!-- Input bar -->
+    <div class="w-full max-w-2xl">
+      <div class="bg-white border border-[#e2e4eb] rounded-full shadow-[0_2px_16px_rgba(0,0,0,0.06)] flex items-center gap-2 pl-5 pr-2 py-2">
+        <input id="home-input" type="text" placeholder="Type here" class="flex-1 text-base text-gray-900 placeholder-[#9ca3af] outline-none bg-transparent"
+          onkeydown="if(event.key==='Enter' && this.value.trim()) showChatScreen()" />
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button class="w-9 h-9 rounded-full border border-[#e2e4eb] bg-white flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5H18l-3.75 2.7 1.5 4.5L12 12l-3.75 2.7 1.5-4.5L6 7.5h4.5L12 3z"/><path d="M5 19l1 2.5M19 19l-1 2.5M12 17v2.5"/></svg>
+          </button>
+          <button class="w-9 h-9 rounded-full border border-[#e2e4eb] bg-white flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10a7 7 0 0 1-14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+          </button>
+          <button onclick="if(document.getElementById('home-input').value.trim()) showChatScreen()" class="w-9 h-9 rounded-full bg-gray-900 flex items-center justify-center text-white hover:bg-gray-700 transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+          </button>
+        </div>
       </div>
+      <p class="text-xs font-medium text-gray-500 text-center mt-3">Need help or have questions? <a href="#" class="text-brand-primary underline">Visit our help center ↗</a></p>
     </div>
 
 
@@ -345,22 +354,28 @@
         </div>
 
         <!-- Chat input (pinned bottom) -->
-        <div class="shrink-0 py-4 flex flex-col gap-1 items-center">
-          <div class="bg-surface-base border border-border-base rounded-2xl flex items-center gap-3 pl-4 pr-3 py-3 w-full">
-            <p class="flex-1 text-base text-neutral-disabled">Message Cait</p>
-            <div class="flex items-center gap-2">
-              <button class="bg-white border border-border-base rounded-xl p-1.5 text-neutral-disabled hover:text-neutral-subtle">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M9 3H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 3l3 3-7 7H7v-3l7-7z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="shrink-0 pt-3 pb-4 flex flex-col items-center gap-3">
+
+          <!-- Contextual prompt chips -->
+          <div id="chat-chips" class="flex flex-wrap justify-center gap-2 w-full"></div>
+
+          <!-- Input bar -->
+          <div class="bg-white border border-[#e2e4eb] rounded-full shadow-[0_2px_16px_rgba(0,0,0,0.06)] flex items-center gap-2 pl-5 pr-2 py-2 w-full">
+            <input id="chat-input" type="text" placeholder="Type here" class="flex-1 text-base text-gray-900 placeholder-[#9ca3af] outline-none bg-transparent" />
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button class="w-9 h-9 rounded-full border border-[#e2e4eb] bg-white flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5H18l-3.75 2.7 1.5 4.5L12 12l-3.75 2.7 1.5-4.5L6 7.5h4.5L12 3z"/><path d="M5 19l1 2.5M19 19l-1 2.5M12 17v2.5"/></svg>
               </button>
-              <button class="bg-white border border-border-base rounded-xl p-1.5 text-neutral-disabled hover:text-neutral-subtle">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 17c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="3" y1="10" x2="17" y2="10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <button class="w-9 h-9 rounded-full border border-[#e2e4eb] bg-white flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10a7 7 0 0 1-14 0"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
               </button>
-              <button class="bg-surface-base border border-border-base rounded-xl p-1.5 text-neutral-disabled hover:text-neutral-subtle">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3a3 3 0 00-3 3v4a3 3 0 006 0V6a3 3 0 00-3-3z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M4.5 10a5.5 5.5 0 0011 0M10 16.5V18" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <button class="w-9 h-9 rounded-full bg-gray-900 flex items-center justify-center text-white hover:bg-gray-700 transition-colors">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
               </button>
             </div>
           </div>
-          <p class="text-xs font-medium text-gray-900">Need help or have questions? <a href="#" class="text-brand-primary underline">Visit our help center</a></p>
+
+          <p class="text-xs font-medium text-gray-500">Need help or have questions? <a href="#" class="text-brand-primary underline">Visit our help center ↗</a></p>
         </div>
 
       </div>
@@ -511,6 +526,7 @@
     // Seed input screen if body is empty
     const body = document.getElementById('fp-body');
     if (body && !body.children.length) body.innerHTML = buildInputScreenHTML();
+    updateChatChips('payment');
   }
 
   function closeFormPanel() {
@@ -624,6 +640,7 @@
     document.getElementById('fp-subtitle').textContent = 'Income & Payment Calculation';
     // Re-render the input screen
     document.getElementById('fp-body').innerHTML = buildInputScreenHTML();
+    updateChatChips('payment');
   }
 
   function buildInputScreenHTML() {
@@ -758,6 +775,7 @@
 
     // Transition to results screen — replace fp-body entirely (no scroll needed)
     document.getElementById('fp-subtitle').textContent = 'Your Estimated Payment';
+    updateChatChips('confirm');
 
     document.getElementById('fp-body').innerHTML = `
       <div class="flex flex-col gap-4 h-full">
@@ -902,6 +920,7 @@
 
   function enrollFromForm(amount) {
     closeFormPanel();
+    updateChatChips('enrolled');
     document.getElementById('step-body').innerHTML = `
       <div class="flex flex-col items-center gap-5 py-6 text-center">
         <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
@@ -1394,10 +1413,47 @@
     document.getElementById('screen-home').classList.remove('hidden');
   }
 
+  /* ── Contextual chips ── */
+  const CHAT_CHIPS = {
+    resolution: [
+      { label: 'Which option removes default from my credit?', action: null },
+      { label: 'How long does loan rehab take?',               action: null },
+      { label: 'Start my rehabilitation →',                    action: 'openFormPanel()' },
+    ],
+    payment: [
+      { label: 'How is discretionary income calculated?', action: null },
+      { label: 'What counts as a dependent?',             action: null },
+      { label: 'Can I use last year\'s taxes?',           action: null },
+    ],
+    confirm: [
+      { label: 'What if I miss a payment?',       action: null },
+      { label: 'Can I change my payment amount?', action: null },
+      { label: 'How quickly will collections stop?', action: null },
+    ],
+    enrolled: [
+      { label: 'When will default be removed from my credit?', action: null },
+      { label: 'Set up auto-pay reminders',                    action: null },
+      { label: 'What happens after 9 payments?',               action: null },
+    ],
+  };
+
+  function updateChatChips(context) {
+    window._chatContext = context;
+    const container = document.getElementById('chat-chips');
+    if (!container) return;
+    const chips = CHAT_CHIPS[context] || [];
+    container.innerHTML = chips.map(c => `
+      <button ${c.action ? `onclick="${c.action}"` : ''}
+        class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors whitespace-nowrap">
+        ${c.label}
+      </button>`).join('');
+  }
+
   function showChatScreen() {
     document.getElementById('screen-home').classList.add('hidden');
     document.getElementById('screen-chat').classList.remove('hidden');
     renderStep();
+    updateChatChips('resolution');
   }
 </script>
 </body>
