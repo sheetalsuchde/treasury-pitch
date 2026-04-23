@@ -644,66 +644,82 @@
   }
 
   function buildInputScreenHTML() {
+    const inputCls = "w-full border border-[#e2e4eb] rounded-xl px-3.5 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors";
+    const selectCls = inputCls + " appearance-none cursor-pointer";
+    const helperCls = "text-xs text-[#676d7a] leading-relaxed";
+    const labelCls  = "text-xs font-semibold text-[#2a2f3d] mb-0.5";
     return `
       <!-- Pre-filled notice -->
-      <div class="flex items-center gap-2 bg-surface-base border border-border-subtle rounded-xl px-3 py-2 shrink-0">
-        <svg class="shrink-0 text-brand-primary" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#265ddc" stroke-width="1.2"/><path d="M4.5 7l1.8 1.8 3-3" stroke="#265ddc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <p class="text-xs text-neutral-disabled whitespace-nowrap">Pre-filled from your Candidly profile — review and confirm</p>
+      <div class="flex items-center gap-2 bg-[#fafbfc] border border-[#f0f2f5] rounded-xl px-3 py-2 shrink-0">
+        <svg class="shrink-0" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#265ddc" stroke-width="1.2"/><path d="M4.5 7l1.8 1.8 3-3" stroke="#265ddc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p class="text-xs text-[#676d7a] whitespace-nowrap">Pre-filled from your Candidly profile — review and confirm</p>
       </div>
 
       <!-- Annual Income section -->
-      <div class="flex flex-col gap-1.5">
-        <p class="text-sm font-bold text-gray-900">What was your annual income?</p>
-        <p class="text-xs text-neutral-disabled">AGI — adjusted gross income is your income before taxes</p>
-        <div class="relative mt-0.5">
-          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-disabled text-sm font-medium pointer-events-none">$</span>
+      <div class="flex flex-col gap-2">
+        <div>
+          <p class="text-sm font-bold text-[#181d29]">What was your annual income?</p>
+          <p class="${helperCls} mt-0.5">AGI — adjusted gross income is your income before taxes</p>
+        </div>
+        <div class="relative">
+          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#676d7a] text-sm font-medium pointer-events-none select-none">$</span>
           <input id="form-gross-income" type="number" value="38400"
             oninput="document.getElementById('form-agi').value=this.value"
-            placeholder="Adjusted Gross Income (required)"
-            class="w-full border border-border-base rounded-xl pl-8 pr-4 py-2.5 text-sm text-gray-900 outline-none bg-white" />
+            placeholder="0"
+            class="w-full border border-[#e2e4eb] rounded-xl pl-8 pr-4 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors" />
         </div>
       </div>
 
       <!-- Household information section -->
       <div class="flex flex-col gap-3">
-        <p class="text-sm font-bold text-gray-900">Household information</p>
+        <p class="text-sm font-bold text-[#181d29]">Household information</p>
 
         <!-- Row 1: Family size + Dependents -->
         <div class="grid grid-cols-2 gap-3">
           <div class="flex flex-col gap-1">
-            <input id="form-family" type="number" value="1" min="1" placeholder="Family size (required)"
-              class="w-full border border-border-base rounded-xl px-3 py-2.5 text-sm text-gray-900 outline-none bg-white" />
-            <p class="text-xs text-neutral-disabled">Total number of people in your household</p>
+            <p class="${labelCls}">Family size</p>
+            <input id="form-family" type="number" value="1" min="1" placeholder="1"
+              class="${inputCls}" />
+            <p class="${helperCls}">Total people in your household</p>
           </div>
           <div class="flex flex-col gap-1">
-            <input id="form-dependents" type="number" value="0" min="0" placeholder="Number of dependents (required)"
-              class="w-full border border-border-base rounded-xl px-3 py-2.5 text-sm text-gray-900 outline-none bg-white" />
-            <p class="text-xs text-neutral-disabled">How many dependents do you claim on your taxes? Enter 0 if none.</p>
+            <p class="${labelCls}">Number of dependents</p>
+            <input id="form-dependents" type="number" value="0" min="0" placeholder="0"
+              class="${inputCls}" />
+            <p class="${helperCls}">Dependents you claim on taxes</p>
           </div>
         </div>
 
         <!-- Row 2: Marital status + Tax filing status -->
         <div class="grid grid-cols-2 gap-3">
           <div class="flex flex-col gap-1">
-            <select id="form-marital" class="w-full border border-border-base rounded-xl px-3 py-2.5 text-sm text-gray-900 outline-none bg-white appearance-none">
-              <option value="" disabled selected>Current marital status</option>
-              <option value="single">Single</option>
-              <option value="married">Married</option>
-              <option value="separated">Separated</option>
-              <option value="divorced">Divorced</option>
-              <option value="widowed">Widowed</option>
-            </select>
-            <p class="text-xs text-neutral-disabled">Indicating your marital status improves the accuracy of your repayment plan.</p>
+            <p class="${labelCls}">Current marital status</p>
+            <div class="relative">
+              <select id="form-marital" class="${selectCls}">
+                <option value="" disabled selected>Select</option>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="separated">Separated</option>
+                <option value="divorced">Divorced</option>
+                <option value="widowed">Widowed</option>
+              </select>
+              <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <p class="${helperCls}">Improves repayment accuracy</p>
           </div>
           <div class="flex flex-col gap-1">
-            <select id="form-filing" class="w-full border border-border-base rounded-xl px-3 py-2.5 text-sm text-gray-900 outline-none bg-white appearance-none">
-              <option value="" disabled selected>Tax filing status</option>
-              <option value="single">Single</option>
-              <option value="married_joint">Married filing jointly</option>
-              <option value="married_separate">Married filing separately</option>
-              <option value="head">Head of household</option>
-            </select>
-            <p class="text-xs text-neutral-disabled">What was your filing status on your most recent tax return?</p>
+            <p class="${labelCls}">Tax filing status</p>
+            <div class="relative">
+              <select id="form-filing" class="${selectCls}">
+                <option value="" disabled selected>Select</option>
+                <option value="single">Single</option>
+                <option value="married_joint">Married filing jointly</option>
+                <option value="married_separate">Married filing separately</option>
+                <option value="head">Head of household</option>
+              </select>
+              <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <p class="${helperCls}">Most recent tax return status</p>
           </div>
         </div>
       </div>
