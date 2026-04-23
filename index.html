@@ -63,6 +63,8 @@
     .ie-section.ie-collapsed .ie-sec-hdr{border-bottom:none}
     .ie-sec-chev{width:14px;height:14px;color:#9ca3af;transition:transform 0.2s;flex-shrink:0}
     .ie-section.ie-collapsed .ie-sec-chev{transform:rotate(-90deg)}
+    .ie-sec-confirm{display:none;border-top:1px solid #e8edf5;padding:10px 12px;background:#fafbfc}
+    .ie-section.ie-active .ie-sec-confirm{display:flex;justify-content:flex-end}
     .ie-sec-body{padding:12px;display:flex;flex-direction:column;gap:10px}
     .ie-sec-badge{width:20px;height:20px;border-radius:50%;background:#e5edff;color:#265ddc;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .ie-section.ie-confirmed .ie-sec-badge{background:#ecfbf5;color:#0d9e6e}
@@ -1421,6 +1423,11 @@
               <input id="ie-employer" class="ie-input" value="TechCorp Inc." />
             </div>
           </div>
+          <div class="ie-sec-confirm">
+            <button onclick="ieReply(1)" class="bg-[#265ddc] text-white text-xs font-semibold rounded-full px-4 py-2 hover:bg-[#1e4fc2] transition-colors">
+              Looks good — confirm →
+            </button>
+          </div>
         </div>
 
         <!-- Section B: Income -->
@@ -1453,6 +1460,11 @@
               <span id="ie-total-income" class="text-xs font-bold text-[#265ddc]">$3,200</span>
             </div>
           </div>
+          <div class="ie-sec-confirm">
+            <button onclick="ieReply(2)" class="bg-[#265ddc] text-white text-xs font-semibold rounded-full px-4 py-2 hover:bg-[#1e4fc2] transition-colors">
+              Income looks right — confirm →
+            </button>
+          </div>
         </div>
 
         <!-- Section C: Expenses -->
@@ -1481,6 +1493,11 @@
               <span class="text-xs font-bold text-gray-900">Total Monthly Expenses</span>
               <span id="ie-total-expenses" class="text-xs font-bold text-[#265ddc]">$2,465</span>
             </div>
+          </div>
+          <div class="ie-sec-confirm">
+            <button onclick="ieReply(3)" class="bg-[#265ddc] text-white text-xs font-semibold rounded-full px-4 py-2 hover:bg-[#1e4fc2] transition-colors">
+              Expenses look right — confirm →
+            </button>
           </div>
         </div>
 
