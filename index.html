@@ -135,14 +135,21 @@
 
   <!-- Alert Banner -->
   <div class="px-10 py-4 border-b border-neutral-light">
-  <div id="alert-banner" class="bg-warning-bg border border-warning-border rounded-2xl px-5 py-4 flex items-start gap-3">
-    <svg class="shrink-0 text-amber-500 mt-0.5" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+  <div id="alert-banner" class="bg-[#fff8eb] border border-[#fed684] rounded-lg px-3 py-3 flex items-start gap-2 overflow-hidden">
+    <!-- Warning icon -->
+    <svg class="shrink-0 text-amber-500 mt-0.5" width="24" height="24" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+    <!-- Content -->
     <div class="flex-1 min-w-0">
-      <p class="text-sm font-bold text-gray-900 mb-1">Your student loan is currently in default — $5,284 owed</p>
-      <p class="text-sm text-gray-700 leading-relaxed">Your federal student loan ($4,000 principal + $1,283 accrued interest) is in default. If you don't act by <strong>July 1</strong>, the Dept. of Education can seize your tax refund, garnish up to 15% of your Social Security, and refer your wages for garnishment.</p>
+      <p class="text-base font-bold text-gray-900 leading-5">Action required:</p>
+      <p class="text-base text-gray-900 leading-relaxed mt-0.5">Your student loan is in default. Treasury offset may begin in 44 days — act now to protect your payments.</p>
     </div>
-    <button onclick="showChatScreen()" class="shrink-0 bg-amber-500 hover:bg-amber-600 text-white rounded-full px-4 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap mt-0.5">Help me get out of default</button>
-    <button onclick="this.parentElement.remove()" class="shrink-0 p-1 rounded-full text-neutral-disabled hover:text-neutral-subtle mt-0.5">
+    <!-- CTA: outlined black border pill (Figma spec) -->
+    <button onclick="showChatScreen()"
+      class="shrink-0 border border-gray-900 text-gray-900 bg-transparent hover:bg-black hover:text-white rounded-full px-4 py-1 text-sm font-medium transition-colors whitespace-nowrap self-center" style="min-height:32px;min-width:96px;">
+      Get out of Default
+    </button>
+    <!-- Close -->
+    <button onclick="this.parentElement.remove()" class="shrink-0 p-1 rounded-full text-neutral-disabled hover:text-neutral-subtle self-center">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 3L3 11M3 3l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
   </div>
