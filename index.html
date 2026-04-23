@@ -50,6 +50,30 @@
     .i2-sec{border:0.5px solid #e2e4eb;border-radius:12px;margin-bottom:8px;overflow:hidden}
     .i2-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;background:#fff;user-select:none}
     .i2-sec-hdr:hover{background:#fafbfc}
+    /* ── I&E Form (OMB 1845-0120) ── */
+    .ie-section{border:1px solid #e2e4eb;border-radius:12px;overflow:hidden;transition:border-color 0.25s,box-shadow 0.25s,opacity 0.25s}
+    .ie-section.ie-locked{opacity:0.42;pointer-events:none}
+    .ie-section.ie-active{border-color:#265ddc;box-shadow:0 0 0 3px rgba(38,93,220,0.09)}
+    .ie-section.ie-confirmed{border-color:#b6eeda}
+    .ie-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#fafbfc;border-bottom:1px solid #f0f2f5}
+    .ie-section.ie-active .ie-sec-hdr{background:#f0f4ff;border-bottom-color:#dde8ff}
+    .ie-section.ie-confirmed .ie-sec-hdr{background:#f0fbf7;border-bottom-color:#d4f5e8}
+    .ie-sec-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+    .ie-sec-badge{width:20px;height:20px;border-radius:50%;background:#265ddc;color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .ie-section.ie-confirmed .ie-sec-badge{background:#0d9e6e}
+    .ie-status{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
+    .ie-status.ie-s-pending{color:#676d7a;background:#f0f2f5}
+    .ie-status.ie-s-confirmed{color:#0d9e6e;background:#ecfbf5}
+    .ie-label{display:block;font-size:11px;font-weight:500;color:#676d7a;margin-bottom:3px}
+    .ie-input{width:100%;border:1px solid #e2e4eb;border-radius:8px;padding:5px 10px;font-size:12px;color:#181d29;background:white;outline:none;transition:border-color 0.15s,box-shadow 0.15s}
+    .ie-input:focus{border-color:#265ddc;box-shadow:0 0 0 2px rgba(38,93,220,0.1)}
+    .ie-money{padding-left:20px}
+    .ie-prefix{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#676d7a;pointer-events:none}
+    .ie-field-wrap{position:relative}
+    .ie-total-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:#f0f2f5;border-radius:8px;margin-top:2px}
+    .ie-locked .ie-input{background:#fafbfc;color:#a0a6b2}
+    .ie-highlight{animation:ie-pulse 1.5s ease-out}
+    @keyframes ie-pulse{0%,100%{box-shadow:0 0 0 0 rgba(38,93,220,0.4)}50%{box-shadow:0 0 0 6px rgba(38,93,220,0)}}
     .i2-sec-hdr-l{display:flex;align-items:center;gap:10px}
     .i2-sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .i2-sec-title{font-size:13px;font-weight:500;color:#181d29}
@@ -114,10 +138,10 @@
   <div id="alert-banner" class="bg-warning-bg border border-warning-border rounded-2xl px-5 py-4 flex items-start gap-3">
     <svg class="shrink-0 text-amber-500 mt-0.5" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
     <div class="flex-1 min-w-0">
-      <p class="text-sm font-bold text-gray-900 mb-1">Your student loan is currently in default</p>
-      <p class="text-sm text-gray-700 leading-relaxed">We've identified that your federal student loan is in default. This means the full balance may be due and collections actions (like tax refund or wage garnishment) could occur if no action is taken. <a href="#" class="text-brand-primary underline font-medium">Learn more</a> about what this means</p>
+      <p class="text-sm font-bold text-gray-900 mb-1">Your student loan is currently in default — $5,284 owed</p>
+      <p class="text-sm text-gray-700 leading-relaxed">Your federal student loan ($4,000 principal + $1,283 accrued interest) is in default. If you don't act by <strong>July 1</strong>, the Dept. of Education can seize your tax refund, garnish up to 15% of your Social Security, and refer your wages for garnishment.</p>
     </div>
-    <button onclick="showChatScreen()" class="shrink-0 border border-black rounded-full px-4 py-1 text-sm font-medium text-black hover:bg-black hover:text-white transition-colors whitespace-nowrap mt-0.5">Help me get out of default</button>
+    <button onclick="showChatScreen()" class="shrink-0 bg-amber-500 hover:bg-amber-600 text-white rounded-full px-4 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap mt-0.5">Help me get out of default</button>
     <button onclick="this.parentElement.remove()" class="shrink-0 p-1 rounded-full text-neutral-disabled hover:text-neutral-subtle mt-0.5">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 3L3 11M3 3l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
@@ -145,25 +169,25 @@
     <!-- Input + chips -->
     <div class="w-full max-w-2xl">
       <div class="bg-white border border-border-base rounded-2xl shadow-[0_4px_40px_rgba(0,0,0,0.05)] flex items-center gap-3 px-4 py-3 mb-3">
-        <input type="text" placeholder="Message Cait" class="flex-1 text-base text-gray-900 placeholder-neutral-disabled outline-none bg-transparent" />
-        <button class="shrink-0 text-neutral-disabled hover:text-brand-primary">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5a3 3 0 00-3 3v4a3 3 0 006 0v-4a3 3 0 00-3-3z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M4.5 10a5.5 5.5 0 0011 0M10 16.5v1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input id="home-input" type="text" placeholder="Message Cait" class="flex-1 text-base text-gray-900 placeholder-neutral-disabled outline-none bg-transparent"
+          onkeydown="if(event.key==='Enter' && this.value.trim()) showChatScreen()" />
+        <button onclick="if(document.getElementById('home-input').value.trim()) showChatScreen()" class="shrink-0 bg-brand-primary hover:bg-brand-secondary text-white rounded-xl p-1.5 transition-colors">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 10l14-7-7 14V10H3z" fill="currentColor"/></svg>
         </button>
       </div>
 
-      <!-- All chips in one unified row — same style -->
+      <!-- All chips in one unified row — urgent chip styled distinctly -->
       <div class="flex flex-wrap items-center justify-center gap-2">
-        <button onclick="showChatScreen()" class="bg-surface-base border border-blue-20 rounded-xl px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-blue-5 transition-colors">Help me get out of default</button>
+        <button onclick="showChatScreen()" class="bg-amber-50 border border-amber-300 rounded-xl px-3 py-1.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 transition-colors flex items-center gap-1.5">
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-amber-500"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+          Help me get out of default
+        </button>
         <button class="bg-surface-base border border-blue-20 rounded-xl px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-blue-5 transition-colors">Pay off my loans faster</button>
         <button class="bg-surface-base border border-blue-20 rounded-xl px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-blue-5 transition-colors">Lower my payment</button>
         <button class="bg-surface-base border border-blue-20 rounded-xl px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-blue-5 transition-colors">Plan for college</button>
       </div>
     </div>
 
-    <!-- Trending label -->
-    <div class="w-full max-w-5xl mt-14">
-      <span class="bg-neutral-hover text-gray-900 text-sm font-medium px-3 py-1.5 rounded-lg">Trending topics</span>
-    </div>
 
     </div><!-- end centered content -->
   </div><!-- end hero -->
@@ -189,7 +213,7 @@
       </div>
     </div>
     <div class="bg-surface-inverse-overlay flex items-center justify-center px-8 py-2">
-      <p class="text-xs text-white">Copyright © 2024 Candidly. All rights reserved.</p>
+      <p class="text-xs text-white">Copyright © 2026 Candidly. All rights reserved.</p>
     </div>
   </footer>
 </div>
@@ -233,7 +257,7 @@
     </div>
 
     <!-- Chat main -->
-    <div class="flex-1 flex flex-col items-center px-6 pb-0 min-h-0">
+    <div id="chat-main" class="flex-1 flex flex-col items-center px-6 pb-0 min-h-0" style="transition:width 0.35s cubic-bezier(0.4,0,0.2,1),flex 0.35s cubic-bezier(0.4,0,0.2,1)">
       <div class="w-full max-w-3xl flex flex-col flex-1 min-h-0">
 
         <!-- Scrollable chat history -->
@@ -249,30 +273,56 @@
 
           <!-- Cait message (left) -->
           <div class="pr-12 flex flex-col gap-3">
-            <p class="text-base text-neutral-subtle leading-7">Hi Sheetal — I can see your student loan is currently in default. The good news: you have options to get out of default and stop collections.</p>
-            <p class="text-base text-neutral-subtle leading-7">There are a few ways to get out of default — administrative loan discharge, loan consolidation, request for review (object to the default), and paying off the debt — but the one I can help you with directly is <strong>loan rehabilitation</strong>. It's also the best option for most people because it's the only path that removes the default from your credit report entirely. Ready to start?</p>
+            <div class="flex items-center gap-2 mb-1">
+              <div class="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" fill="white"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </div>
+              <span class="text-sm font-semibold text-gray-900">Cait</span>
+              <span class="text-xs text-neutral-disabled">· AI Student Loan Assistant, Candidly</span>
+            </div>
+            <p class="text-base text-neutral-subtle leading-7">Hi Sheetal — your loan is currently in default, and I want to help you get out of it. Being in default has real consequences: the Dept. of Education can seize your federal tax refund, garnish up to 15% of your Social Security benefits, order wage garnishment, and it causes serious long-term damage to your credit score — affecting your ability to rent, borrow, or qualify for housing.</p>
+            <p class="text-base text-neutral-subtle leading-7">Here are the five ways to resolve a defaulted federal student loan. I can help you with one of them:</p>
+            <div class="flex flex-col gap-2">
+              <div class="bg-surface-base rounded-xl px-4 py-3">
+                <p class="text-sm font-semibold text-gray-900 mb-0.5">Administrative loan discharge</p>
+                <p class="text-sm text-neutral-disabled leading-relaxed">Your loan may be cancelled if you qualify — for example, due to total and permanent disability, school closure, or identity theft fraud. Requires an application and review.</p>
+              </div>
+              <div class="bg-surface-base rounded-xl px-4 py-3">
+                <p class="text-sm font-semibold text-gray-900 mb-0.5">Loan consolidation</p>
+                <p class="text-sm text-neutral-disabled leading-relaxed">Combine your defaulted loan into a new Direct Consolidation Loan. Resolves default quickly, but the default notation remains on your credit report.</p>
+              </div>
+              <div class="bg-surface-base rounded-xl px-4 py-3">
+                <p class="text-sm font-semibold text-gray-900 mb-0.5">Request for review</p>
+                <p class="text-sm text-neutral-disabled leading-relaxed">If you believe the default was placed in error, you can formally object or dispute it. This puts collections on hold while the review is pending.</p>
+              </div>
+              <div class="bg-surface-base rounded-xl px-4 py-3 border-2 border-[#265ddc] relative">
+                <span class="absolute -top-2.5 left-3 bg-[#265ddc] text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Cait can help with this</span>
+                <p class="text-sm font-semibold text-gray-900 mb-0.5">Loan rehabilitation</p>
+                <p class="text-sm text-neutral-disabled leading-relaxed">Make 9 affordable monthly payments over 10 consecutive months. This is the <strong>only option that completely removes the default from your credit report</strong> — as if it never happened.</p>
+              </div>
+              <div class="bg-surface-base rounded-xl px-4 py-3">
+                <p class="text-sm font-semibold text-gray-900 mb-0.5">Pay off the debt</p>
+                <p class="text-sm text-neutral-disabled leading-relaxed">Pay the full balance in a lump sum to exit default immediately. Fastest resolution, but the default notation may remain on your credit report for up to 7 years.</p>
+              </div>
+            </div>
+            <p class="text-base text-neutral-subtle leading-7">Let's get you started. Since your federal loan is held by the <strong>Department of Education</strong>, we can set up your rehabilitation agreement directly with the <strong>Default Resolution Group</strong> — no need to call a third-party servicer. I've estimated your recommended monthly payment using your adjusted gross income (AGI) on file. Review it below and let me know if it works for you.</p>
           </div>
 
           <!-- Flow card -->
           <div class="bg-white border border-border-subtle rounded-lg overflow-hidden">
 
             <!-- Card title -->
-            <div class="px-5 pt-5 pb-4">
-              <p class="text-base font-bold text-gray-900">Complete these steps to stop collections and rehabilitate your loan.</p>
+            <div class="px-5 pt-5 pb-4 border-b border-neutral-light">
+              <p class="text-base font-bold text-gray-900">Your loan &amp; recommended payment</p>
+              <p class="text-sm text-neutral-disabled mt-0.5">Review your balance, see what Cait recommends, and choose your path.</p>
             </div>
 
-            <!-- ── Figma Stepper Component (5088:6436) ── -->
-            <div id="stepper" class="flex border-0"></div>
-
             <!-- Step body -->
-            <div id="step-body" class="px-5 py-5 min-h-[200px]"></div>
+            <div id="step-body" class="px-5 py-5"></div>
 
             <!-- Card footer -->
-            <div class="flex items-center justify-between px-5 pb-5 pt-2 border-t border-neutral-light">
-              <button id="btn-back" onclick="prevStep()" class="hidden px-5 py-2 border border-border-base rounded-full text-sm font-medium text-gray-900 hover:bg-neutral-light transition-colors">Back</button>
-              <div class="flex-1"></div>
-              <span id="step-counter" class="text-sm font-medium text-neutral-disabled mr-4"></span>
-              <button id="btn-next" onclick="nextStep()" class="bg-brand-primary hover:bg-brand-secondary text-white rounded-full px-5 py-2 text-base font-medium transition-colors">Submit</button>
+            <div class="flex items-center justify-end px-5 pb-5 pt-2 border-t border-neutral-light">
+              <button id="btn-next" onclick="openFormPanel()" class="bg-brand-primary hover:bg-brand-secondary text-white rounded-full px-6 py-2.5 text-base font-medium transition-colors">Start Loan Rehabilitation →</button>
             </div>
           </div>
         </div>
@@ -299,6 +349,75 @@
 
       </div>
     </div>
+
+    <!-- ── Right: Form panel (split screen) ── -->
+    <div id="form-panel" style="width:0;display:flex;flex-direction:column;overflow:hidden;border-left:0px solid #e2e4eb;background:#ffffff;transition:width 0.35s cubic-bezier(0.4,0,0.2,1),border-left-width 0.1s ease;min-height:0;flex-shrink:0;">
+
+      <!-- Panel header -->
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-neutral-light shrink-0 bg-white">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-xl bg-brand-primary flex items-center justify-center shrink-0">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 2h6l3 3v7a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 2v3.5h3.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M5 8h4M5 10h2.5" stroke="white" stroke-width="1.1" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <p id="fp-title" class="text-sm font-bold text-gray-900 leading-tight whitespace-nowrap">Loan Rehabilitation</p>
+            <p id="fp-subtitle" class="text-xs text-neutral-disabled whitespace-nowrap">Income &amp; Payment Calculation</p>
+          </div>
+        </div>
+        <button onclick="closeFormPanel()" class="shrink-0 p-1.5 rounded-xl hover:bg-neutral-light text-neutral-disabled ml-4">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 3L3 11M3 3l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Panel body -->
+      <div id="fp-body" class="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-4">
+
+        <!-- Pre-filled notice -->
+        <div class="flex items-center gap-2 bg-surface-base border border-border-subtle rounded-xl px-3 py-2 shrink-0">
+          <svg class="shrink-0 text-brand-primary" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#265ddc" stroke-width="1.2"/><path d="M4.5 7l1.8 1.8 3-3" stroke="#265ddc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="text-xs text-neutral-disabled whitespace-nowrap">Pre-filled from your Candidly profile — review and confirm</p>
+        </div>
+
+        <!-- AGI input -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-gray-900">Adjusted Gross Income (AGI)</label>
+          <p class="text-xs text-neutral-disabled">Your most recent <strong class="text-gray-700">Form 1040, Line 11</strong></p>
+          <div class="relative mt-0.5">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-disabled text-sm font-medium pointer-events-none">$</span>
+            <input id="form-agi" type="number" value="38400" oninput="clearFormResults()"
+              class="w-full border border-border-base rounded-xl pl-8 pr-4 py-2.5 text-sm text-gray-900 outline-none bg-white" style="focus:border-color:#265ddc" />
+          </div>
+          <p class="text-xs text-neutral-disabled leading-relaxed">Don't know your exact AGI? Enter an estimate — you can adjust it later. Your AGI is on <strong class="text-gray-700">Line 11 of Form 1040</strong>.</p>
+        </div>
+
+        <!-- Family size -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-gray-900">Family size</label>
+          <p class="text-xs text-neutral-disabled">Number of people in your household</p>
+          <input id="form-family" type="number" value="1" min="1" oninput="clearFormResults()"
+            class="w-full border border-border-base rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none bg-white mt-0.5" />
+        </div>
+
+        <!-- Calculate button -->
+        <button onclick="calculateFormPayment()"
+          class="w-full bg-brand-primary hover:bg-brand-secondary text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
+          Calculate My Monthly Payment →
+        </button>
+
+        <!-- Results (shown after calculate) -->
+        <div id="form-results" style="display:none;" class="flex flex-col gap-4">
+
+          <!-- Payment result card -->
+          <div id="form-payment-card" class="bg-brand-light border border-[#c5d8ff] rounded-2xl p-4 text-center"></div>
+
+          <!-- Comfort question + conditional path -->
+          <div id="form-comfort-section" class="flex flex-col gap-3"></div>
+
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- Footer -->
@@ -323,83 +442,13 @@
     </div>
     <div class="bg-surface-inverse-overlay flex items-center justify-between px-8 py-2">
       <div></div>
-      <p class="text-xs text-white">Copyright © 2024 Candidly. All rights reserved.</p>
+      <p class="text-xs text-white">Copyright © 2026 Candidly. All rights reserved.</p>
     </div>
   </footer>
 </div>
 
 <script>
-  /* ── Step data ── */
-  const steps = [
-    { label: 'Your situation',   sub: 'Loan overview' },
-    { label: 'Income & expenses',sub: 'Calculate payment' },
-    { label: 'Review & enroll',  sub: 'Sign & submit' },
-  ];
-
-  let currentStep = 0;
-  let calculatedPayment = 5;
-
-  /* ── Figma Stepper Component ──
-     States: success = completed steps (blue filled + checkmark)
-             active  = current step (blue ring + blue dot)
-             inactive = future steps (gray ring + gray dot)
-  */
-  function statusIcon(state) {
-    if (state === 'success') {
-      // Blue filled circle with white checkmark
-      return `<span class="inline-flex items-center justify-center w-5 h-5 rounded-[4px]">
-        <span class="relative inline-flex items-center justify-center w-4 h-4">
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <circle cx="4" cy="4" r="4" fill="#265ddc"/>
-          </svg>
-          <svg class="absolute" width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <path d="M2 4l1.5 1.5L6 2.5" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-      </span>`;
-    } else if (state === 'active') {
-      // Blue ring with blue dot
-      return `<span class="inline-flex items-center justify-center w-5 h-5 rounded-[4px]">
-        <span class="inline-flex items-center justify-center w-4 h-4">
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <circle cx="4" cy="4" r="3.25" stroke="#265ddc" stroke-width="1.5"/>
-            <circle cx="4" cy="4" r="2" fill="#265ddc"/>
-          </svg>
-        </span>
-      </span>`;
-    } else {
-      // Gray ring with gray dot
-      return `<span class="inline-flex items-center justify-center w-5 h-5 rounded-[4px]">
-        <span class="inline-flex items-center justify-center w-4 h-4">
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <circle cx="4" cy="4" r="3.25" stroke="#676d7a" stroke-width="1.5"/>
-            <circle cx="4" cy="4" r="2" fill="#676d7a"/>
-          </svg>
-        </span>
-      </span>`;
-    }
-  }
-
-  function renderStepper() {
-    const el = document.getElementById('stepper');
-    el.innerHTML = steps.map((s, i) => {
-      const state = i < currentStep ? 'success' : i === currentStep ? 'active' : 'inactive';
-      const borderColor = state !== 'inactive' ? 'border-[#265ddc]' : 'border-[#e2e4eb]';
-      const labelColor  = state === 'success' ? 'text-[#265ddc]' : state === 'active' ? 'text-black' : 'text-[#2a2f3d]';
-      return `
-        <div class="flex-1 border-t-2 ${borderColor} pt-2 pb-1 pl-1 pr-4 flex flex-col gap-0.5 min-w-[100px]">
-          <div class="flex items-center gap-1">
-            ${statusIcon(state)}
-            <span class="text-sm font-medium ${labelColor} whitespace-nowrap">${s.label}</span>
-          </div>
-          <div class="pl-6">
-            <span class="text-xs font-medium text-[#2a2f3d] whitespace-nowrap">${s.sub}</span>
-          </div>
-        </div>`;
-    }).join('');
-  }
-
-  /* ── Step content ── */
+  /* ── Loan overview card content ── */
   const stepBodies = [
     // Step 1 — Your situation
     `<div class="flex flex-col gap-4">
@@ -408,322 +457,692 @@
         <div class="bg-surface-base rounded-xl p-4"><p class="text-xs text-neutral-disabled mb-1">Accrued interest</p><p class="text-xl font-bold text-gray-900">$1,283</p></div>
         <div class="bg-surface-base rounded-xl p-4"><p class="text-xs text-neutral-disabled mb-1">Total owed</p><p class="text-xl font-bold text-red-500">$5,284</p></div>
       </div>
+
       <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
-        <span class="font-bold">What happens if you don't act:</span> The Dept. of Education may offset your federal tax refund, up to 15% of your Social Security, and refer your debt for wage garnishment. You have <span class="font-bold">44 days</span> from April 21, 2025 to act before collections begin.
-      </div>
-      <div class="grid grid-cols-3 gap-3 pt-1">
-        <div class="bg-surface-base rounded-xl p-4">
-          <div class="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center mb-3">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2v12" stroke="#265ddc" stroke-width="1.6" stroke-linecap="round"/></svg>
-          </div>
-          <p class="text-sm font-semibold text-gray-900 mb-1">Share your finances</p>
-          <p class="text-xs text-neutral-disabled leading-relaxed">We calculate a payment based on your income — as low as $5/mo</p>
-        </div>
-        <div class="bg-surface-base rounded-xl p-4">
-          <div class="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center mb-3">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#265ddc" stroke-width="1.6"/><path d="M5.5 8l1.8 1.8 3.2-3.6" stroke="#265ddc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <p class="text-sm font-semibold text-gray-900 mb-1">Make 9 payments</p>
-          <p class="text-xs text-neutral-disabled leading-relaxed">Over 10 consecutive months at your agreed monthly amount</p>
-        </div>
-        <div class="bg-surface-base rounded-xl p-4">
-          <div class="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center mb-3">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="#265ddc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <p class="text-sm font-semibold text-gray-900 mb-1">Default removed</p>
-          <p class="text-xs text-neutral-disabled leading-relaxed">Credit bureaus are notified and the default is cleared from your record</p>
-        </div>
-      </div>
-    </div>`,
-
-    // Step 2 — Income & expenses (collapsible form)
-    `<div>
-      <div class="i2-cait-msg">
-        <div class="i2-cait-av"><div class="i2-cait-dot"></div></div>
-        <div class="i2-cait-bub">I've pre-filled what I know about you from your account. For expenses, I've added <strong>estimated amounts</strong> based on typical costs for your area — these are just a starting point. Review each section and adjust anything that doesn't match your situation. The more accurate you are, the lower your payment could be.</div>
+        <span class="font-bold">What happens if you don't act:</span> The Dept. of Education may offset your federal tax refund, up to 15% of your Social Security, and refer your debt for wage garnishment. <span class="font-bold">July 1 is D-Day</span> — under the One Big Beautiful Bill, collections are set to escalate. You have <span class="font-bold">70 days</span> to act.
       </div>
 
-      <div class="i2-ticker">
-        <div class="i2-tc formula">
-          <div class="i2-tc-label">15% formula payment</div>
-          <div class="i2-tc-amount" id="t-formula">$198</div>
-          <div class="i2-tc-note">Based on your income alone</div>
-        </div>
-        <div class="i2-tc income">
-          <div class="i2-rec-badge">Recommended</div>
-          <div class="i2-tc-label">Income-based payment</div>
-          <div class="i2-tc-amount" id="t-income">$50</div>
-          <div class="i2-tc-note">Based on income minus expenses</div>
-        </div>
-      </div>
+      <!-- ── How Loan Rehabilitation Works ── -->
+      <div class="rounded-2xl border border-[#c5d8ff] bg-gradient-to-b from-[#f5f8ff] to-white p-4">
 
-      <!-- Basic info -->
-      <div class="i2-sec" id="sec-basic">
-        <div class="i2-sec-hdr" onclick="i2toggle('basic')">
-          <div class="i2-sec-hdr-l">
-            <div class="i2-sec-icon" style="background:#E6F1FB"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#185FA5" stroke-width="1.2"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#185FA5" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-            <div><div class="i2-sec-title">Basic information</div><div class="i2-sec-sub">Pre-filled from your account</div></div>
-          </div>
-          <div class="i2-sec-r">
-            <span class="i2-status i2-s-prefilled" id="basic-status">Pre-filled</span>
-            <svg class="i2-chev open" id="chev-basic" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+        <div class="flex items-center gap-2 mb-4">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p class="text-xs font-bold text-brand-primary uppercase tracking-widest">How Loan Rehabilitation Works</p>
         </div>
-        <div class="i2-sec-body" id="body-basic">
-          <div class="i2-grid">
-            <div class="i2-fg"><label class="i2-lbl">Name <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input class="is-prefilled" value="Sheetal Suchde" readonly></div></div>
-            <div class="i2-fg"><label class="i2-lbl">SSN <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input class="is-prefilled" value="•••-••-6789" readonly></div></div>
-            <div class="i2-fg full"><label class="i2-lbl">Address <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input class="is-prefilled" value="123 Main St, Austin, TX 78701" readonly></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Primary phone <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input class="is-prefilled" value="(512) 555-0142" readonly></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Family size <span class="i2-pre-tag">pre-filled</span></label><div class="i2-inp-wrap"><input id="fsize" value="1" oninput="i2recalc()"></div></div>
-          </div>
-          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('basic')">Confirm ✓</button></div>
-        </div>
-      </div>
 
-      <!-- Income -->
-      <div class="i2-sec" id="sec-income">
-        <div class="i2-sec-hdr" onclick="i2toggle('income')">
-          <div class="i2-sec-hdr-l">
-            <div class="i2-sec-icon" style="background:#E1F5EE"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1.5" stroke="#0F6E56" stroke-width="1.2"/><path d="M5 7h4M7 5v4" stroke="#0F6E56" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-            <div><div class="i2-sec-title">Monthly income</div><div class="i2-sec-sub">All sources before taxes</div></div>
+        <!-- Vertical timeline -->
+        <div class="flex flex-col gap-0">
+
+          <!-- Step 1 -->
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center shrink-0">
+              <div class="w-8 h-8 rounded-full bg-[#265ddc] text-white flex items-center justify-center text-xs font-bold shadow-sm shrink-0">1</div>
+              <div class="w-0.5 flex-1 bg-[#c5d8ff] my-1"></div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#dde8ff] p-3 mb-2 flex-1" style="box-shadow:0 1px 4px rgba(38,93,220,0.07)">
+              <div class="flex items-center gap-2.5 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <p class="text-sm font-bold text-gray-900">Share Your Finances</p>
+              </div>
+              <p class="text-xs text-neutral-disabled leading-relaxed">Provide your income (AGI from <strong class="text-gray-700">Form 1040, Line 11</strong>) and household size. Cait calculates your monthly payment — no guessing needed.</p>
+              <div class="mt-2.5 flex items-center gap-2">
+                <span class="text-[10px] font-semibold text-brand-primary bg-[#eff4ff] px-2 py-0.5 rounded-full">≤ 15% of discretionary income</span>
+                <span class="text-[10px] font-semibold text-brand-primary bg-[#eff4ff] px-2 py-0.5 rounded-full">As low as $5/mo</span>
+              </div>
+            </div>
           </div>
-          <div class="i2-sec-r">
-            <span class="i2-sec-total" id="inc-display">$3,200</span>
-            <span class="i2-status i2-s-pending" id="income-status">Review</span>
-            <svg class="i2-chev" id="chev-income" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          <!-- Step 2 -->
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center shrink-0">
+              <div class="w-8 h-8 rounded-full bg-[#265ddc] text-white flex items-center justify-center text-xs font-bold shadow-sm shrink-0">2</div>
+              <div class="w-0.5 flex-1 bg-[#c5d8ff] my-1"></div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#dde8ff] p-3 mb-2 flex-1" style="box-shadow:0 1px 4px rgba(38,93,220,0.07)">
+              <div class="flex items-center gap-2.5 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <p class="text-sm font-bold text-gray-900">Make 9 Monthly Payments</p>
+              </div>
+              <p class="text-xs text-neutral-disabled leading-relaxed mb-2.5">Pay your agreed amount each month for <strong class="text-gray-700">9 consecutive months</strong>, within a 10-month window. Auto-pay is strongly recommended.</p>
+              <!-- Month tracker grid -->
+              <div class="flex gap-1 flex-wrap">
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 1</span></div>
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 2</span></div>
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 3</span></div>
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 4</span></div>
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 5</span></div>
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 6</span></div>
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 7</span></div>
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 8</span></div>
+                <div class="flex items-center gap-1 bg-[#eff4ff] border border-[#c5d8ff] rounded-lg px-2 py-1"><span style="font-size:9px;color:#265ddc;font-weight:700">Mo 9</span></div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="i2-sec-body" id="body-income" style="display:none">
-          <div class="i2-tip"><div class="i2-tip-av"><div class="i2-tip-dot"></div></div><div>Include all income sources. Being accurate protects you if income is verified. Include spouse income only if they contribute to your household.</div></div>
-          <div class="i2-grid">
-            <div class="i2-fg"><label class="i2-lbl">Employment income</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-emp" value="3200" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Spouse employment income</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-spouse" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Child support received</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-child" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Social Security benefits</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-ss" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Worker's compensation</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-wc" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Public assistance</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-pa" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Other income</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="i-other" value="0" oninput="i2recalc()"></div></div>
+
+          <!-- Step 3 -->
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center shrink-0">
+              <div class="w-8 h-8 rounded-full bg-[#0d9e6e] text-white flex items-center justify-center shadow-sm shrink-0">
+                <svg width="13" height="10" viewBox="0 0 13 10" fill="none"><path d="M1 5L5 9L12 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl border border-[#b6eeda] p-3 flex-1" style="box-shadow:0 1px 4px rgba(13,158,110,0.07)">
+              <div class="flex items-center gap-2.5 mb-2">
+                <div class="w-8 h-8 rounded-lg bg-[#ecfbf5] flex items-center justify-center shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9e6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                </div>
+                <p class="text-sm font-bold text-gray-900">Default Removed ✓</p>
+              </div>
+              <p class="text-xs text-neutral-disabled leading-relaxed">After your 9th payment, your loan is officially rehabilitated. All three credit bureaus are notified and the default is <strong class="text-gray-700">permanently cleared</strong> from your credit report.</p>
+              <div class="mt-2.5 flex items-center gap-2">
+                <span class="text-[10px] font-semibold text-emerald-700 bg-[#ecfbf5] px-2 py-0.5 rounded-full">All 3 bureaus notified</span>
+                <span class="text-[10px] font-semibold text-emerald-700 bg-[#ecfbf5] px-2 py-0.5 rounded-full">~10 months total</span>
+              </div>
+            </div>
           </div>
-          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('income')">Confirm ✓</button></div>
+
         </div>
       </div>
 
-      <!-- Housing -->
-      <div class="i2-sec" id="sec-housing">
-        <div class="i2-sec-hdr" onclick="i2toggle('housing')">
-          <div class="i2-sec-hdr-l">
-            <div class="i2-sec-icon" style="background:#FAEEDA"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L7 2l5 5" stroke="#854F0B" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="7" width="6" height="5" rx="0.5" stroke="#854F0B" stroke-width="1.2"/></svg></div>
-            <div><div class="i2-sec-title">Housing &amp; utilities</div><div class="i2-sec-sub">Rent, mortgage, utilities, communication</div></div>
-          </div>
-          <div class="i2-sec-r">
-            <span class="i2-sec-total" id="hous-display">$1,395</span>
-            <span class="i2-status i2-s-pending" id="housing-status">Review</span>
-            <svg class="i2-chev" id="chev-housing" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="i2-sec-body" id="body-housing" style="display:none">
-          <div class="i2-tip"><div class="i2-tip-av"><div class="i2-tip-dot"></div></div><div>Estimated based on typical Austin costs for a single-person household. Adjust to match your actual bills — higher expenses here can lower your payment.</div></div>
-          <div class="i2-grid">
-            <div class="i2-fg"><label class="i2-lbl">Rent / mortgage <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-rent" value="1200" oninput="i2recalc()"></div><div class="i2-inp-note">Avg Austin 1BR ~$1,200–$1,500</div></div>
-            <div class="i2-fg"><label class="i2-lbl">Utilities <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-util" value="130" oninput="i2recalc()"></div><div class="i2-inp-note">Gas, electric, water</div></div>
-            <div class="i2-fg"><label class="i2-lbl">Basic communication <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-comm" value="80" oninput="i2recalc()"></div><div class="i2-inp-note">Phone, internet, basic cable</div></div>
-            <div class="i2-fg"><label class="i2-lbl">Renter's insurance</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-rins" value="15" oninput="i2recalc()"></div></div>
-          </div>
-          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('housing')">Confirm ✓</button></div>
-        </div>
-      </div>
-
-      <!-- Transport -->
-      <div class="i2-sec" id="sec-transport">
-        <div class="i2-sec-hdr" onclick="i2toggle('transport')">
-          <div class="i2-sec-hdr-l">
-            <div class="i2-sec-icon" style="background:#EEEDFE"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="6" rx="1.5" stroke="#534AB7" stroke-width="1.2"/><circle cx="4.5" cy="10.5" r="1" stroke="#534AB7" stroke-width="1"/><circle cx="9.5" cy="10.5" r="1" stroke="#534AB7" stroke-width="1"/><path d="M2 7h10" stroke="#534AB7" stroke-width="1"/></svg></div>
-            <div><div class="i2-sec-title">Transportation</div><div class="i2-sec-sub">Car payments, fuel, insurance, transit</div></div>
-          </div>
-          <div class="i2-sec-r">
-            <span class="i2-sec-total" id="trans-display">$555</span>
-            <span class="i2-status i2-s-pending" id="transport-status">Review</span>
-            <svg class="i2-chev" id="chev-transport" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="i2-sec-body" id="body-transport" style="display:none">
-          <div class="i2-tip"><div class="i2-tip-av"><div class="i2-tip-dot"></div></div><div>Include car payments, fuel, maintenance, insurance, parking, tolls, or transit passes. Only include vehicles you're actively using.</div></div>
-          <div class="i2-grid">
-            <div class="i2-fg"><label class="i2-lbl">Car payment(s)</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-car" value="300" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Fuel &amp; maintenance <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-fuel" value="100" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Auto insurance</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-autoins" value="150" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Public transit</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-transit" value="5" oninput="i2recalc()"></div></div>
-          </div>
-          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('transport')">Confirm ✓</button></div>
-        </div>
-      </div>
-
-      <!-- Other expenses -->
-      <div class="i2-sec" id="sec-other">
-        <div class="i2-sec-hdr" onclick="i2toggle('other')">
-          <div class="i2-sec-hdr-l">
-            <div class="i2-sec-icon" style="background:#F1EFE8"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-            <div><div class="i2-sec-title">Other expenses</div><div class="i2-sec-sub">Food, medical, childcare, loan payments</div></div>
-          </div>
-          <div class="i2-sec-r">
-            <span class="i2-sec-total" id="other-display">$500</span>
-            <span class="i2-status i2-s-pending" id="other-status">Review</span>
-            <svg class="i2-chev" id="chev-other" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <div class="i2-sec-body" id="body-other" style="display:none">
-          <div class="i2-tip"><div class="i2-tip-av"><div class="i2-tip-dot"></div></div><div>Food, medical, and childcare expenses directly reduce your payment calculation. Don't leave these blank. For student loan payments, only include loans <em>other</em> than the one you're rehabilitating.</div></div>
-          <div class="i2-grid">
-            <div class="i2-fg"><label class="i2-lbl">Food <span class="i2-est-tag">estimated</span></label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input class="is-template" id="e-food" value="350" oninput="i2recalc()"></div><div class="i2-inp-note">USDA moderate plan, single adult</div></div>
-            <div class="i2-fg"><label class="i2-lbl">Medical/dental out-of-pocket</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-med" value="50" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Health/dental insurance</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-hins" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Child/dependent care</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-child" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Required child/spousal support</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-support" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Other federal loan payments</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-fedloan" value="100" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Private loan payments</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-privloan" value="0" oninput="i2recalc()"></div></div>
-            <div class="i2-fg"><label class="i2-lbl">Other necessary expenses</label><div class="i2-inp-wrap"><span class="i2-dollar">$</span><input id="e-misc" value="0" oninput="i2recalc()"></div></div>
-          </div>
-          <div class="i2-sec-footer"><button class="i2-done-btn" onclick="i2markDone('other')">Confirm ✓</button></div>
-        </div>
-      </div>
-    </div>`,
-
-    // Step 3 — Review & enroll
-    `<div class="flex flex-col gap-4">
-
-      <!-- Cait bubble -->
-      <div class="flex items-start gap-2.5">
-        <div class="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center shrink-0 mt-0.5">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" fill="white"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
-        </div>
-        <div class="bg-surface-base rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-gray-800 leading-relaxed">
-          Here's your estimated rehabilitation payment. Once you enroll, I'll submit your Income &amp; Expense form to the Default Resolution Group on your behalf.
-        </div>
-      </div>
-
-      <!-- Payment card -->
-      <div class="rounded-2xl bg-brand-light p-6 text-center">
-        <p class="text-sm font-medium text-gray-900 mb-2">Estimated monthly payment</p>
-        <p id="review-payment-amount" class="font-bold text-gray-900 mb-2 leading-none" style="font-size:3rem;">$5<span class="text-2xl font-semibold">/mo</span></p>
-        <p class="text-sm text-neutral-disabled">Final amount confirmed by Default Resolution Group within 5–7 days</p>
-      </div>
-
-      <!-- Next steps -->
-      <div class="bg-surface-base rounded-2xl p-5">
-        <p class="text-sm font-bold text-gray-900 mb-3">What happens after you enroll</p>
-        <ul class="flex flex-col gap-2.5">
-          ${[
-            ['brand','Your I&E form is submitted to Default Resolution Group'],
-            ['brand','They confirm your payment amount (5–7 business days)'],
-            ['brand','You make your first payment to officially begin rehabilitation'],
-            ['green','After 9 payments — default removed from your credit report'],
-          ].map(([color,text])=>`
-          <li class="flex items-start gap-2.5 text-sm text-gray-800">
-            <svg class="shrink-0 mt-1.5" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="${color==='green'?'#22c55e':'#265ddc'}"/></svg>
-            <span ${color==='green'?'style="color:#16a34a;font-weight:500;"':''}>${text}</span>
-          </li>`).join('')}
-        </ul>
-      </div>
-
-      <!-- Legal -->
-      <p class="text-xs text-neutral-disabled leading-relaxed">
-        By enrolling you authorize Candidly to submit your Income &amp; Expense information to the U.S. Dept. of Education Default Resolution Group on your behalf.
-      </p>
+      <p class="text-xs text-neutral-disabled pt-1 text-center">Click <strong class="text-gray-700">Start Loan Rehabilitation</strong> below to confirm your income and get your exact monthly payment.</p>
     </div>`,
   ];
 
+  /* ── Form panel ── */
+  function openFormPanel() {
+    const panel = document.getElementById('form-panel');
+    const main  = document.getElementById('chat-main');
+    panel.style.width = '47%';
+    panel.style.borderLeftWidth = '1px';
+    main.style.flex = 'none';
+    main.style.width = '53%';
+  }
+
+  function closeFormPanel() {
+    const panel = document.getElementById('form-panel');
+    const main  = document.getElementById('chat-main');
+    panel.style.width = '0';
+    panel.style.borderLeftWidth = '0px';
+    main.style.flex = '1';
+    main.style.width = '';
+  }
+
+  function clearFormResults() {
+    document.getElementById('form-results').style.display = 'none';
+  }
+
+  function calculateFormPayment() {
+    const agi        = parseFloat(document.getElementById('form-agi').value)    || 38400;
+    const familySize = parseInt(document.getElementById('form-family').value)   || 1;
+
+    // 2025 federal poverty guidelines
+    const poverty    = 15060 + (familySize - 1) * 5380;
+    const annual     = Math.max(0, agi - poverty * 1.5);
+    const monthly    = Math.max(5, Math.round(annual * 0.15 / 12));
+    const total      = monthly * 9;
+
+    // Candidly's income-based estimate (with expenses from profile)
+    const estMonthly = Math.max(5, Math.round(((agi / 12) - 2465) * 0.1));
+
+    const resultsEl  = document.getElementById('form-results');
+    resultsEl.style.display    = 'flex';
+    resultsEl.style.flexDirection = 'column';
+
+    document.getElementById('form-payment-card').innerHTML = `
+      <p class="text-xs font-semibold text-brand-primary uppercase tracking-wide mb-2">Your calculated monthly payment</p>
+      <p class="font-bold text-gray-900 leading-none mb-1" style="font-size:2.2rem;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
+      <p class="text-xs text-neutral-disabled mb-1">× 9 consecutive months = $${total} total</p>
+      ${estMonthly < monthly ? `<p class="text-xs text-brand-primary mt-2 pt-2 border-t border-[#c5d8ff]">💡 With expense verification, Cait may reduce this to <strong>$${estMonthly}/mo</strong> via the I&amp;E form</p>` : ''}
+    `;
+
+    document.getElementById('form-comfort-section').innerHTML = `
+      <p class="text-sm font-semibold text-gray-900">Are you comfortable with <strong>$${monthly}/month</strong> for 9 months?</p>
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="confirmPayment(true,${monthly})"  class="rounded-xl border-2 border-[#265ddc] px-3 py-2.5 text-sm font-semibold text-[#265ddc] hover:bg-brand-light transition-colors text-left leading-snug">
+          <span class="block mb-0.5">✓</span>Yes, I can manage this
+        </button>
+        <button onclick="confirmPayment(false,${monthly})" class="rounded-xl border-2 border-border-base px-3 py-2.5 text-sm font-semibold text-gray-900 hover:bg-neutral-light transition-colors text-left leading-snug">
+          <span class="block mb-0.5">↓</span>This is too high for me
+        </button>
+      </div>
+    `;
+  }
+
+  function confirmPayment(comfortable, amount) {
+    const section = document.getElementById('form-comfort-section');
+    // Guard: prevent duplicate blocks if button clicked more than once
+    if (document.getElementById('enroll-block') || document.getElementById('ie-block')) return;
+    // Hide the Yes/No choice buttons after selection
+    const choiceGrid = section.querySelector('.grid.grid-cols-2');
+    if (choiceGrid) choiceGrid.style.display = 'none';
+
+    if (comfortable) {
+      section.insertAdjacentHTML('beforeend', `
+        <div id="enroll-block" class="flex flex-col gap-3 border-t border-neutral-light pt-3">
+          <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 flex items-start gap-2">
+            <svg class="shrink-0 mt-0.5 text-amber-500" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            <p class="text-xs text-gray-800 leading-relaxed"><strong>Note:</strong> If a payment is missed, your 9-payment clock may reset. Set up auto-pay once confirmed.</p>
+          </div>
+          <label class="flex items-start gap-2.5 cursor-pointer select-none">
+            <input type="checkbox" id="form-consent" onchange="toggleFormEnroll(${amount})" class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
+            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${amount}.</span>
+          </label>
+          <button id="form-enroll-btn" onclick="enrollFromForm(${amount})" disabled
+            class="w-full bg-brand-primary text-white rounded-full py-2.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-colors">
+            Confirm &amp; Enroll →
+          </button>
+        </div>`);
+    } else {
+      section.insertAdjacentHTML('beforeend', `
+        <div id="ie-block" class="bg-blue-50 border border-[#aee1ff] rounded-xl p-4 flex flex-col gap-2">
+          <p class="text-sm font-semibold text-gray-900">No problem — let's find a lower payment</p>
+          <p class="text-sm text-neutral-disabled leading-relaxed">You'll need to provide written evidence of your income and expenses via <strong class="text-gray-800">Form OMB No. 1845-0120</strong>. Cait will guide you through every field — your payment could be as low as <strong class="text-gray-800">$5/month</strong>.</p>
+          <button onclick="startIEForm()" class="mt-1 w-full bg-brand-primary hover:bg-brand-secondary text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
+            Start Income &amp; Expense Form →
+          </button>
+        </div>`);
+    }
+  }
+
+  function toggleFormEnroll(amount) {
+    const checked = document.getElementById('form-consent')?.checked;
+    const btn     = document.getElementById('form-enroll-btn');
+    if (!btn) return;
+    btn.disabled = !checked;
+    btn.classList.toggle('opacity-40', !checked);
+    btn.classList.toggle('cursor-not-allowed', !checked);
+  }
+
+  function enrollFromForm(amount) {
+    closeFormPanel();
+    document.getElementById('step-body').innerHTML = `
+      <div class="flex flex-col items-center gap-5 py-6 text-center">
+        <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <p class="text-lg font-bold text-gray-900 mb-1">You're enrolled in rehabilitation!</p>
+          <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your agreement has been submitted to the Default Resolution Group. Collections actions are now paused while your case is processed.</p>
+        </div>
+        <div class="bg-surface-base rounded-2xl p-5 w-full text-left">
+          <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
+          <ul class="flex flex-col gap-3 text-sm text-gray-800">
+            <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-brand-light text-brand-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>The Default Resolution Group will confirm your <strong>$${amount}/month</strong> payment within 5–7 business days</li>
+            <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-brand-light text-brand-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>Make your <strong>first payment</strong> to officially start the 9-payment clock</li>
+            <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-brand-light text-brand-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>Set up <strong>auto-pay</strong> — a missed payment can reset your clock</li>
+            <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">✓</span><span style="color:#16a34a;font-weight:500;">After 9 on-time payments — default permanently removed from your credit report</span></li>
+          </ul>
+        </div>
+        <p class="text-xs text-neutral-disabled">Questions? Contact us at help@getcandidly.com or (866) 719-3437</p>
+      </div>`;
+    document.getElementById('btn-next').classList.add('hidden');
+  }
+
+  /* ══════════════════════════════════════════
+     I&E FORM  (OMB No. 1845-0120)
+     ══════════════════════════════════════════ */
+
+  function startIEForm() {
+    if (document.getElementById('ie-form-msg')) return;
+    const btn = document.querySelector('#ie-block button');
+    if (btn) { btn.disabled = true; btn.classList.add('opacity-60','cursor-not-allowed'); }
+    document.getElementById('form-comfort-section').insertAdjacentHTML('beforeend',
+      `<p id="ie-form-msg" class="text-xs text-brand-primary font-semibold text-center pt-1">→ Cait is opening Form OMB No. 1845-0120…</p>`);
+    setTimeout(launchIEPanel, 700);
+  }
+
+  function launchIEPanel() {
+    // Ensure panel is open at correct proportions
+    const panel = document.getElementById('form-panel');
+    const main  = document.getElementById('chat-main');
+    panel.style.width = '47%';
+    panel.style.borderLeftWidth = '1px';
+    main.style.flex = 'none';
+    main.style.width = '53%';
+    document.getElementById('fp-title').textContent    = 'Form OMB No. 1845-0120';
+    document.getElementById('fp-subtitle').textContent = 'Income & Expense Statement';
+    document.getElementById('fp-body').innerHTML       = buildIEFormHTML();
+    ieActivateSection('ie-sec-a');
+    setTimeout(() => ieAddMsg('cait',
+      `I've opened <strong>Form OMB No. 1845-0120</strong> — the Income &amp; Expense Statement used by the Default Resolution Group. I've pre-filled your personal information from your Candidly profile. Please review <strong>Section A</strong> and confirm.`,
+      [
+        { label: '✓ Looks good', fn: `ieReply(1)` },
+        { label: '✏️ Update my address', fn: `ieEditField('ie-addr',1)` },
+        { label: '❓ What is this form?', fn: `ieReply('faq-form')` }
+      ]
+    ), 500);
+  }
+
+  function ieReply(step) {
+    // Remove all pill rows so old pills can't be re-clicked
+    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+
+    if (step === 'faq-form') {
+      ieAddMsg('user', 'What is this form?');
+      setTimeout(() => ieAddMsg('cait',
+        `Form OMB No. 1845-0120 is the <strong>Income &amp; Expense Statement</strong> required by the U.S. Dept. of Education when a standard rehabilitation payment is unaffordable. It documents your monthly income and expenses so the Default Resolution Group can calculate a lower, truly affordable payment — as low as $5/month.`,
+        [
+          { label: '✓ Got it — confirm my info', fn: `ieReply(1)` },
+          { label: '✏️ Update my address', fn: `ieEditField('ie-addr',1)` }
+        ]
+      ), 700);
+      return;
+    }
+
+    if (step === 'faq-health') {
+      ieAddMsg('user', 'Is health insurance included as an expense?');
+      setTimeout(() => ieAddMsg('cait',
+        `Yes! Health insurance premiums are listed under <strong>"Health Insurance"</strong> in Section C — currently set to <strong>$120/month</strong>. This is already factored into your total expenses. If your actual premium is different, update it directly in the form or tell me the amount.`,
+        [
+          { label: '✓ $120 is correct', fn: `ieReply(3)` },
+          { label: '✏️ Update health insurance', fn: `ieEditField('ie-health-ins',3)` },
+          { label: '📎 Attach insurance statement', fn: `ieAttachReceipt()` }
+        ]
+      ), 700);
+      return;
+    }
+
+    if (step === 're-expenses') {
+      ieAddMsg('user', 'Let me review my expenses');
+      ieActivateSection('ie-sec-c');
+      setTimeout(() => ieAddMsg('cait',
+        `Of course! Section C is open. Update any amounts directly in the form, attach receipts for documentation, or ask me about any line item.`,
+        [
+          { label: '✓ Done — recalculate', fn: `ieReply(3)` },
+          { label: '📎 Attach a receipt', fn: `ieAttachReceipt()` },
+          { label: '❓ Is health insurance included?', fn: `ieReply('faq-health')` }
+        ]
+      ), 600);
+      return;
+    }
+
+    // Numbered steps: confirm and advance
+    if (step === 1) {
+      ieAddMsg('user', 'Looks good');
+      ieConfirmSection('ie-sec-a');
+      setTimeout(() => {
+        ieActivateSection('ie-sec-b');
+        ieAddMsg('cait',
+          `Section A confirmed ✓<br><br>Now let's verify your <strong>monthly income</strong>. Based on your AGI of $38,400, your estimated take-home pay is <strong>$3,200/month</strong>. Does this look correct?`,
+          [
+            { label: '✓ Yes, that\'s correct', fn: `ieReply(2)` },
+            { label: '➕ I have additional income', fn: `ieEditField('ie-other-inc',2)` },
+            { label: '✏️ My income is different', fn: `ieEditField('ie-income',2)` }
+          ]
+        );
+      }, 600);
+    }
+
+    if (step === 2) {
+      ieAddMsg('user', "Yes, that's correct");
+      ieConfirmSection('ie-sec-b');
+      setTimeout(() => {
+        ieActivateSection('ie-sec-c');
+        ieAddMsg('cait',
+          `Income confirmed ✓<br><br>Now let's review your <strong>monthly expenses</strong> (Section C). I've pre-populated typical amounts as a starting point — update anything that doesn't match your actual expenses. You can also attach a receipt and I'll categorize it automatically.`,
+          [
+            { label: '✓ These look right', fn: `ieReply(3)` },
+            { label: '📎 Attach a receipt', fn: `ieAttachReceipt()` },
+            { label: '❓ Is health insurance included?', fn: `ieReply('faq-health')` },
+            { label: '✏️ Update rent amount', fn: `ieEditField('ie-rent',3)` }
+          ]
+        );
+      }, 600);
+    }
+
+    if (step === 3) {
+      ieAddMsg('user', 'Expenses look right');
+      ieConfirmSection('ie-sec-c');
+      setTimeout(() => {
+        ieActivateSection('ie-sec-d');
+        const income     = (parseInt(document.getElementById('ie-income')?.value)||3200)
+                         + (parseInt(document.getElementById('ie-ss')?.value)||0)
+                         + (parseInt(document.getElementById('ie-other-inc')?.value)||0);
+        const expenses   = ['ie-rent','ie-utilities','ie-food','ie-transport','ie-medical',
+                             'ie-health-ins','ie-personal','ie-recreation','ie-other-exp']
+                           .reduce((s,id) => s + (parseInt(document.getElementById(id)?.value)||0), 0);
+        const disposable = Math.max(0, income - expenses);
+        const payment    = Math.max(5, Math.round(disposable * 0.1));
+        document.getElementById('ie-d-income').textContent    = '$' + income.toLocaleString();
+        document.getElementById('ie-d-expenses').textContent  = '$' + expenses.toLocaleString();
+        document.getElementById('ie-d-disposable').textContent= '$' + disposable.toLocaleString();
+        document.getElementById('ie-d-payment').textContent   = '$' + payment + '/mo';
+        ieAddMsg('cait',
+          `Based on your verified income and expenses, your <strong>affordable monthly payment is $${payment}/month</strong> — versus the standard $198. This has been calculated at 10% of your disposable income per DOE guidelines and is ready to submit.`,
+          [
+            { label: `✓ Submit $${payment}/month`, fn: `ieSubmitForm(${payment})` },
+            { label: '✏️ Review my expenses again', fn: `ieReply('re-expenses')` }
+          ]
+        );
+      }, 800);
+    }
+  }
+
+  function ieEditField(fieldId, nextStep) {
+    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+    const el = document.getElementById(fieldId);
+    if (el) {
+      el.closest('.ie-section')?.classList.remove('ie-locked');
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => { el.focus(); el.select(); el.classList.add('ie-highlight'); }, 300);
+    }
+    const labels = {
+      'ie-addr':       'I\'ve highlighted your address field — update it directly in the form on the right.',
+      'ie-income':     'I\'ve highlighted your income field. Enter your actual monthly take-home pay.',
+      'ie-other-inc':  'I\'ve highlighted the Other Income field — add any additional income (freelance, rental, etc.).',
+      'ie-rent':       'I\'ve highlighted the rent/mortgage field. Enter your actual monthly amount.',
+      'ie-health-ins': 'I\'ve highlighted the health insurance field. Enter your monthly premium.'
+    };
+    ieAddMsg('cait', labels[fieldId] || 'I\'ve highlighted the field — update it directly in the form.',
+      [{ label: '✓ Updated, continue', fn: `ieReply(${nextStep})` }]);
+  }
+
+  function ieAttachReceipt() {
+    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+    ieAddMsg('user', '📎 Attaching a receipt…');
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*,.pdf';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      ieAddMsg('user', `📎 ${file.name}`);
+      setTimeout(() => ieAddMsg('cait',
+        `I've reviewed your receipt. It looks like a <strong>rental/housing payment</strong>. What's the monthly amount on this receipt?`,
+        [
+          { label: '$1,450/mo', fn: `ieApplyReceipt('ie-rent',1450,'rent')` },
+          { label: '$1,600/mo', fn: `ieApplyReceipt('ie-rent',1600,'rent')` },
+          { label: 'Different expense', fn: `ieReply('re-expenses')` }
+        ]
+      ), 1100);
+    };
+    input.click();
+  }
+
+  function ieApplyReceipt(fieldId, amount, label) {
+    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+    const el = document.getElementById(fieldId);
+    if (el) { el.value = amount; el.dispatchEvent(new Event('input')); }
+    ieAddMsg('user', `$${amount}/mo`);
+    setTimeout(() => ieAddMsg('cait',
+      `Updated! <strong>${label.charAt(0).toUpperCase()+label.slice(1)}</strong> is now set to <strong>$${amount}/month</strong>. The expense total has been recalculated automatically. Ready to confirm your expenses?`,
+      [
+        { label: '✓ Yes, confirm expenses', fn: `ieReply(3)` },
+        { label: '📎 Attach another receipt', fn: `ieAttachReceipt()` }
+      ]
+    ), 600);
+  }
+
+  function ieSubmitForm(payment) {
+    document.querySelectorAll('.ie-pills').forEach(r => r.remove());
+    ieAddMsg('user', `Submit $${payment}/month payment`);
+    ieConfirmSection('ie-sec-d');
+    document.getElementById('ie-d-status').innerHTML =
+      `<span class="ie-status ie-s-confirmed">✓ Calculated</span>`;
+
+    // Update consent text with exact payment amount and reveal auth block
+    const consentText = document.getElementById('ie-consent-text');
+    if (consentText) {
+      consentText.textContent = `I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${payment}.`;
+    }
+    const authBlock = document.getElementById('ie-auth-block');
+    if (authBlock) {
+      authBlock.style.display = 'flex';
+      authBlock.style.flexDirection = 'column';
+      document.getElementById('ie-enroll-btn').dataset.payment = payment;
+      setTimeout(() => authBlock.scrollIntoView({ behavior:'smooth', block:'nearest' }), 300);
+    }
+
+    setTimeout(() => ieAddMsg('cait',
+      `Your affordable monthly payment is confirmed at <strong>$${payment}/month</strong>. Please review the authorization in the form on the right — check the box and click <strong>Confirm &amp; Enroll</strong> to submit your agreement to the Default Resolution Group.`,
+      []
+    ), 800);
+  }
+
+  function toggleIEEnroll() {
+    const checked = document.getElementById('ie-consent-chk')?.checked;
+    const btn     = document.getElementById('ie-enroll-btn');
+    if (!btn) return;
+    btn.disabled = !checked;
+    btn.classList.toggle('opacity-40', !checked);
+    btn.classList.toggle('cursor-not-allowed', !checked);
+  }
+
+  function completeIEEnrollment() {
+    const payment = document.getElementById('ie-enroll-btn')?.dataset.payment || '74';
+    const btn     = document.getElementById('ie-enroll-btn');
+    if (!btn || btn.disabled) return;
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    setTimeout(() => {
+      btn.textContent = '✓ Enrolled';
+      btn.classList.remove('opacity-40','cursor-not-allowed');
+      btn.style.background = '#0d9e6e';
+      document.getElementById('ie-d-status').innerHTML =
+        `<span class="ie-status ie-s-confirmed">✓ Submitted to DRG</span>`;
+      ieAddMsg('cait',
+        `🎉 You're enrolled in rehabilitation! Your Form OMB No. 1845-0120 has been submitted to the Default Resolution Group with a verified payment of <strong>$${payment}/month</strong>. Collections actions are now paused. You'll receive written confirmation within 5–7 business days — then your 9-payment clock begins. Set up auto-pay to protect your clock.`,
+        []
+      );
+    }, 1200);
+  }
+
+  function ieActivateSection(id) {
+    document.querySelectorAll('.ie-section').forEach(s => {
+      if (!s.classList.contains('ie-confirmed')) {
+        s.classList.add('ie-locked'); s.classList.remove('ie-active');
+      }
+    });
+    const sec = document.getElementById(id);
+    if (sec) {
+      sec.classList.remove('ie-locked','ie-confirmed'); sec.classList.add('ie-active');
+      setTimeout(() => sec.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
+    }
+  }
+
+  function ieConfirmSection(id) {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    sec.classList.remove('ie-active','ie-locked'); sec.classList.add('ie-confirmed');
+    const badge = sec.querySelector('.ie-status');
+    if (badge) { badge.textContent = '✓ Confirmed'; badge.className = 'ie-status ie-s-confirmed'; }
+  }
+
+  function ieAddMsg(role, html, pills) {
+    const area = document.querySelector('#chat-main .py-6.flex.flex-col.gap-6');
+    if (!area) return;
+    const pillsHTML = (pills && pills.length)
+      ? `<div class="flex flex-wrap gap-2 mt-2 ie-pills">
+           ${pills.map(p =>
+             `<button onclick="${p.fn.replace(/"/g,"'")}"
+               class="bg-white border border-[#c5d8ff] text-brand-primary text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-brand-light transition-colors whitespace-nowrap">
+               ${p.label}
+             </button>`
+           ).join('')}
+         </div>` : '';
+    if (role === 'cait') {
+      area.insertAdjacentHTML('beforeend', `
+        <div class="pr-12 flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-full bg-brand-primary flex items-center justify-center shrink-0">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" fill="white"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+            <span class="text-sm font-semibold text-gray-900">Cait</span>
+            <span class="text-xs text-neutral-disabled">· AI Student Loan Assistant, Candidly</span>
+          </div>
+          <p class="text-sm text-neutral-subtle leading-relaxed">${html}</p>
+          ${pillsHTML}
+        </div>`);
+    } else {
+      area.insertAdjacentHTML('beforeend', `
+        <div class="flex justify-end pl-12">
+          <div class="bg-white rounded-lg px-4 py-2.5 shadow-sm border border-border-subtle">
+            <p class="text-sm text-neutral-subtle">${html}</p>
+          </div>
+        </div>`);
+    }
+    area.lastElementChild?.scrollIntoView({ behavior:'smooth', block:'end' });
+  }
+
+  function ieUpdateTotals() {
+    const inc = ['ie-income','ie-ss','ie-other-inc']
+      .reduce((s,id) => s+(parseInt(document.getElementById(id)?.value)||0), 0);
+    const exp = ['ie-rent','ie-utilities','ie-food','ie-transport','ie-medical',
+                  'ie-health-ins','ie-personal','ie-recreation','ie-other-exp']
+      .reduce((s,id) => s+(parseInt(document.getElementById(id)?.value)||0), 0);
+    const ti = document.getElementById('ie-total-income');
+    const te = document.getElementById('ie-total-expenses');
+    if (ti) ti.textContent = '$' + inc.toLocaleString();
+    if (te) te.textContent = '$' + exp.toLocaleString();
+  }
+
+  function buildIEFormHTML() {
+    return `
+      <div class="flex flex-col gap-3">
+        <!-- Section A -->
+        <div id="ie-sec-a" class="ie-section ie-locked">
+          <div class="ie-sec-hdr">
+            <div class="flex items-center gap-2">
+              <span class="ie-sec-badge">A</span>
+              <span class="text-xs font-bold text-gray-900">Borrower Information</span>
+            </div>
+            <span class="ie-status ie-s-pending">Awaiting confirmation</span>
+          </div>
+          <div class="ie-sec-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="ie-field-wrap" style="grid-column:1/-1">
+              <label class="ie-label">Full Name</label>
+              <input id="ie-name" class="ie-input" value="Sheetal Bahl" />
+            </div>
+            <div class="ie-field-wrap">
+              <label class="ie-label">SSN (Last 4)</label>
+              <input id="ie-ssn" class="ie-input" value="●●●-●●-4821" />
+            </div>
+            <div class="ie-field-wrap">
+              <label class="ie-label">Phone</label>
+              <input id="ie-phone" class="ie-input" value="(512) 555-0194" />
+            </div>
+            <div class="ie-field-wrap" style="grid-column:1/-1">
+              <label class="ie-label">Home Address</label>
+              <input id="ie-addr" class="ie-input" value="1284 Oak Street, Austin TX 78701" />
+            </div>
+            <div class="ie-field-wrap" style="grid-column:1/-1">
+              <label class="ie-label">Employer / Income Source</label>
+              <input id="ie-employer" class="ie-input" value="TechCorp Inc." />
+            </div>
+          </div>
+        </div>
+
+        <!-- Section B: Income -->
+        <div id="ie-sec-b" class="ie-section ie-locked">
+          <div class="ie-sec-hdr">
+            <div class="flex items-center gap-2">
+              <span class="ie-sec-badge">B</span>
+              <span class="text-xs font-bold text-gray-900">Monthly Gross Income</span>
+            </div>
+            <span class="ie-status ie-s-pending">Pending</span>
+          </div>
+          <div class="ie-sec-body">
+            <div class="ie-field-wrap">
+              <label class="ie-label">Wages / Take-home Pay</label>
+              <div class="relative"><span class="ie-prefix">$</span><input id="ie-income" class="ie-input ie-money" value="3200" oninput="ieUpdateTotals()" /></div>
+            </div>
+            <div class="ie-field-wrap">
+              <label class="ie-label">Social Security / Disability</label>
+              <div class="relative"><span class="ie-prefix">$</span><input id="ie-ss" class="ie-input ie-money" value="0" oninput="ieUpdateTotals()" /></div>
+            </div>
+            <div class="ie-field-wrap">
+              <label class="ie-label">Other Income</label>
+              <div class="relative"><span class="ie-prefix">$</span><input id="ie-other-inc" class="ie-input ie-money" value="0" oninput="ieUpdateTotals()" /></div>
+            </div>
+            <div class="ie-total-row">
+              <span class="text-xs font-bold text-gray-900">Total Monthly Income</span>
+              <span id="ie-total-income" class="text-xs font-bold text-[#265ddc]">$3,200</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section C: Expenses -->
+        <div id="ie-sec-c" class="ie-section ie-locked">
+          <div class="ie-sec-hdr">
+            <div class="flex items-center gap-2">
+              <span class="ie-sec-badge">C</span>
+              <span class="text-xs font-bold text-gray-900">Monthly Expenses</span>
+            </div>
+            <span class="ie-status ie-s-pending">Pending</span>
+          </div>
+          <div class="ie-sec-body">
+            <div class="ie-field-wrap"><label class="ie-label">Rent / Mortgage</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-rent" class="ie-input ie-money" value="1200" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-field-wrap"><label class="ie-label">Utilities (electric, gas, water)</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-utilities" class="ie-input ie-money" value="150" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-field-wrap"><label class="ie-label">Food &amp; Groceries</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-food" class="ie-input ie-money" value="400" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-field-wrap"><label class="ie-label">Transportation</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-transport" class="ie-input ie-money" value="350" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-field-wrap"><label class="ie-label">Medical / Dental / Prescriptions</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-medical" class="ie-input ie-money" value="80" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-field-wrap"><label class="ie-label">Health Insurance</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-health-ins" class="ie-input ie-money" value="120" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-field-wrap"><label class="ie-label">Personal Care</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-personal" class="ie-input ie-money" value="50" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-field-wrap"><label class="ie-label">Recreation &amp; Entertainment</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-recreation" class="ie-input ie-money" value="50" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-field-wrap"><label class="ie-label">Other Expenses</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-other-exp" class="ie-input ie-money" value="65" oninput="ieUpdateTotals()" /></div></div>
+            <div class="ie-total-row">
+              <span class="text-xs font-bold text-gray-900">Total Monthly Expenses</span>
+              <span id="ie-total-expenses" class="text-xs font-bold text-[#265ddc]">$2,465</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section D: Affordable Payment -->
+        <div id="ie-sec-d" class="ie-section ie-locked">
+          <div class="ie-sec-hdr">
+            <div class="flex items-center gap-2">
+              <span class="ie-sec-badge" style="background:#0d9e6e">D</span>
+              <span class="text-xs font-bold text-gray-900">Affordable Payment</span>
+            </div>
+            <span id="ie-d-status" class="ie-status ie-s-pending">Pending</span>
+          </div>
+          <div class="ie-sec-body">
+            <div class="flex justify-between items-center py-1.5 border-b border-[#f0f2f5]">
+              <span class="text-xs text-neutral-disabled">Monthly Income</span>
+              <span id="ie-d-income" class="text-xs font-semibold text-gray-900">—</span>
+            </div>
+            <div class="flex justify-between items-center py-1.5 border-b border-[#f0f2f5]">
+              <span class="text-xs text-neutral-disabled">Monthly Expenses</span>
+              <span id="ie-d-expenses" class="text-xs font-semibold text-gray-900">—</span>
+            </div>
+            <div class="flex justify-between items-center py-1.5 border-b border-[#f0f2f5]">
+              <span class="text-xs text-neutral-disabled">Disposable Income</span>
+              <span id="ie-d-disposable" class="text-xs font-semibold text-gray-900">—</span>
+            </div>
+            <div class="flex justify-between items-center pt-2">
+              <span class="text-sm font-bold text-gray-900">Affordable Payment</span>
+              <span id="ie-d-payment" class="text-xl font-bold text-brand-primary">—</span>
+            </div>
+            <p class="text-[10px] text-neutral-disabled leading-relaxed">10% of disposable income per DOE guidelines</p>
+          </div>
+        </div>
+
+        <!-- Authorization + Confirm & Enroll (revealed after Section D) -->
+        <div id="ie-auth-block" style="display:none;" class="flex flex-col gap-3 border-t border-[#e2e4eb] pt-4 mt-1">
+          <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 flex items-start gap-2">
+            <svg class="shrink-0 mt-0.5 text-amber-500" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            <p class="text-xs text-gray-800 leading-relaxed"><strong>Note:</strong> If a payment is missed, your 9-payment clock may reset. Set up auto-pay once confirmed.</p>
+          </div>
+          <label class="flex items-start gap-2.5 cursor-pointer select-none">
+            <input type="checkbox" id="ie-consent-chk" onchange="toggleIEEnroll()" class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
+            <span id="ie-consent-text" class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf.</span>
+          </label>
+          <button id="ie-enroll-btn" onclick="completeIEEnrollment()" disabled
+            class="w-full bg-brand-primary text-white rounded-full py-2.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-colors">
+            Confirm &amp; Enroll →
+          </button>
+        </div>
+
+        <p class="text-[10px] text-neutral-disabled text-center pt-1">OMB No. 1845-0120 · Exp. 11/30/2027 · U.S. Dept. of Education</p>
+      </div>`;
+  }
+
   function renderStep() {
-    renderStepper();
-    document.getElementById('step-body').innerHTML = stepBodies[currentStep];
-    const btnBack = document.getElementById('btn-back');
-    const btnNext = document.getElementById('btn-next');
-    const counter = document.getElementById('step-counter');
-    btnBack.classList.toggle('hidden', currentStep === 0);
-    btnNext.textContent = currentStep === steps.length - 1 ? 'Enroll in rehabilitation →' : currentStep === 0 ? 'Start Rehabilitation' : currentStep === 1 ? 'Calculate my payment' : 'Next';
-    counter.textContent = `Step ${currentStep + 1} of ${steps.length}`;
-    if (currentStep === 1) setTimeout(i2recalc, 0);
-    if (currentStep === 2) {
-      const el = document.getElementById('review-payment-amount');
-      if (el) el.innerHTML = '$' + calculatedPayment.toLocaleString() + '<span class="text-2xl font-semibold">/mo</span>';
-    }
-  }
-
-  function nextStep() {
-    if (currentStep < steps.length - 1) { currentStep++; renderStep(); }
-    else alert('Enrollment submitted! You will be redirected to StudentAid.gov.');
-  }
-
-  function prevStep() {
-    if (currentStep > 0) { currentStep--; renderStep(); }
-  }
-
-  function calcTotals() {
-    const incIds = ['inc-1','inc-2','inc-3','inc-4','inc-5','inc-6','inc-7'];
-    const expIds = ['exp-1','exp-2','exp-3','exp-4','exp-5','exp-6','exp-7','exp-8','exp-9','exp-10','exp-11','exp-12'];
-    const sum = ids => ids.reduce((t,id) => { const el = document.getElementById(id); return t + (el ? parseFloat(el.value)||0 : 0); }, 0);
-    const incTotal = sum(incIds);
-    const expTotal = sum(expIds);
-    const incEl = document.getElementById('inc-total');
-    const expEl = document.getElementById('exp-total');
-    if (incEl) incEl.textContent = incTotal.toLocaleString();
-    if (expEl) expEl.textContent = expTotal.toLocaleString();
-    const preview = document.getElementById('payment-preview');
-    const amountEl = document.getElementById('payment-amount');
-    if (preview && amountEl && incTotal > 0) {
-      const discretionary = Math.max(0, incTotal - expTotal);
-      const payment = Math.max(5, Math.round(discretionary * 0.15 / 12));
-      calculatedPayment = payment;
-      amountEl.textContent = '$' + payment.toLocaleString() + ' / month';
-      preview.classList.remove('hidden');
-    }
-  }
-
-  const i2sections = ['basic','income','housing','transport','other'];
-  function i2toggle(id) {
-    const body = document.getElementById('body-'+id);
-    const chev = document.getElementById('chev-'+id);
-    if (!body) return;
-    const isOpen = body.style.display !== 'none';
-    body.style.display = isOpen ? 'none' : 'block';
-    chev.classList.toggle('open', !isOpen);
-  }
-  function i2markDone(id) {
-    const status = document.getElementById(id+'-status');
-    if (status) { status.textContent = '✓ Confirmed'; status.className = 'i2-status i2-s-complete'; }
-    const body = document.getElementById('body-'+id);
-    const chev = document.getElementById('chev-'+id);
-    if (body) body.style.display = 'none';
-    if (chev) chev.classList.remove('open');
-    const idx = i2sections.indexOf(id);
-    if (idx >= 0 && idx < i2sections.length - 1) {
-      const next = i2sections[idx + 1];
-      const nb = document.getElementById('body-'+next);
-      const nc = document.getElementById('chev-'+next);
-      if (nb) nb.style.display = 'block';
-      if (nc) nc.classList.add('open');
-    }
-  }
-  function i2v(id) { const el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; }
-  function i2recalc() {
-    const inc = i2v('i-emp')+i2v('i-spouse')+i2v('i-child')+i2v('i-ss')+i2v('i-wc')+i2v('i-pa')+i2v('i-other');
-    const hous = i2v('e-rent')+i2v('e-util')+i2v('e-comm')+i2v('e-rins');
-    const trans = i2v('e-car')+i2v('e-fuel')+i2v('e-autoins')+i2v('e-transit');
-    const other = i2v('e-food')+i2v('e-med')+i2v('e-hins')+i2v('e-child')+i2v('e-support')+i2v('e-fedloan')+i2v('e-privloan')+i2v('e-misc');
-    const exp = hous + trans + other;
-    const fmt = n => '$'+Math.round(n).toLocaleString();
-    const s = id => { const el = document.getElementById(id); if (el) el.textContent = fmt(eval(id.replace('hous-display','hous').replace('trans-display','trans').replace('other-display','other').replace('inc-display','inc')));};
-    const idEl = document.getElementById('inc-display'); if (idEl) idEl.textContent = fmt(inc);
-    const hdEl = document.getElementById('hous-display'); if (hdEl) hdEl.textContent = fmt(hous);
-    const tdEl = document.getElementById('trans-display'); if (tdEl) tdEl.textContent = fmt(trans);
-    const odEl = document.getElementById('other-display'); if (odEl) odEl.textContent = fmt(other);
-    const poverty = 15060;
-    const formula = Math.max(5, Math.round((inc * 12 - poverty * 1.5) * 0.15 / 12));
-    const disposable = inc - exp;
-    const incomeBased = Math.max(5, Math.round(disposable * 0.1));
-    calculatedPayment = incomeBased;
-    const tfEl = document.getElementById('t-formula'); if (tfEl) tfEl.textContent = fmt(formula);
-    const tiEl = document.getElementById('t-income'); if (tiEl) tiEl.textContent = fmt(incomeBased);
+    document.getElementById('step-body').innerHTML = stepBodies[0];
   }
 
   function showHomeScreen() {
@@ -734,7 +1153,6 @@
   function showChatScreen() {
     document.getElementById('screen-home').classList.add('hidden');
     document.getElementById('screen-chat').classList.remove('hidden');
-    currentStep = 0;
     renderStep();
   }
 </script>
