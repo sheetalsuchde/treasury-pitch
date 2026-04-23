@@ -52,12 +52,17 @@
     .i2-sec-hdr:hover{background:#fafbfc}
     /* ── I&E Form (OMB 1845-0120) ── */
     .ie-section{border:1px solid #e2e4eb;border-radius:12px;overflow:hidden;transition:border-color 0.25s,box-shadow 0.25s,opacity 0.25s}
-    .ie-section.ie-locked{opacity:0.42;pointer-events:none}
+    .ie-section.ie-locked{opacity:0.65}
     .ie-section.ie-active{border-color:#265ddc;box-shadow:0 0 0 3px rgba(38,93,220,0.09)}
     .ie-section.ie-confirmed{border-color:#b6eeda}
-    .ie-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#fafbfc;border-bottom:1px solid #f0f2f5}
+    .ie-sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#fafbfc;border-bottom:1px solid #f0f2f5;cursor:pointer;user-select:none}
+    .ie-sec-hdr:hover{background:#f4f5f8}
     .ie-section.ie-active .ie-sec-hdr{background:#f0f4ff;border-bottom-color:#dde8ff}
     .ie-section.ie-confirmed .ie-sec-hdr{background:#f0fbf7;border-bottom-color:#d4f5e8}
+    .ie-section.ie-collapsed .ie-sec-body{display:none}
+    .ie-section.ie-collapsed .ie-sec-hdr{border-bottom:none}
+    .ie-sec-chev{width:14px;height:14px;color:#9ca3af;transition:transform 0.2s;flex-shrink:0}
+    .ie-section.ie-collapsed .ie-sec-chev{transform:rotate(-90deg)}
     .ie-sec-body{padding:12px;display:flex;flex-direction:column;gap:10px}
     .ie-sec-badge{width:20px;height:20px;border-radius:50%;background:#e5edff;color:#265ddc;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .ie-section.ie-confirmed .ie-sec-badge{background:#ecfbf5;color:#0d9e6e}
@@ -71,7 +76,7 @@
     .ie-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:#676d7a;pointer-events:none;font-weight:500}
     .ie-field-wrap{position:relative;display:flex;flex-direction:column;gap:2px}
     .ie-total-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f0f2f5;border-radius:12px;margin-top:2px}
-    .ie-locked .ie-input{background:#fafbfc;color:#a0a6b2;border-color:#f0f2f5}
+    .ie-locked .ie-input{background:#fafbfc;color:#6b7280;border-color:#e2e4eb}
     .ie-highlight{animation:ie-pulse 1.5s ease-out}
     @keyframes ie-pulse{0%,100%{box-shadow:0 0 0 0 rgba(38,93,220,0.4)}50%{box-shadow:0 0 0 6px rgba(38,93,220,0)}}
     .cait-line{opacity:0}
@@ -1030,9 +1035,23 @@
         [
           { label: 'Done — recalculate', fn: `ieReply(3)` },
           { label: 'Attach a receipt', fn: `ieAttachReceipt()` },
+          { label: 'Does Starbucks count as food?', fn: `ieReply('starbucks')` },
           { label: 'Is health insurance included?', fn: `ieReply('faq-health')` }
         ]
       ), 600);
+      return;
+    }
+
+    if (step === 'starbucks') {
+      ieAddMsg('user', 'Does Starbucks count as a food expense?');
+      setTimeout(() => ieAddMsg('cait',
+        `Yes — coffee shop purchases like Starbucks fall under <strong>Food &amp; Groceries</strong>. The IRS and DOE treat any food or beverage spending the same way: restaurants, cafés, grocery stores, and delivery apps all count toward that category.<br><br>Your Food &amp; Groceries is currently set to <strong>$400/month</strong>. If you spend around $50–60/month at coffee shops, we can bump that up — or you can edit the field directly in the form.`,
+        [
+          { label: 'Add $60 for coffee ($460 total)', fn: `ieApplyStarbucks(460)` },
+          { label: 'Keep it at $400', fn: `ieReply(3)` },
+          { label: "I'll update it myself", fn: `ieEditField('ie-food',3)` }
+        ]
+      ), 700);
       return;
     }
 
@@ -1062,6 +1081,7 @@
           `Income confirmed ✓<br><br>Now let's review your <strong>monthly expenses</strong> (Section C). I've pre-populated typical amounts as a starting point — update anything that doesn't match your actual expenses. You can also attach a receipt and I'll categorize it automatically.`,
           [
             { label: 'These look right', fn: `ieReply(3)` },
+            { label: 'Does Starbucks count as food?', fn: `ieReply('starbucks')` },
             { label: 'Attach a receipt', fn: `ieAttachReceipt()` },
             { label: 'Is health insurance included?', fn: `ieReply('faq-health')` },
             { label: 'Update rent amount', fn: `ieEditField('ie-rent',3)` }
@@ -1149,6 +1169,25 @@
       [
         { label: 'Yes, confirm expenses', fn: `ieReply(3)` },
         { label: 'Attach another receipt', fn: `ieAttachReceipt()` }
+      ]
+    ), 600);
+  }
+
+  function ieApplyStarbucks(amount) {
+    updateChatChips([]);
+    const el = document.getElementById('ie-food');
+    if (el) {
+      el.value = amount;
+      el.dispatchEvent(new Event('input'));
+      el.classList.add('ie-highlight');
+      el.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+    ieAddMsg('user', `Update food to $${amount}/month`);
+    setTimeout(() => ieAddMsg('cait',
+      `Done! Food &amp; Groceries is now <strong>$${amount}/month</strong> — I've highlighted it in the form. Your total expenses have been recalculated automatically. Ready to confirm and see your final payment?`,
+      [
+        { label: 'Yes, confirm expenses', fn: `ieReply(3)` },
+        { label: 'Review other expenses', fn: `ieReply('re-expenses')` }
       ]
     ), 600);
   }
@@ -1261,6 +1300,12 @@
     }, 1200);
   }
 
+  function toggleIESection(id) {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    sec.classList.toggle('ie-collapsed');
+  }
+
   function ieActivateSection(id) {
     document.querySelectorAll('.ie-section').forEach(s => {
       if (!s.classList.contains('ie-confirmed')) {
@@ -1269,7 +1314,7 @@
     });
     const sec = document.getElementById(id);
     if (sec) {
-      sec.classList.remove('ie-locked','ie-confirmed'); sec.classList.add('ie-active');
+      sec.classList.remove('ie-locked','ie-confirmed','ie-collapsed'); sec.classList.add('ie-active');
       setTimeout(() => sec.scrollIntoView({ behavior:'smooth', block:'nearest' }), 100);
     }
   }
@@ -1280,6 +1325,8 @@
     sec.classList.remove('ie-active','ie-locked'); sec.classList.add('ie-confirmed');
     const badge = sec.querySelector('.ie-status');
     if (badge) { badge.textContent = '✓ Confirmed'; badge.className = 'ie-status ie-s-confirmed'; }
+    // Auto-collapse confirmed section after a beat
+    setTimeout(() => sec.classList.add('ie-collapsed'), 600);
   }
 
   // Split HTML into reveal chunks: by <br><br>, then <br>, trimmed
@@ -1342,12 +1389,15 @@
       <div class="flex flex-col gap-3">
         <!-- Section A -->
         <div id="ie-sec-a" class="ie-section ie-locked">
-          <div class="ie-sec-hdr">
+          <div class="ie-sec-hdr" onclick="toggleIESection('ie-sec-a')">
             <div class="flex items-center gap-2">
               <span class="ie-sec-badge">A</span>
               <span class="text-xs font-bold text-gray-900">Borrower Information</span>
             </div>
-            <span class="ie-status ie-s-pending">Awaiting confirmation</span>
+            <div class="flex items-center gap-2">
+              <span class="ie-status ie-s-pending">Awaiting confirmation</span>
+              <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+            </div>
           </div>
           <div class="ie-sec-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
             <div class="ie-field-wrap" style="grid-column:1/-1">
@@ -1374,13 +1424,16 @@
         </div>
 
         <!-- Section B: Income -->
-        <div id="ie-sec-b" class="ie-section ie-locked">
-          <div class="ie-sec-hdr">
+        <div id="ie-sec-b" class="ie-section ie-locked ie-collapsed">
+          <div class="ie-sec-hdr" onclick="toggleIESection('ie-sec-b')">
             <div class="flex items-center gap-2">
               <span class="ie-sec-badge">B</span>
               <span class="text-xs font-bold text-gray-900">Monthly Gross Income</span>
             </div>
-            <span class="ie-status ie-s-pending">Pending</span>
+            <div class="flex items-center gap-2">
+              <span class="ie-status ie-s-pending">Pending</span>
+              <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+            </div>
           </div>
           <div class="ie-sec-body">
             <div class="ie-field-wrap">
@@ -1403,13 +1456,16 @@
         </div>
 
         <!-- Section C: Expenses -->
-        <div id="ie-sec-c" class="ie-section ie-locked">
-          <div class="ie-sec-hdr">
+        <div id="ie-sec-c" class="ie-section ie-locked ie-collapsed">
+          <div class="ie-sec-hdr" onclick="toggleIESection('ie-sec-c')">
             <div class="flex items-center gap-2">
               <span class="ie-sec-badge">C</span>
               <span class="text-xs font-bold text-gray-900">Monthly Expenses</span>
             </div>
-            <span class="ie-status ie-s-pending">Pending</span>
+            <div class="flex items-center gap-2">
+              <span class="ie-status ie-s-pending">Pending</span>
+              <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+            </div>
           </div>
           <div class="ie-sec-body">
             <div class="ie-field-wrap"><label class="ie-label">Rent / Mortgage</label><div class="relative"><span class="ie-prefix">$</span><input id="ie-rent" class="ie-input ie-money" value="1200" oninput="ieUpdateTotals()" /></div></div>
@@ -1429,13 +1485,16 @@
         </div>
 
         <!-- Section D: Affordable Payment -->
-        <div id="ie-sec-d" class="ie-section ie-locked">
-          <div class="ie-sec-hdr">
+        <div id="ie-sec-d" class="ie-section ie-locked ie-collapsed">
+          <div class="ie-sec-hdr" onclick="toggleIESection('ie-sec-d')">
             <div class="flex items-center gap-2">
               <span class="ie-sec-badge">D</span>
               <span class="text-xs font-bold text-gray-900">Affordable Payment</span>
             </div>
-            <span id="ie-d-status" class="ie-status ie-s-pending">Pending</span>
+            <div class="flex items-center gap-2">
+              <span id="ie-d-status" class="ie-status ie-s-pending">Pending</span>
+              <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+            </div>
           </div>
           <div class="ie-sec-body">
             <div class="flex justify-between items-center py-1.5 border-b border-[#f0f2f5]">
