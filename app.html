@@ -76,10 +76,10 @@
     /* Input bar */
     .mob-input-bar {
       background: white;
-      border: 1px solid #e2e4eb;
+      border: 1.5px solid #e2e4eb;
       border-radius: 999px;
       display: flex; align-items: center; gap: 8px;
-      padding: 7px 7px 7px 16px;
+      padding: 10px 10px 10px 20px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.06);
     }
 
@@ -157,16 +157,16 @@
     <h1 class="text-[44px] font-semibold tracking-tight text-center mb-2 leading-tight">
       <span class="text-gray-900">Ask </span><span class="cait-gradient">Cait</span>
     </h1>
-    <p class="text-sm text-[#676d7a] text-center">Your AI assistant for managing your student debt</p>
+    <p class="text-[18px] text-gray-900 text-center leading-snug">Your personal student loan coach —<br>expert guidance to get out of default.</p>
   </div>
 
   <!-- Input bar -->
   <div class="px-4 bg-white border-t border-[#f0f2f5] shrink-0" style="padding-top:12px;padding-bottom:max(16px,env(safe-area-inset-bottom))">
-    <div class="mob-input-bar">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" class="shrink-0" style="color:#265ddc"><path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74z" fill="currentColor" opacity="0.75"/></svg>
-      <input type="text" onclick="mobShowChat()" placeholder="Help me get out of default" class="flex-1 text-sm outline-none bg-transparent text-gray-700 placeholder-[#a0a6b2] cursor-pointer" readonly />
-      <button onclick="mobShowChat()" class="w-9 h-9 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    <div class="mob-input-bar" onclick="mobShowChat()" style="cursor:pointer">
+      <input type="text" onclick="mobShowChat()" placeholder="Type here" class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2] cursor-pointer" readonly />
+      <button onclick="mobShowChat()" class="w-9 h-9 rounded-full bg-[#ebebeb] flex items-center justify-center shrink-0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+
       </button>
     </div>
   </div>
@@ -240,10 +240,10 @@
   <!-- Input bar -->
   <div class="px-4 shrink-0 bg-white" style="padding-top:8px;padding-bottom:max(14px,env(safe-area-inset-bottom))">
     <div class="mob-input-bar">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" class="shrink-0" style="color:#265ddc"><path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74z" fill="currentColor" opacity="0.75"/></svg>
-      <input type="text" placeholder="Ask Cait anything…" class="flex-1 text-sm outline-none bg-transparent text-gray-700 placeholder-[#a0a6b2]" />
-      <button class="w-8 h-8 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <input type="text" placeholder="Type here" class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2]" />
+      <button class="w-9 h-9 rounded-full bg-[#ebebeb] flex items-center justify-center shrink-0">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+
       </button>
     </div>
   </div>
@@ -428,8 +428,9 @@
     const chips = Array.isArray(ctx) ? ctx : (MOB_CHIPS[ctx] || []);
     container.innerHTML = chips.map(c =>
       `<button ${c.fn ? `onclick="${c.fn}"` : ''}
-        class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-xs font-medium text-[#3a57c8] bg-white hover:bg-[#eff4ff] transition-colors whitespace-nowrap">
+        class="shrink-0 border border-gray-300 rounded-full px-4 py-2 text-[13px] font-medium text-gray-900 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap flex items-center gap-1.5">
         ${c.label}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 opacity-50"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg>
       </button>`
     ).join('');
   }
