@@ -168,7 +168,12 @@
       <div class="dynamic-island">
         <div class="di-camera"></div>
       </div>
-      <iframe src="/app.html" title="Candidly Mobile"></iframe>
+      <iframe id="main-iframe" src="/app.html" title="Candidly Mobile"></iframe>
+      <script>
+        // Pass query string from /mobile?sheet → iframe src
+        const qs = location.search;
+        if (qs) document.getElementById('main-iframe').src = '/app.html' + qs;
+      </script>
       <div class="home-indicator"></div>
     </div>
   </div>

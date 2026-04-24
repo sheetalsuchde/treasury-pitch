@@ -658,10 +658,10 @@
   let caitChatReady = false;
 
   const CAIT_ANSWERS = {
-    'What is AGI?': 'Your <strong>Adjusted Gross Income (AGI)</strong> is your total income minus deductions like student loan interest. Find it on <strong>Line 11</strong> of your most recent Form 1040. I've pre-filled it from your file — just confirm it looks right.',
+    'What is AGI?': 'Your <strong>Adjusted Gross Income (AGI)</strong> is your total income minus deductions like student loan interest. Find it on <strong>Line 11</strong> of your most recent Form 1040. I\'ve pre-filled it from your file — just confirm it looks right.',
     'Household size?': 'Include everyone you live with and support — yourself, a spouse or partner, and any dependents. This affects your poverty line calculation and ultimately how low your monthly payment can be.',
-    'Tax filing status?': 'Use the same status as your most recent tax return. If you're unsure, "Single" is the most common. This helps us calculate your discretionary income accurately.',
-    'What are dependents?': 'Dependents are people you claim on your taxes — typically children or relatives you financially support. Enter 0 if you don't claim anyone.',
+    'Tax filing status?': 'Use the same status as your most recent tax return. If you\'re unsure, "Single" is the most common. This helps us calculate your discretionary income accurately.',
+    'What are dependents?': 'Dependents are people you claim on your taxes — typically children or relatives you financially support. Enter 0 if you don\'t claim anyone.',
     'Why does this matter?': 'These details determine your <strong>discretionary income</strong> — the portion the DOE uses to set your rehab payment. A larger household = lower payment. Accurate info = the lowest possible amount for you.',
   };
 
@@ -1197,6 +1197,15 @@
       </div>
 
     </div>`;
+  }
+
+  // ?sheet shortcut — opens income form directly (for previewing)
+  if (location.search.includes('sheet')) {
+    setTimeout(() => {
+      document.getElementById('mob-sheet-body').innerHTML = buildMobIncomeForm();
+      document.getElementById('mob-sheet').classList.add('open');
+      document.getElementById('mob-overlay').classList.add('visible');
+    }, 300);
   }
 </script>
 
