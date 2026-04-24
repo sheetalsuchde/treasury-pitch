@@ -2,6 +2,6 @@
   "outputDirectory": ".",
   "buildCommand": null,
   "routes": [
-    { "src": "/mobile", "dest": "/demo.html" }
+    { "src": "/mobile", "dest": "/mobile.html" }
   ]
 }
