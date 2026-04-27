@@ -378,7 +378,8 @@
   <div class="shrink-0 bg-white border-t border-[#f0f2f5]">
     <!-- Contextual chips -->
     <div class="chips-row py-2">
-      <button onclick="mobIncomeChipAsk('What\'s a 1040?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">What's a 1040?</button>
+      <button onclick="mobIncomeChipAsk('Where do I find this form?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">Where do I find this form?</button>
+      <button onclick="mobIncomeChipAsk('Can I skip this upload?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">Can I skip this upload?</button>
       <button onclick="mobIncomeChipAsk('What is AGI?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">What is AGI?</button>
       <button onclick="mobIncomeChipAsk('What counts as income?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">What counts as income?</button>
       <button onclick="mobIncomeChipAsk('Household size?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">Household size?</button>
@@ -1023,7 +1024,8 @@
   let caitChatReady = false;
 
   const CAIT_ANSWERS = {
-    'What\'s a 1040?': 'A <strong>Form 1040</strong> is the standard tax return most Americans file each year. It shows everything you earned and what you owe in taxes. We use it to confirm your income — specifically a number called your <strong>AGI</strong> — so the DOE can calculate the lowest possible payment for you.',
+    'Where do I find this form?': 'Your tax return is usually in your email from your tax preparer, or you can download it free at <strong>IRS.gov → Get Transcript</strong>. If you used TurboTax, H&R Block, or similar software, it\'s saved in your account. A PDF works perfectly — just upload it here.',
+    'Can I skip this upload?': 'Yes — the upload is optional. If you skip it, I\'ll use the income figure you entered manually. Uploading just makes it faster and more accurate, which can mean a <strong>lower monthly payment</strong>. You can always come back and add it later.',
     'What is AGI?': 'Your <strong>Adjusted Gross Income (AGI)</strong> is your total income minus deductions like student loan interest. Find it on <strong>Line 11</strong> of your most recent Form 1040. I\'ve pre-filled it from your file — just confirm it looks right.',
     'Household size?': 'Include everyone you live with and support — yourself, a spouse or partner, and any dependents. This affects your poverty line calculation and ultimately how low your monthly payment can be.',
     'Tax filing status?': 'Use the same status as your most recent tax return. If you\'re unsure, "Single" is the most common. This helps us calculate your discretionary income accurately.',
