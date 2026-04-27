@@ -378,6 +378,7 @@
   <div class="shrink-0 bg-white border-t border-[#f0f2f5]">
     <!-- Contextual chips -->
     <div class="chips-row py-2">
+      <button onclick="mobIncomeChipAsk('What\'s a 1040?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">What's a 1040?</button>
       <button onclick="mobIncomeChipAsk('What is AGI?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">What is AGI?</button>
       <button onclick="mobIncomeChipAsk('What counts as income?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">What counts as income?</button>
       <button onclick="mobIncomeChipAsk('Household size?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">Household size?</button>
@@ -1022,6 +1023,7 @@
   let caitChatReady = false;
 
   const CAIT_ANSWERS = {
+    'What\'s a 1040?': 'A <strong>Form 1040</strong> is the standard tax return most Americans file each year. It shows everything you earned and what you owe in taxes. We use it to confirm your income — specifically a number called your <strong>AGI</strong> — so the DOE can calculate the lowest possible payment for you.',
     'What is AGI?': 'Your <strong>Adjusted Gross Income (AGI)</strong> is your total income minus deductions like student loan interest. Find it on <strong>Line 11</strong> of your most recent Form 1040. I\'ve pre-filled it from your file — just confirm it looks right.',
     'Household size?': 'Include everyone you live with and support — yourself, a spouse or partner, and any dependents. This affects your poverty line calculation and ultimately how low your monthly payment can be.',
     'Tax filing status?': 'Use the same status as your most recent tax return. If you\'re unsure, "Single" is the most common. This helps us calculate your discretionary income accurately.',
@@ -1296,8 +1298,8 @@
           <div class="flex items-center gap-2.5">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             <div>
-              <p class="text-xs font-semibold text-gray-900">Verify with Form 1040</p>
-              <p class="text-xs text-[#676d7a]">Upload to auto-extract your AGI</p>
+              <p class="text-xs font-semibold text-gray-900">Confirm your income with a tax form</p>
+              <p class="text-xs text-[#676d7a]">Upload last year's tax return to fill this in automatically</p>
             </div>
           </div>
           <span class="text-[10px] font-semibold text-[#0d9e6e] bg-[#ecfbf5] px-2 py-0.5 rounded-full whitespace-nowrap">Speeds up review</span>
@@ -1564,7 +1566,7 @@
       <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-xl p-4 flex flex-col gap-3">
         <div class="flex items-start justify-between gap-2">
           <div>
-            <p class="text-sm font-bold text-gray-900">Verify with Form 1040</p>
+            <p class="text-sm font-bold text-gray-900">Confirm your income with a tax form</p>
             <p class="text-xs text-[#676d7a] mt-0.5">Upload your most recent tax return so we can extract your AGI instantly — no manual entry needed.</p>
           </div>
           <span class="shrink-0 text-[10px] font-semibold text-[#265ddc] bg-[#eff4ff] border border-[#e5edff] px-2 py-0.5 rounded-full whitespace-nowrap">Speeds up review</span>
