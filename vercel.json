@@ -1,7 +1,8 @@
 {
   "outputDirectory": ".",
   "buildCommand": null,
-  "routes": [
-    { "src": "/mobile", "dest": "/mobile.html" }
+  "rewrites": [
+    { "source": "/mobile",  "destination": "/mobile.html" },
+    { "source": "/desktop", "destination": "/desktop.html" }
   ]
 }

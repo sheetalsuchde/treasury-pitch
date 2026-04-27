@@ -30,6 +30,16 @@
     /* Full-screen base layer */
     body { background: #fafbfc; overflow: hidden; height: 100dvh; }
 
+    /* Screen dissolve animation */
+    @keyframes screen-in {
+      0%   { opacity: 0; transform: translateY(16px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes app-enter {
+      0%   { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
     /* Screens */
     .mob-screen {
       position: fixed; inset: 0;
@@ -40,41 +50,30 @@
     .mob-screen.slide {
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
     }
-    .mob-screen.slide.active { opacity: 1; pointer-events: auto; }
+    .mob-screen.slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      animation: screen-in 0.42s cubic-bezier(0.22,1,0.36,1) both;
+    }
 
     /* Home fades out when chat is active */
     #mob-home.fading { opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
 
+    /* Home screen staggered entrance */
+    @keyframes home-item-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hi  { opacity:0; animation: home-item-in 0.55s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s  forwards; }
+    .h1  { opacity:0; animation: home-item-in 0.6s  cubic-bezier(0.25,0.46,0.45,0.94) 0.28s forwards; }
+    .sub { opacity:0; animation: home-item-in 0.55s cubic-bezier(0.25,0.46,0.45,0.94) 0.48s forwards; }
+    .hc  { opacity:0; animation: home-item-in 0.5s  cubic-bezier(0.25,0.46,0.45,0.94) 0.65s forwards; }
+    .hi2 { opacity:0; animation: home-item-in 0.5s  cubic-bezier(0.25,0.46,0.45,0.94) 0.80s forwards; }
+
     /* Bubble pop-in */
     @keyframes bubble-in { from { opacity: 0; transform: translateY(8px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .bubble-in { animation: bubble-in 0.28s ease forwards; }
-
-    /* Bottom sheet */
-    .mob-sheet {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 92dvh;
-      background: white;
-      border-radius: 22px 22px 0 0;
-      box-shadow: 0 -6px 40px rgba(0,0,0,0.13);
-      transform: translateY(100%);
-      transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
-      z-index: 60;
-      display: flex; flex-direction: column;
-    }
-    .mob-sheet.open { transform: translateY(0); }
-
-    /* Sheet overlay */
-    .mob-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.35);
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
-      z-index: 50;
-    }
-    .mob-overlay.visible { opacity: 1; pointer-events: auto; }
 
     /* Cait line reveal */
     .cait-line { opacity: 0; }
@@ -96,15 +95,39 @@
     @keyframes card-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .card-revealed { animation: card-in 0.4s ease forwards; }
 
-    /* Input bar */
+    /* Input bar — Figma Chat Input Field */
+    @keyframes cait-glow {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(174,225,255,0.35), 0 0 18px rgba(174,225,255,0.2); }
+      50%       { box-shadow: 0 0 0 3px rgba(227,188,235,0.35), 0 0 18px rgba(227,188,235,0.2); }
+    }
     .mob-input-bar {
       background: white;
-      border: 1.5px solid #e2e4eb;
-      border-radius: 999px;
+      border: 1px solid #e2e4eb;
+      border-radius: 16px;
       display: flex; align-items: center; gap: 8px;
-      padding: 10px 10px 10px 20px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      padding: 8px 8px 8px 16px;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
     }
+    .mob-input-bar:hover, .mob-input-bar:focus-within {
+      border: 1px solid transparent;
+      background:
+        linear-gradient(white, white) padding-box,
+        linear-gradient(135deg, #aee1ff 0%, #e3bceb 100%) border-box;
+      animation: cait-glow 2.4s ease-in-out infinite;
+    }
+    .mob-input-bar-btn {
+      width: 32px; height: 32px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: #676d7a; background: transparent; border: none; flex-shrink: 0; cursor: pointer;
+    }
+    .mob-input-bar-btn.outlined {
+      background: #fafbfc; border: 1px solid #e2e4eb;
+    }
+    .mob-input-disclosure {
+      text-align: center; font-size: 12px; font-weight: 500;
+      color: #181d29; padding: 4px 16px 2px;
+    }
+    .mob-input-disclosure a { color: #265ddc; text-decoration: underline; }
 
     /* Chips scroll */
     .chips-row { display: flex; gap: 8px; overflow-x: auto; padding: 0 16px 2px; scrollbar-width: none; }
@@ -138,9 +161,22 @@
     .ie-sec-body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
     .ie-total-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f0f2f5; border-radius: 12px; margin-top: 2px; }
 
-    /* Nav bar base */
-    .mob-nav { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f0f2f5; background: white; flex-shrink: 0; padding-top: max(12px, env(safe-area-inset-top)); }
-    .mob-back-btn { width: 36px; height: 36px; border-radius: 10px; border: 1px solid #e2e4eb; display: flex; align-items: center; justify-content: center; color: #676d7a; flex-shrink: 0; }
+    /* Global app nav (Figma Header 1.0) */
+    .mob-global-nav { display: flex; align-items: center; padding: max(16px,env(safe-area-inset-top)) 24px 12px; background: white; border-bottom: 1px solid #e2e4eb; flex-shrink: 0; }
+    .mob-nav-ham { min-height: 32px; padding: 4px 8px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #181d29; background: transparent; border: none; cursor: pointer; }
+    .mob-nav-icon { width: 32px; height: 32px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #181d29; background: transparent; border: none; cursor: pointer; }
+
+    /* Autopay form inputs */
+    .ap-field { position: relative; margin-bottom: 16px; }
+    .ap-field label { position: absolute; top: -9px; left: 14px; background: white; padding: 0 4px; font-size: 11px; font-weight: 500; color: #676d7a; letter-spacing: 0.2px; }
+    .ap-input { width: 100%; border: 1.5px solid #d1d5db; border-radius: 12px; padding: 18px 16px; font-size: 15px; color: #181d29; background: white; outline: none; transition: border-color 0.2s; }
+    .ap-input:focus { border-color: #265ddc; }
+    .ap-input.filled { border-color: #265ddc; }
+
+    /* Confirm schedule table */
+    .ap-table-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid #f0f2f5; }
+    .ap-table-row:last-child { border-bottom: none; }
+    .ap-table-hdr { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
   </style>
 </head>
 <body>
@@ -150,21 +186,24 @@
 <!-- ================================================================ -->
 <div id="mob-home" class="mob-screen" style="z-index:10">
 
-  <!-- Top nav -->
-  <div class="flex items-center justify-between px-5 bg-white border-b border-[#f0f2f5] shrink-0" style="padding-top:max(14px,env(safe-area-inset-top));padding-bottom:12px">
-    <div class="flex items-center gap-2">
-      <div class="w-8 h-8 bg-[#eff4ff] rounded-xl flex items-center justify-center">
-        <div class="w-3 h-3 rounded-full bg-[#265ddc]"></div>
-      </div>
-      <span class="text-sm font-bold text-gray-900">Candidly</span>
-    </div>
-    <button class="w-8 h-8 rounded-xl border border-[#e2e4eb] flex items-center justify-center text-[#676d7a]">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  <!-- Global nav -->
+  <div class="mob-global-nav">
+    <button class="mob-nav-ham">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-2">
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
   </div>
 
   <!-- Alert banner -->
-  <div class="mx-4 mt-4 bg-[#fff8eb] border border-[#fed684] rounded-xl p-3 flex flex-col gap-2 shrink-0">
+  <div class="hi mx-4 mt-4 bg-[#fff8eb] border border-[#fed684] rounded-xl p-3 flex flex-col gap-2 shrink-0">
     <div class="flex items-start gap-2">
       <svg class="shrink-0 mt-0.5 text-amber-500" width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
       <p class="text-[13px] text-gray-900 leading-snug"><span class="font-bold">Action required:</span> Your student loan is in default. Treasury offset may begin in 44 days — act now to protect your payments.</p>
@@ -176,15 +215,15 @@
 
   <!-- Hero -->
   <div class="flex-1 flex flex-col items-center justify-center px-6 pb-4">
-    <p class="text-base font-medium text-gray-900 mb-1">Hi, Jennifer!</p>
-    <h1 class="text-[44px] font-semibold tracking-tight text-center mb-2 leading-tight">
+    <p class="hi text-base font-medium text-gray-900 mb-1">Hi, Jennifer!</p>
+    <h1 class="h1 text-[44px] font-semibold tracking-tight text-center mb-2 leading-tight">
       <span class="text-gray-900">Ask </span><span class="cait-gradient">Cait</span>
     </h1>
-    <p class="text-[18px] text-gray-900 text-center leading-snug">Your personal student loan coach —<br>expert guidance to get out of default.</p>
+    <p class="sub text-[18px] text-gray-900 text-center leading-snug">Your personal guide through<br>every student loan decision.</p>
   </div>
 
   <!-- Home prompt chips -->
-  <div class="chips-row shrink-0 pb-2 px-4">
+  <div class="hc chips-row shrink-0 pb-2 px-4">
     <button onclick="mobShowChat('Help me get out of default')" class="shrink-0 bg-transparent border border-amber-300 rounded-full px-4 py-2 text-[13px] font-semibold text-amber-800 whitespace-nowrap flex items-center gap-1.5 hover:bg-[#FFF8EB] transition-colors">
       <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-amber-500"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
       Help me get out of default
@@ -198,13 +237,17 @@
   </div>
 
   <!-- Input bar -->
-  <div class="px-4 bg-white border-t border-[#f0f2f5] shrink-0" style="padding-top:12px;padding-bottom:max(16px,env(safe-area-inset-bottom))">
+  <div class="hi2 px-4 bg-white border-t border-[#f0f2f5] shrink-0" style="padding-top:12px;padding-bottom:max(16px,env(safe-area-inset-bottom))">
     <div class="mob-input-bar" onclick="mobShowChat('Help me get out of default')" style="cursor:pointer">
-      <input type="text" onclick="mobShowChat('Help me get out of default')" placeholder="Type here" class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2] cursor-pointer" readonly />
-      <button onclick="mobShowChat('Help me get out of default')" class="w-9 h-9 rounded-full bg-[#ebebeb] flex items-center justify-center shrink-0">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-
-      </button>
+      <input type="text" placeholder="Ask Cait…" class="flex-1 text-base outline-none bg-transparent text-[#676d7a] placeholder-[#676d7a] cursor-pointer" readonly />
+      <div class="flex items-center gap-2">
+        <button class="mob-input-bar-btn" onclick="mobShowChat('Help me get out of default')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+        </button>
+        <button class="mob-input-bar-btn outlined" onclick="mobShowChat('Help me get out of default')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -216,17 +259,29 @@
 <!-- ================================================================ -->
 <div id="mob-chat" class="mob-screen slide" style="z-index:20; background:white">
 
-  <!-- Nav -->
-  <div class="mob-nav shrink-0">
-    <button onclick="mobShowHome()" class="mob-back-btn">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  <!-- Global nav -->
+  <div class="mob-global-nav">
+    <button class="mob-nav-ham">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <div class="flex-1">
-      <p class="text-sm font-semibold text-gray-900">Cait</p>
-      <p class="text-xs text-[#676d7a]">AI Student Loan Assistant</p>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-2">
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
     </div>
   </div>
 
+  <!-- Back link -->
+  <div class="shrink-0 px-6 pt-3 pb-1">
+    <button onclick="mobShowHome()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc]">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </button>
+  </div>
 
   <!-- Chat messages -->
   <div id="mob-chat-area" class="flex-1 overflow-y-auto px-4 py-5 flex flex-col gap-4">
@@ -259,7 +314,7 @@
           <!-- populated by JS -->
         </div>
         <div class="px-4 pb-4">
-          <button id="mob-btn-next" onclick="mobOpenSheet()" class="w-full bg-[#265ddc] text-white rounded-full py-3 text-sm font-medium hover:bg-[#1e4fc2] transition-colors">
+          <button id="mob-btn-next" onclick="mobOpenIncome()" class="w-full bg-[#265ddc] text-white rounded-full py-3 text-sm font-medium hover:bg-[#1e4fc2] transition-colors">
             Start Loan Rehabilitation
           </button>
         </div>
@@ -272,13 +327,17 @@
   <div id="mob-chips" class="chips-row shrink-0 py-2"></div>
 
   <!-- Input bar -->
-  <div class="px-4 shrink-0 bg-white" style="padding-top:8px;padding-bottom:max(14px,env(safe-area-inset-bottom))">
+  <div id="mob-chat-input-bar" class="px-4 shrink-0 bg-white transition-opacity" style="padding-top:8px;padding-bottom:max(14px,env(safe-area-inset-bottom))">
     <div class="mob-input-bar">
-      <input type="text" placeholder="Type here" class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2]" />
-      <button class="w-9 h-9 rounded-full bg-[#ebebeb] flex items-center justify-center shrink-0">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-
-      </button>
+      <input id="mob-chat-input" type="text" placeholder="Ask Cait…" class="flex-1 text-base outline-none bg-transparent text-gray-800 placeholder-[#676d7a]" />
+      <div class="flex items-center gap-2">
+        <button class="mob-input-bar-btn" onclick="mobSendChat()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+        </button>
+        <button class="mob-input-bar-btn outlined" onclick="mobSendChat()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -286,89 +345,220 @@
 
 
 <!-- ================================================================ -->
-<!-- OVERLAY (dims chat behind bottom sheet)                            -->
+<!-- SCREEN 2b: INCOME FORM (full-screen slide)                        -->
 <!-- ================================================================ -->
-<div id="mob-overlay" class="mob-overlay" onclick="mobCloseSheet()"></div>
+<div id="mob-income" class="mob-screen slide" style="z-index:25; background:white">
 
-
-<!-- ================================================================ -->
-<!-- BOTTOM SHEET: Income & Payment Form                               -->
-<!-- ================================================================ -->
-<div id="mob-sheet" class="mob-sheet">
-
-  <!-- Drag handle -->
-  <div class="flex justify-center pt-3 pb-1 shrink-0">
-    <div class="w-9 h-1 bg-[#e2e4eb] rounded-full"></div>
+  <!-- Global nav -->
+  <div class="mob-global-nav">
+    <button class="mob-nav-ham">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-2">
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
   </div>
 
-  <!-- Sheet header -->
-  <div class="flex items-center justify-between px-5 py-3 border-b border-[#f0f2f5] shrink-0">
-    <div>
-      <p class="text-base font-bold text-gray-900">Loan Rehabilitation</p>
-      <p class="text-xs text-[#676d7a] mt-0.5">Income &amp; Payment Setup</p>
+  <!-- Scrollable form body -->
+  <div id="mob-income-body" class="flex-1 overflow-y-auto px-4 py-4">
+    <!-- Populated by mobOpenIncome() -->
+  </div>
+
+  <!-- Pinned bottom: chips + chat input (tapping opens Cait panel) -->
+  <div class="shrink-0 bg-white border-t border-[#f0f2f5]">
+    <!-- Contextual chips -->
+    <div class="chips-row py-2">
+      <button onclick="mobIncomeChipAsk('What is AGI?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What is AGI?</button>
+      <button onclick="mobIncomeChipAsk('What counts as income?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What counts as income?</button>
+      <button onclick="mobIncomeChipAsk('Household size?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">Household size?</button>
+      <button onclick="mobIncomeChipAsk('Tax filing status?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">Tax filing status?</button>
     </div>
-    <button onclick="mobCloseSheet()" class="mob-back-btn">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    <!-- Input bar — tap to open Cait chat -->
+    <div class="px-4 pb-4" style="padding-bottom:max(16px,env(safe-area-inset-bottom))">
+      <div class="mob-input-bar" onclick="mobOpenCaitFromInput()" style="cursor:pointer">
+        <input id="income-chat-input" type="text" placeholder="Ask Cait about this form…"
+          class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2] cursor-pointer"
+          readonly onfocus="mobOpenCaitFromInput()" />
+        <div class="flex items-center gap-2">
+          <button class="mob-input-bar-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          </button>
+          <button class="mob-input-bar-btn outlined">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- SCREEN 2d: TOO HIGH (Find a Lower Payment)                        -->
+<!-- ================================================================ -->
+<div id="mob-toohigh" class="mob-screen slide" style="z-index:35; background:white">
+
+  <!-- Global nav -->
+  <div class="mob-global-nav">
+    <button class="mob-nav-ham">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-2">
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Back link -->
+  <div class="shrink-0 px-6 pt-3 pb-1">
+    <button onclick="document.getElementById('mob-toohigh').classList.remove('active')" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc]">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </button>
+  </div>
+
+  <div class="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4 pb-8">
+
+    <!-- No problem card -->
+    <div class="bg-blue-50 border border-[#aee1ff] rounded-xl p-4 flex flex-col gap-2">
+      <p class="text-sm font-semibold text-gray-900">No problem — let's find a lower payment</p>
+      <p class="text-sm text-[#676d7a] leading-relaxed">You'll need to provide written evidence of your income and expenses via <strong class="text-gray-800">Form OMB No. 1845-0120</strong>. Cait will guide you through every field — your payment could be as low as <strong class="text-gray-800">$5/month</strong>.</p>
+    </div>
+
+    <!-- What to expect -->
+    <div class="flex flex-col gap-2">
+      <p class="text-xs font-bold text-[#2a2f3d] uppercase tracking-wide">What to expect</p>
+      <div class="flex flex-col gap-2">
+        <div class="flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3">
+          <div class="w-7 h-7 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-gray-900">Fill out Form OMB No. 1845-0120</p>
+            <p class="text-xs text-[#676d7a] mt-0.5 leading-snug">Cait pre-fills what she knows and guides you through every field.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3">
+          <div class="w-7 h-7 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="3"/><path d="M12 6a6 6 0 0 1 6 6c0 2.2-1.2 4.2-3 5.3V19a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-1.7C7.2 16.2 6 14.2 6 12a6 6 0 0 1 6-6z"/><line x1="10" y1="22" x2="14" y2="22"/></svg>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-gray-900">Cait calculates your true payment</p>
+            <p class="text-xs text-[#676d7a] mt-0.5 leading-snug">Based on your actual income and expenses — could be as low as $5/month.</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3">
+          <div class="w-7 h-7 rounded-lg bg-[#ecfbf5] flex items-center justify-center shrink-0">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-gray-900">Default removed after 9 payments</p>
+            <p class="text-xs text-[#676d7a] mt-0.5 leading-snug">Permanently cleared from all 3 credit bureaus.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <button id="mob-toohigh-start-btn" onclick="mobStartTooHighIE()" class="w-full bg-[#265ddc] hover:bg-[#1e4fc2] text-white rounded-full py-3.5 text-sm font-semibold transition-colors mt-2">
+      Start Income &amp; Expense Form →
+    </button>
+
+  </div>
+
+  <!-- Pinned Cait bar -->
+  <div class="shrink-0 bg-white border-t border-[#f0f2f5]">
+    <div class="chips-row py-2">
+      <button onclick="mobIncomeChipAsk('How low can my payment go?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">How low can my payment go?</button>
+      <button onclick="mobIncomeChipAsk('What\'s on the OMB form?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What&apos;s on the OMB form?</button>
+      <button onclick="mobIncomeChipAsk('How long does this take?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">How long does this take?</button>
+      <button onclick="mobIncomeChipAsk('What if I can\'t afford anything?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What if I can&apos;t afford anything?</button>
+    </div>
+    <div class="px-4 pb-4" style="padding-bottom:max(16px,env(safe-area-inset-bottom))">
+      <div class="mob-input-bar" onclick="mobOpenCaitFromInput()" style="cursor:pointer">
+        <input type="text" placeholder="Ask Cait a question…" class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2] cursor-pointer" readonly onfocus="mobOpenCaitFromInput()" />
+        <div class="flex items-center gap-2">
+          <button class="mob-input-bar-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          </button>
+          <button class="mob-input-bar-btn outlined">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- SCREEN 2c: ENROLL (Confirm & Enroll)                              -->
+<!-- ================================================================ -->
+<div id="mob-enroll" class="mob-screen slide" style="z-index:35; background:white">
+
+  <!-- Global nav -->
+  <div class="mob-global-nav">
+    <button class="mob-nav-ham">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-2">
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Back link -->
+  <div class="shrink-0 px-6 pt-3 pb-1">
+    <button onclick="mobCloseEnroll()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc]">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
     </button>
   </div>
 
   <!-- Scrollable body -->
-  <div id="mob-sheet-body" class="flex-1 overflow-y-auto px-4 py-4">
-    <!-- Populated by buildMobIncomeForm() -->
+  <div id="mob-enroll-body" class="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4 pb-8">
+    <!-- Populated by mobOpenEnroll() -->
   </div>
 
-  <!-- Cait FAB -->
-  <button id="cait-fab" onclick="mobToggleCaitChat()" class="absolute bottom-5 right-4 z-50 w-12 h-12 rounded-full bg-[#265ddc] shadow-lg flex items-center justify-center transition-transform active:scale-95">
-    <div class="w-5 h-5 rounded-full bg-white flex items-center justify-center">
-      <div class="w-2 h-2 rounded-full bg-[#265ddc]"></div>
+  <!-- Pinned Cait bar -->
+  <div class="shrink-0 bg-white border-t border-[#f0f2f5]">
+    <div class="chips-row py-2">
+      <button onclick="mobIncomeChipAsk('What happens after I enroll?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What happens after I enroll?</button>
+      <button onclick="mobIncomeChipAsk('What if I miss a payment?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What if I miss a payment?</button>
+      <button onclick="mobIncomeChipAsk('Can I change my payment later?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">Can I change my payment?</button>
+      <button onclick="mobIncomeChipAsk('Is this legally binding?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">Is this legally binding?</button>
     </div>
-    <span id="cait-fab-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-[#fed684] rounded-full border-2 border-white hidden"></span>
-  </button>
-
-  <!-- Mini Cait chat panel -->
-  <div id="cait-mini-chat" class="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl z-40 flex flex-col"
-    style="height:55%; transform:translateY(100%); transition:transform 0.38s cubic-bezier(0.32,0.72,0,1);">
-
-    <!-- Handle + header -->
-    <div class="flex items-center justify-between px-4 pt-3 pb-3 border-b border-[#f0f2f5] shrink-0">
-      <div class="flex items-center gap-2.5">
-        <div class="w-7 h-7 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0">
-          <div class="w-2.5 h-2.5 rounded-full bg-white"></div>
+    <div class="px-4 pb-4" style="padding-bottom:max(16px,env(safe-area-inset-bottom))">
+      <div class="mob-input-bar" onclick="mobOpenCaitFromInput()" style="cursor:pointer">
+        <input type="text" placeholder="Ask Cait a question…" class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2] cursor-pointer" readonly onfocus="mobOpenCaitFromInput()" />
+        <div class="flex items-center gap-2">
+          <button class="mob-input-bar-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          </button>
+          <button class="mob-input-bar-btn outlined">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+          </button>
         </div>
-        <div>
-          <p class="text-sm font-semibold text-gray-900">Ask Cait</p>
-          <p class="text-[10px] text-[#676d7a]">AI guidance for this form</p>
-        </div>
-      </div>
-      <button onclick="mobToggleCaitChat()" class="w-7 h-7 rounded-full bg-[#f5f5f5] flex items-center justify-center">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-
-    <!-- Messages -->
-    <div id="cait-mini-messages" class="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
-      <!-- Initial message -->
-      <div class="flex flex-col gap-1.5" style="max-width:88%">
-        <p id="cait-mini-intro" class="text-sm text-[#676d7a] leading-relaxed hidden">I can help you fill out this form. What do you need help with?</p>
-      </div>
-    </div>
-
-    <!-- Quick chips -->
-    <div id="cait-mini-chips" class="chips-row shrink-0 py-2 px-4"></div>
-
-    <!-- Input -->
-    <div class="px-4 pb-4 shrink-0">
-      <div class="mob-input-bar">
-        <input id="cait-mini-input" type="text" placeholder="Ask about any field…" class="flex-1 text-[14px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2]" onkeydown="if(event.key==='Enter') mobSendCaitMsg()" />
-        <button onclick="mobSendCaitMsg()" class="w-8 h-8 rounded-full bg-[#ebebeb] flex items-center justify-center shrink-0">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-        </button>
       </div>
     </div>
   </div>
-
-  <!-- Dim overlay for mini chat -->
-  <div id="cait-mini-overlay" onclick="mobToggleCaitChat()" class="absolute inset-0 bg-black/20 z-30 hidden rounded-t-2xl"></div>
 
 </div>
 
@@ -376,24 +566,37 @@
 <!-- ================================================================ -->
 <!-- SCREEN 3: OMB FORM (full-screen)                                  -->
 <!-- ================================================================ -->
-<div id="mob-ie" class="mob-screen slide" style="z-index:30; background:white">
+<div id="mob-ie" class="mob-screen slide" style="z-index:45; background:white">
 
-  <!-- Nav -->
-  <div class="mob-nav shrink-0">
-    <button onclick="mobCloseIE()" class="mob-back-btn">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+  <!-- Global nav -->
+  <div class="mob-global-nav">
+    <button class="mob-nav-ham">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <div class="flex-1 min-w-0">
-      <p class="text-sm font-semibold text-gray-900 truncate">Form OMB No. 1845-0120</p>
-      <p class="text-xs text-[#676d7a]">Income &amp; Expense Statement</p>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-2">
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Back link -->
+  <div class="shrink-0 px-6 pt-3 pb-1">
+    <button onclick="mobCloseIE()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc]">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </button>
   </div>
 
   <!-- Cait guidance strip -->
   <div id="mob-ie-tip" class="shrink-0 border-b border-[#dde8ff] px-4 py-2.5" style="background:#f0f4ff">
     <div class="flex items-start gap-2.5">
-      <div class="w-5 h-5 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0 mt-0.5">
-        <div class="w-2 h-2 rounded-full bg-white"></div>
+      <div class="shrink-0 mt-0.5">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#265ddc" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><rect x="11" y="10.5" width="2" height="6.5" rx="1" fill="white"/><circle cx="12" cy="8" r="1.2" fill="white"/></svg>
       </div>
       <p id="mob-ie-tip-text" class="text-xs font-medium leading-relaxed" style="color:#265ddc">Confirm your borrower information to get started.</p>
     </div>
@@ -420,6 +623,157 @@
     </button>
   </div>
 
+  <!-- Pinned Cait bar -->
+  <div class="shrink-0 bg-white border-t border-[#f0f2f5]">
+    <div class="chips-row py-2">
+      <button onclick="mobIncomeChipAsk('Can I include child support?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">Can I include child support?</button>
+      <button onclick="mobIncomeChipAsk('What counts as income?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What counts as income?</button>
+      <button onclick="mobIncomeChipAsk('Health insurance counts?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">Health insurance counts?</button>
+      <button onclick="mobIncomeChipAsk('What are dependents?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What are dependents?</button>
+    </div>
+    <div class="px-4 pb-4" style="padding-bottom:max(16px,env(safe-area-inset-bottom))">
+      <div class="mob-input-bar" onclick="mobOpenCaitFromInput()" style="cursor:pointer">
+        <input type="text" placeholder="Ask Cait about this form…" class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2] cursor-pointer" readonly onfocus="mobOpenCaitFromInput()" />
+        <div class="flex items-center gap-2">
+          <button class="mob-input-bar-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          </button>
+          <button class="mob-input-bar-btn outlined">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- SCREEN: AUTO-PAY SETUP (z:55)                                      -->
+<!-- ================================================================ -->
+<div id="mob-autopay" class="mob-screen slide" style="z-index:55; background:white">
+
+  <!-- Global nav -->
+  <div class="mob-global-nav">
+    <button class="mob-nav-ham">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <!-- Step pill shown inline in the nav center for autopay flow -->
+    <div class="flex-1 flex justify-center">
+      <div id="mob-autopay-step-pill" class="bg-[#f0f2f5] rounded-full px-3 py-1">
+        <p class="text-[11px] font-semibold text-[#676d7a]">1 of 2</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </button>
+      <button class="mob-nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </div>
+  <!-- Hidden subtitle placeholder (JS target) -->
+  <span id="mob-autopay-subtitle" style="display:none"></span>
+
+  <!-- Step body -->
+  <div id="mob-autopay-body" class="flex-1 overflow-y-auto px-5 py-5 flex flex-col">
+    <!-- populated by JS -->
+  </div>
+
+  <!-- Bottom buttons -->
+  <div id="mob-autopay-footer" class="shrink-0 px-5 pt-4 pb-3 bg-white border-t border-[#f0f2f5] flex gap-3">
+    <button id="mob-autopay-back-btn" onclick="mobAutopayBack()"
+      class="flex-1 border border-[#e2e4eb] text-gray-700 rounded-full py-3.5 text-sm font-semibold transition-colors hover:bg-[#fafbfc]">
+      Back
+    </button>
+    <button id="mob-autopay-next-btn" onclick="mobAutopayNext()"
+      class="flex-2 bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold transition-colors" style="flex:2">
+      Next →
+    </button>
+  </div>
+
+  <!-- Pinned Cait bar (shown on steps 1 & 2) -->
+  <div id="mob-autopay-cait-bar" class="shrink-0 bg-white">
+    <div class="chips-row py-2">
+      <button onclick="mobIncomeChipAsk('What is a routing number?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">What is a routing number?</button>
+      <button onclick="mobIncomeChipAsk('Where do I find my account number?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">Where is my account number?</button>
+      <button onclick="mobIncomeChipAsk('Is this secure?')" class="shrink-0 bg-[#fafbfc] border border-[#aee1ff] rounded-xl px-3 py-1.5 text-[13px] font-medium text-gray-900 whitespace-nowrap hover:bg-[#e8f4ff] transition-colors">Is this secure?</button>
+    </div>
+    <div class="px-4 pb-3" style="padding-bottom:max(12px,env(safe-area-inset-bottom))">
+      <div class="mob-input-bar" onclick="mobOpenCaitFromInput()" style="cursor:pointer">
+        <input type="text" placeholder="Ask Cait a question…" class="flex-1 text-[15px] outline-none bg-transparent text-gray-800 placeholder-[#b0b6c2] cursor-pointer" readonly onfocus="mobOpenCaitFromInput()" />
+        <div class="flex items-center gap-2">
+          <button class="mob-input-bar-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+          </button>
+          <button class="mob-input-bar-btn outlined">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================================================================ -->
+<!-- GLOBAL CAIT PANEL (z:60 — floats above all screens)               -->
+<!-- ================================================================ -->
+<div id="cait-mini-overlay" onclick="mobToggleCaitChat()" class="fixed inset-0 bg-black/20 z-50 hidden"></div>
+
+<div id="cait-mini-chat" class="fixed left-0 right-0 bg-white rounded-t-2xl shadow-2xl flex flex-col"
+  style="bottom:0;height:72%;z-index:60;transform:translateY(100%);transition:transform 0.38s cubic-bezier(0.32,0.72,0,1);">
+
+  <!-- Handle -->
+  <div class="flex justify-center pt-2.5 pb-1 shrink-0">
+    <div class="w-9 h-1 bg-[#e2e4eb] rounded-full"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="flex items-center justify-between px-4 pb-3 border-b border-[#f0f2f5] shrink-0">
+    <div class="flex items-center gap-2.5">
+      <div class="shrink-0">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#265ddc" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><rect x="11" y="10.5" width="2" height="6.5" rx="1" fill="white"/><circle cx="12" cy="8" r="1.2" fill="white"/></svg>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-gray-900">Ask Cait</p>
+        <p class="text-[10px] text-[#676d7a]">Your AI student loan coach</p>
+      </div>
+    </div>
+    <button onclick="mobToggleCaitChat()" class="w-7 h-7 rounded-full bg-[#f5f5f5] flex items-center justify-center">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div id="cait-mini-messages" class="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-3">
+    <div style="max-width:88%">
+      <p id="cait-mini-intro" class="text-sm text-[#676d7a] leading-relaxed hidden"></p>
+    </div>
+  </div>
+
+  <!-- Quick chips -->
+  <div id="cait-mini-chips" class="chips-row shrink-0 py-2 px-4"></div>
+
+  <!-- Input -->
+  <div class="px-4 pb-4 shrink-0" style="padding-bottom:max(16px,env(safe-area-inset-bottom))">
+    <div class="mob-input-bar">
+      <input id="cait-mini-input" type="text" placeholder="Ask Cait anything…"
+        class="flex-1 text-base outline-none bg-transparent text-gray-800 placeholder-[#676d7a]"
+        onkeydown="if(event.key==='Enter') mobSendCaitMsg()" />
+      <div class="flex items-center gap-2">
+        <button class="mob-input-bar-btn" onclick="mobSendCaitMsg()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+        </button>
+        <button class="mob-input-bar-btn outlined" onclick="mobSendCaitMsg()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -615,7 +969,7 @@
     resolution: [
       { label: 'How long does rehab take?', fn: null },
       { label: 'Which option removes default from credit?', fn: null },
-      { label: 'Start my rehabilitation →', fn: 'mobOpenSheet()' },
+      { label: 'Start my rehabilitation →', fn: 'mobOpenIncome()' },
     ],
     enrolled: [
       { label: 'Set up auto-pay', fn: null },
@@ -638,20 +992,31 @@
   }
 
   /* ─────────────────────────────────────────────
-     Bottom sheet — Income form
+     Full-screen Income Form
   ───────────────────────────────────────────── */
-  function mobOpenSheet() {
-    document.getElementById('mob-sheet-body').innerHTML = buildMobIncomeForm();
-    document.getElementById('mob-sheet').classList.add('open');
-    document.getElementById('mob-overlay').classList.add('visible');
+  function mobOpenIncome() {
+    document.getElementById('mob-income-body').innerHTML = buildMobIncomeForm();
+    document.getElementById('mob-income').classList.add('active');
+    // Reset Cait chat state for fresh open
+    caitChatOpen = false;
+    caitChatReady = false;
+    const panel = document.getElementById('cait-mini-chat');
+    if (panel) panel.style.transform = 'translateY(100%)';
+    const msgs = document.getElementById('cait-mini-messages');
+    if (msgs) {
+      msgs.innerHTML = '<div style="max-width:88%"><p id="cait-mini-intro" class="text-sm text-[#676d7a] leading-relaxed hidden"></p></div>';
+    }
+    document.getElementById('cait-mini-chips').innerHTML = '';
   }
 
-  function mobCloseSheet() {
-    document.getElementById('mob-sheet').classList.remove('open');
-    document.getElementById('mob-overlay').classList.remove('visible');
-    // also close mini chat if open
+  function mobCloseIncome() {
+    document.getElementById('mob-income').classList.remove('active');
     mobCloseCaitChat();
   }
+
+  /* Aliases kept so any stray references still work */
+  function mobOpenSheet()  { mobOpenIncome(); }
+  function mobCloseSheet() { mobCloseIncome(); }
 
   /* ── Cait mini-chat on income form ── */
   let caitChatOpen = false;
@@ -663,6 +1028,20 @@
     'Tax filing status?': 'Use the same status as your most recent tax return. If you\'re unsure, "Single" is the most common. This helps us calculate your discretionary income accurately.',
     'What are dependents?': 'Dependents are people you claim on your taxes — typically children or relatives you financially support. Enter 0 if you don\'t claim anyone.',
     'Why does this matter?': 'These details determine your <strong>discretionary income</strong> — the portion the DOE uses to set your rehab payment. A larger household = lower payment. Accurate info = the lowest possible amount for you.',
+    'What is a routing number?': 'Your <strong>routing number</strong> is a 9-digit code that identifies your bank. You can find it on the bottom-left of a check, or in your bank\'s app under account details. It\'s different for each bank.',
+    'Where do I find my account number?': 'Your <strong>account number</strong> is typically 10–12 digits and found on the bottom of a check (to the right of the routing number), or in your bank app under account details.',
+    'Is this secure?': 'Yes — your bank details are encrypted with <strong>bank-level security</strong>. Candidly uses the same 256-bit SSL encryption as major financial institutions. Your data is never stored in plain text.',
+    'Can I include child support?': 'Yes — if you pay child support, list it under <strong>Other Expenses</strong> in Section C. If you <em>receive</em> child support, include it under <strong>Other Income</strong> in Section B. Both affect your disposable income calculation.',
+    'What counts as income?': 'Include <strong>all regular income</strong>: wages, take-home pay, Social Security, disability payments, alimony received, rental income, and any other consistent sources. Use your <em>monthly</em> take-home amount, not your gross salary.',
+    'Health insurance counts?': 'Absolutely. List your monthly health insurance premium under <strong>Health Insurance</strong> in Section C — it\'s already pre-filled at $120. If your actual premium is different, update it. Higher premiums = lower disposable income = lower payment.',
+    'What happens after I enroll?': 'The <strong>Default Resolution Group</strong> confirms your agreement within 5–7 business days. Your first payment starts the 9-month clock. After 9 on-time payments, your default is <strong>permanently removed</strong> from all 3 credit bureaus.',
+    'Can I change my payment later?': 'Your payment is set at enrollment based on your income. If your finances change significantly, contact your loan servicer — but changing the amount may require restarting the rehabilitation process, so auto-pay is strongly recommended.',
+    'What if I miss a payment?': 'Missing a payment can <strong>reset your 9-payment clock</strong>. That\'s exactly why we set up auto-pay — it runs automatically each month so you stay on track and never lose progress toward clearing your default.',
+    'Is this legally binding?': 'Yes — the rehabilitation agreement is a legal commitment to make 9 on-time monthly payments. In return, your default and all collection activity are <strong>permanently removed</strong> from your credit report after completion.',
+    'How low can my payment go?': 'Payments can be as low as <strong>$5/month</strong> — or even $0 if your disposable income is zero. The OMB form captures your real income and expenses so Cait can calculate the absolute lowest payment you qualify for.',
+    'What\'s on the OMB form?': 'The <strong>OMB No. 1845-0120</strong> form asks for your monthly income (wages, benefits, etc.) and expenses (rent, utilities, food, etc.). Cait pre-fills everything she knows from your profile — you just review and confirm.',
+    'How long does this take?': 'Filling out the form takes about <strong>5–10 minutes</strong> with Cait\'s help. Once submitted, the DOE reviews it within a few business days and confirms your adjusted lower payment.',
+    'What if I can\'t afford anything?': 'You may qualify for a <strong>$0/month</strong> payment if your disposable income is zero. You still complete all 9 payments — they just cost nothing. Candidly will document your situation accurately to get you there.',
   };
 
   function mobToggleCaitChat() {
@@ -670,25 +1049,22 @@
     caitChatOpen = true;
     const panel = document.getElementById('cait-mini-chat');
     const overlay = document.getElementById('cait-mini-overlay');
-    const fab = document.getElementById('cait-fab');
     panel.style.transform = 'translateY(0)';
     overlay.classList.remove('hidden');
-    fab.style.display = 'none';
 
-    // First open: stream intro message + show chips
+    // First open: stream intro message + show chips inside panel
     if (!caitChatReady) {
       caitChatReady = true;
       const intro = document.getElementById('cait-mini-intro');
       intro.classList.remove('hidden');
-      const el = intro;
       const text = 'I can help you fill out this form. What do you need help with?';
-      el.innerHTML = '';
+      intro.innerHTML = '';
       text.split(' ').forEach((w, i) => {
         setTimeout(() => {
           const s = document.createElement('span');
           s.className = 'stream-word';
           s.textContent = w + ' ';
-          el.appendChild(s);
+          intro.appendChild(s);
         }, i * 55);
       });
       setTimeout(() => {
@@ -699,15 +1075,95 @@
             ${q}
           </button>`
         ).join('');
+        // Focus panel input
+        setTimeout(() => document.getElementById('cait-mini-input')?.focus(), 50);
       }, text.split(' ').length * 55 + 200);
+    } else {
+      setTimeout(() => document.getElementById('cait-mini-input')?.focus(), 400);
     }
   }
 
   function mobCloseCaitChat() {
     caitChatOpen = false;
-    document.getElementById('cait-mini-chat').style.transform = 'translateY(100%)';
-    document.getElementById('cait-mini-overlay').classList.add('hidden');
-    document.getElementById('cait-fab').style.display = 'flex';
+    const panel = document.getElementById('cait-mini-chat');
+    const overlay = document.getElementById('cait-mini-overlay');
+    if (panel) panel.style.transform = 'translateY(100%)';
+    if (overlay) overlay.classList.add('hidden');
+  }
+
+  // Tap on the pinned input bar → open Cait panel
+  function mobOpenCaitFromInput() {
+    if (!caitChatOpen) mobToggleCaitChat();
+  }
+
+  // Inline form upload — health insurance premium statement
+  function mobFormSimulateUpload() {
+    const area = document.getElementById('ie-health-upload-area');
+    if (!area || area.dataset.uploading) return;
+    area.dataset.uploading = '1';
+    area.onclick = null;
+
+    // Uploading state
+    area.innerHTML = `
+      <div class="w-8 h-8 rounded-xl bg-[#eff4ff] flex items-center justify-center shrink-0">
+        <svg class="animate-spin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-[12px] font-semibold text-[#265ddc]">Uploading…</p>
+        <p class="text-[10px] text-[#9ca3af]">HealthInsurance_Statement.pdf</p>
+      </div>`;
+
+    // Success state after 1.6s
+    setTimeout(() => {
+      // Swap upload area to success
+      area.classList.remove('hover:bg-[#f5f8ff]', 'cursor-pointer');
+      area.classList.add('bg-[#f0fdf4]');
+      area.innerHTML = `
+        <div class="w-8 h-8 rounded-xl bg-[#dcfce7] flex items-center justify-center shrink-0">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-[12px] font-semibold text-[#16a34a]">Statement verified ✓</p>
+          <p class="text-[10px] text-[#86efac]">HealthInsurance_Statement.pdf</p>
+        </div>`;
+
+      // Swap the header badge from "Required" → "Verified"
+      const badge = area.closest('.rounded-2xl')?.querySelector('.text-\\[\\#e05c2e\\]');
+      if (badge) {
+        badge.textContent = 'Verified';
+        badge.className = 'text-[10px] font-medium text-[#16a34a] bg-[#dcfce7] rounded-full px-2 py-0.5';
+      }
+
+      // Enable the Confirm button
+      const btn = document.getElementById('ie-exp-confirm-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-40', 'cursor-not-allowed');
+        btn.classList.add('hover:bg-[#e0eaff]');
+        // Brief pulse to draw attention
+        btn.style.transition = 'transform 0.15s ease, box-shadow 0.15s ease';
+        setTimeout(() => {
+          btn.style.transform = 'scale(1.04)';
+          btn.style.boxShadow = '0 0 0 3px rgba(38,93,220,0.15)';
+          setTimeout(() => {
+            btn.style.transform = '';
+            btn.style.boxShadow = '';
+          }, 220);
+        }, 100);
+      }
+    }, 1600);
+  }
+
+  // Tap a bottom chip → open Cait and immediately ask the question
+  function mobIncomeChipAsk(question) {
+    if (!caitChatOpen) {
+      mobToggleCaitChat();
+      // Wait for panel + intro to finish then fire the question
+      const delay = caitChatReady ? 450 : (question.split(' ').length * 55 + 700);
+      setTimeout(() => mobCaitQuickAsk(null, question), delay);
+    } else {
+      mobCaitQuickAsk(null, question);
+    }
   }
 
   function mobCaitQuickAsk(btn, question) {
@@ -765,12 +1221,16 @@
     return `
     <div class="flex flex-col gap-4 pb-6">
 
-      <!-- Cait tip -->
-      <div class="bg-[#f0f4ff] border border-[#dde8ff] rounded-xl px-3.5 py-3 flex items-start gap-2.5">
-        <div class="w-5 h-5 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0 mt-0.5">
-          <div class="w-2 h-2 rounded-full bg-white"></div>
-        </div>
-        <p class="text-xs text-[#265ddc] leading-relaxed font-medium">I've pre-filled your income from your Form 1040 on file. Review and confirm to calculate your payment.</p>
+      <!-- Back link -->
+      <button onclick="mobCloseIncome()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc] self-start">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back
+      </button>
+
+      <!-- Pre-filled notice (matches desktop) -->
+      <div class="flex items-center gap-2 bg-[#fafbfc] border border-[#f0f2f5] rounded-xl px-3 py-2.5">
+        <svg class="shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#265ddc" stroke-width="1.3"/><path d="M4.5 7l1.8 1.8 3-3" stroke="#265ddc" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p class="text-xs text-[#676d7a]">Pre-filled from your Candidly profile — review and confirm</p>
       </div>
 
       <!-- AGI -->
@@ -844,10 +1304,42 @@
           <span class="text-[10px] font-semibold text-[#0d9e6e] bg-[#ecfbf5] px-2 py-0.5 rounded-full whitespace-nowrap">Speeds up review</span>
         </div>
         <div class="px-4 py-3">
-          <button onclick="document.getElementById('mob-1040-input').click()" class="w-full border-2 border-dashed border-[#b3c6f7] rounded-xl py-3 text-xs font-medium text-[#265ddc] hover:bg-[#eff4ff] transition-colors">
-            Tap to upload PDF or photo
-          </button>
-          <input id="mob-1040-input" type="file" accept=".pdf,image/*" class="hidden" />
+          <!-- Upload trigger -->
+          <div id="mob-upload-zone" onclick="document.getElementById('mob-1040-input').click()"
+            class="w-full border-2 border-dashed border-[#b3c6f7] rounded-xl py-4 px-3 flex flex-col items-center gap-1.5 cursor-pointer hover:bg-[#eff4ff] transition-colors">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="text-xs font-medium text-[#265ddc]">Tap to upload PDF or photo</span>
+            <span class="text-[10px] text-[#9ca3af]">Form 1040 · PDF or image</span>
+          </div>
+          <!-- Processing state (hidden initially) -->
+          <div id="mob-upload-processing" class="hidden w-full rounded-xl border border-[#b3c6f7] bg-[#f0f4ff] px-4 py-3 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-[#265ddc] flex items-center justify-center shrink-0 animate-pulse">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p id="mob-upload-filename" class="text-xs font-semibold text-gray-900 truncate"></p>
+              <p class="text-[10px] text-[#265ddc] mt-0.5">Extracting your income data…</p>
+            </div>
+            <div class="typing-dots shrink-0"><span></span><span></span><span></span></div>
+          </div>
+          <!-- Success state (hidden initially) -->
+          <div id="mob-upload-success" class="hidden w-full rounded-xl border border-[#b6eeda] bg-[#f0fbf7] px-4 py-3">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-[#ecfbf5] border border-[#b6eeda] flex items-center justify-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0d9e6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p id="mob-upload-success-name" class="text-xs font-semibold text-gray-900 truncate"></p>
+                <p class="text-[10px] text-[#0d9e6e] mt-0.5">Income data extracted successfully</p>
+              </div>
+              <button onclick="mobResetUpload()" class="text-[10px] text-[#676d7a] underline shrink-0">Remove</button>
+            </div>
+            <div class="bg-white rounded-lg border border-[#d4f5e8] px-3 py-2 flex items-center justify-between">
+              <span class="text-[11px] text-[#676d7a]">AGI confirmed from Line 11</span>
+              <span class="text-[11px] font-bold text-gray-900">$38,400</span>
+            </div>
+          </div>
+          <input id="mob-1040-input" type="file" accept=".pdf,image/*" class="hidden" onchange="mobHandle1040Upload(this)" />
         </div>
       </div>
 
@@ -859,56 +1351,303 @@
     </div>`;
   }
 
+  /* ── Form 1040 upload handler ── */
+  function mobHandle1040Upload(input) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const name = file.name;
+
+    // Show processing state
+    document.getElementById('mob-upload-zone').classList.add('hidden');
+    document.getElementById('mob-upload-processing').classList.remove('hidden');
+    document.getElementById('mob-upload-filename').textContent = name;
+
+    // Simulate extraction (1.8s)
+    setTimeout(() => {
+      document.getElementById('mob-upload-processing').classList.add('hidden');
+      document.getElementById('mob-upload-success').classList.remove('hidden');
+      document.getElementById('mob-upload-success-name').textContent = name;
+      // Confirm AGI field as verified
+      const agiInput = document.getElementById('mob-agi');
+      if (agiInput) {
+        agiInput.value = '38400';
+        agiInput.style.borderColor = '#0d9e6e';
+        agiInput.style.background = '#f0fbf7';
+      }
+    }, 1800);
+  }
+
+  function mobResetUpload() {
+    document.getElementById('mob-upload-success').classList.add('hidden');
+    document.getElementById('mob-upload-zone').classList.remove('hidden');
+    const agiInput = document.getElementById('mob-agi');
+    if (agiInput) {
+      agiInput.style.borderColor = '';
+      agiInput.style.background = '';
+    }
+    document.getElementById('mob-1040-input').value = '';
+  }
+
   function mobCalculatePayment() {
-    const agi       = parseInt(document.getElementById('mob-agi')?.value) || 38400;
-    const household = parseInt(document.getElementById('mob-household')?.value) || 1;
-    const poverty   = { 1:14580, 2:19720, 3:24860, 4:30000 }[household] || 14580;
-    const disposable = Math.max(0, agi - poverty * 1.5);
-    const payment   = Math.max(5, Math.round((disposable / 12) * 0.1));
+    const agi        = parseInt(document.getElementById('mob-agi')?.value) || 38400;
+    const household  = parseInt(document.getElementById('mob-household')?.value) || 1;
+    const poverty    = 15060 + (household - 1) * 5380;
+    const annual     = Math.max(0, agi - poverty * 1.5);
+    const monthly    = Math.max(5, Math.round(annual * 0.15 / 12));
+    const total      = monthly * 9;
+    const estMonthly = Math.max(5, Math.round(((agi / 12) - 2465) * 0.1));
+    const familyLabel = household === 1 ? '1 person' : household + ' people';
 
-    document.getElementById('mob-sheet-body').innerHTML = `
-    <div class="flex flex-col gap-4 pb-6">
-
-      <!-- Cait tip -->
-      <div class="bg-[#f0f4ff] border border-[#dde8ff] rounded-xl px-3.5 py-3 flex items-start gap-2.5">
-        <div class="w-5 h-5 rounded-full bg-[#265ddc] flex items-center justify-center shrink-0 mt-0.5">
-          <div class="w-2 h-2 rounded-full bg-white"></div>
+    const lightbulbHint = estMonthly < monthly ? `
+      <div class="bg-[#eff4ff] border border-[#e5edff] rounded-lg flex gap-2 items-start pl-2 pr-4 py-2 w-full">
+        <div class="overflow-hidden relative shrink-0 w-5 h-5 mt-0.5">
+          <div class="absolute" style="inset:10% 20% 7.5% 20%">
+            <img alt="lightbulb" class="absolute block inset-0 max-w-none w-full h-full" src="https://www.figma.com/api/mcp/asset/5342e21b-f505-4a67-a52c-0dfde35ce33d" />
+          </div>
         </div>
-        <p class="text-xs text-[#265ddc] leading-relaxed font-medium">Based on your AGI of $${agi.toLocaleString()} and household size, here's your affordable monthly payment under DOE guidelines.</p>
+        <p class="text-sm text-gray-900 leading-relaxed">With expense verification, Cait may reduce this to <strong class="font-semibold">$${estMonthly}/mo</strong></p>
+      </div>` : '';
+
+    document.getElementById('mob-income-body').innerHTML = `
+    <div class="flex flex-col gap-4 pb-8">
+
+      <!-- Back link -->
+      <button onclick="mobOpenIncome()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc] self-start">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back
+      </button>
+
+      <!-- Payment result card -->
+      <div class="border border-[#e5edff] rounded-xl p-4 flex flex-col gap-4" style="background:rgba(239,244,255,0.22)">
+
+        <!-- Amount (centered) -->
+        <div class="flex flex-col items-center text-center gap-1">
+          <p class="text-sm font-medium text-[#2a2f3d]">Your estimated monthly payment</p>
+          <p class="font-bold text-gray-900 leading-none" style="font-size:32px">$${monthly}<span class="text-xl font-semibold">/mo</span></p>
+          <p class="text-xs font-medium text-[#676d7a]">× 9 consecutive months = $${total.toLocaleString()} total</p>
+        </div>
+
+        ${lightbulbHint}
       </div>
 
-      <!-- Payment summary -->
-      <div class="bg-[#fafbfc] rounded-2xl p-4 border border-[#f0f2f5] flex flex-col gap-2.5">
-        <div class="flex justify-between items-center">
-          <span class="text-xs text-[#676d7a]">Your AGI</span>
-          <span class="text-xs font-semibold text-gray-900">$${agi.toLocaleString()}</span>
+      <!-- Based on / family size -->
+      <div class="grid grid-cols-2 gap-2">
+        <div class="bg-white border border-[#f0f2f5] rounded-xl px-3 py-2.5">
+          <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide mb-0.5 font-medium">Based on income</p>
+          <p class="text-sm font-bold text-gray-900">$${agi.toLocaleString()}/yr</p>
         </div>
-        <div class="flex justify-between items-center">
-          <span class="text-xs text-[#676d7a]">Standard payment</span>
-          <span class="text-xs font-medium text-[#676d7a] line-through">$198/mo</span>
-        </div>
-        <div class="border-t border-[#e2e4eb] pt-3 flex justify-between items-center">
-          <span class="text-sm font-bold text-gray-900">Your monthly payment</span>
-          <span class="text-2xl font-bold text-[#265ddc]">$${payment}<span class="text-sm font-medium">/mo</span></span>
+        <div class="bg-white border border-[#f0f2f5] rounded-xl px-3 py-2.5">
+          <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide mb-0.5 font-medium">Family size</p>
+          <p class="text-sm font-bold text-gray-900">${familyLabel}</p>
         </div>
       </div>
-      <p class="text-xs text-[#676d7a] text-center -mt-1">10% of discretionary income · DOE guidelines</p>
 
-      <!-- Accept CTA -->
-      <button onclick="mobOpenIE(${payment})" class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold hover:bg-[#1e4fc2] transition-colors">
-        Accept $${payment}/mo — Complete I&amp;E Statement →
-      </button>
-      <button onclick="mobCloseSheet()" class="w-full bg-[#eff4ff] text-[#265ddc] rounded-full py-3 text-sm font-medium hover:bg-[#e0eaff] transition-colors">
-        Go back
-      </button>
+      <!-- Comfort question -->
+      <div class="flex flex-col gap-3">
+        <p class="text-sm font-semibold text-gray-900">Are you comfortable with <strong>$${monthly}/month</strong> for 9 months?</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="mob-yes-btn" onclick="mobYesManage(${monthly})"
+            class="rounded-xl border-2 border-[#265ddc] px-3 py-3 text-sm font-semibold text-[#265ddc] hover:bg-[#eff4ff] transition-colors text-left leading-snug flex flex-col gap-2">
+            <div class="bg-[#eff4ff] rounded-[6px] relative flex items-center justify-center shrink-0 overflow-hidden" style="width:32px;height:32px;padding:6.4px">
+              <div class="relative shrink-0" style="width:19.2px;height:19.2px">
+                <img alt="" class="absolute block inset-0 max-w-none w-full h-full" src="https://www.figma.com/api/mcp/asset/ebc3c8df-7ae0-49ab-be48-fba9614be917" />
+              </div>
+            </div>
+            Yes, I can manage this
+          </button>
+          <button id="mob-no-btn" onclick="mobTooHigh(${estMonthly})"
+            class="rounded-xl border-2 border-[#e2e4eb] px-3 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left leading-snug flex flex-col gap-2">
+            <div class="bg-[#eff4ff] rounded-[6px] flex items-center justify-center shrink-0" style="width:32px;height:32px;padding:6.4px">
+              <img alt="" class="block w-full h-full max-w-none" src="https://www.figma.com/api/mcp/asset/7c806ca6-79db-4c3f-ad45-7381a8fe5bb3" />
+            </div>
+            This is too high for me
+          </button>
+        </div>
+      </div>
+
     </div>`;
+  }
+
+  function mobComfortGetGridParent() {
+    const allGrids = document.querySelectorAll('#mob-income-body .grid');
+    let gp = null;
+    allGrids.forEach(g => { if (g.querySelector('button')) gp = g.parentElement; });
+    return gp;
+  }
+
+  function mobComfortReset() {
+    // Remove any existing choice block
+    document.getElementById('mob-ie-block')?.remove();
+    document.getElementById('mob-enroll-block')?.remove();
+    // Reset both buttons to default styles
+    const yesBtn = document.getElementById('mob-yes-btn');
+    const noBtn  = document.getElementById('mob-no-btn');
+    if (yesBtn) { yesBtn.style.opacity='1'; yesBtn.style.background=''; yesBtn.style.borderColor='#265ddc'; yesBtn.style.color='#265ddc'; }
+    if (noBtn)  { yesBtn && (noBtn.style.opacity='1'); noBtn.style.background=''; noBtn.style.borderColor='#e2e4eb'; noBtn.style.color=''; }
+  }
+
+  function mobTooHigh(estPayment) {
+    mobComfortReset();
+    // Highlight "This is too high", dim "Yes"
+    const noBtn  = document.getElementById('mob-no-btn');
+    const yesBtn = document.getElementById('mob-yes-btn');
+    if (noBtn)  { noBtn.style.borderColor = '#181d29'; noBtn.style.background = '#f5f5f5'; }
+    if (yesBtn) { yesBtn.style.opacity = '0.4'; yesBtn.style.borderColor = '#e2e4eb'; }
+    // Store payment for the IE form
+    document.getElementById('mob-toohigh-start-btn').dataset.payment = estPayment;
+    setTimeout(() => document.getElementById('mob-toohigh').classList.add('active'), 120);
+  }
+
+  function mobStartTooHighIE() {
+    const btn = document.getElementById('mob-toohigh-start-btn');
+    const payment = btn?.dataset.payment || 74;
+    if (btn) { btn.disabled = true; btn.textContent = 'Opening form…'; btn.style.opacity = '0.7'; }
+    setTimeout(() => {
+      document.getElementById('mob-ie-body').innerHTML = buildMobIEForm();
+      document.getElementById('mob-auth-block').classList.add('hidden');
+      document.getElementById('mob-consent-chk').checked = false;
+      document.getElementById('mob-enroll-btn').disabled = true;
+      document.getElementById('mob-enroll-btn').classList.add('opacity-40','cursor-not-allowed');
+      if (payment) document.getElementById('mob-enroll-btn').dataset.payment = payment;
+      document.getElementById('mob-ie').classList.add('active');
+      mobIEActivate('mob-ie-sec-a');
+    }, 600);
+  }
+
+  function mobYesManage(payment) {
+    mobComfortReset();
+    // Highlight "Yes", dim "No"
+    const yesBtn = document.getElementById('mob-yes-btn');
+    const noBtn  = document.getElementById('mob-no-btn');
+    if (yesBtn) { yesBtn.style.background = '#eff4ff'; }
+    if (noBtn)  { noBtn.style.opacity = '0.4'; noBtn.style.borderColor = '#e2e4eb'; }
+    // Navigate to enroll screen
+    setTimeout(() => mobOpenEnroll(payment), 120);
+  }
+
+  function mobOpenEnroll(payment) {
+    const alreadyUploaded = !!document.getElementById('mob-upload-success') &&
+      !document.getElementById('mob-upload-success').classList.contains('hidden');
+
+    document.getElementById('mob-enroll-body').innerHTML = `
+
+      <!-- Payment summary card -->
+      <div class="border border-[#e5edff] rounded-xl p-4 flex flex-col gap-3" style="background:rgba(239,244,255,0.22)">
+        <p class="text-xs font-semibold text-[#676d7a] uppercase tracking-wide">Your estimated monthly payment</p>
+        <div class="flex items-end gap-2">
+          <p class="font-bold text-gray-900 leading-none" style="font-size:32px">$${payment}<span class="text-lg font-semibold text-[#676d7a]">/mo</span></p>
+        </div>
+        <div class="flex gap-4 text-xs text-[#676d7a]">
+          <span>× 9 consecutive months = <strong class="text-gray-900">$${payment * 9}</strong></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-[#e5edff]">
+          <div>
+            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide mb-0.5">Based on income</p>
+            <p class="text-xs font-bold text-gray-900">$38,400/yr</p>
+          </div>
+          <div>
+            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide mb-0.5">Family size</p>
+            <p class="text-xs font-bold text-gray-900">1 person</p>
+          </div>
+        </div>
+      </div>
+
+      ${alreadyUploaded ? `
+      <!-- Already verified -->
+      <div class="bg-[#ecfbf5] border border-[#b6eeda] rounded-xl px-3 py-2.5 flex items-center gap-2.5">
+        <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0d9e6e"/><path d="M5 8l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <p class="text-xs font-semibold text-emerald-800">Income verified from Form 1040</p>
+          <p class="text-xs text-emerald-700">Line 11: $38,400</p>
+        </div>
+      </div>` : `
+      <!-- Form 1040 upload prompt -->
+      <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-xl p-4 flex flex-col gap-3">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <p class="text-sm font-bold text-gray-900">Verify with Form 1040</p>
+            <p class="text-xs text-[#676d7a] mt-0.5">Upload your most recent tax return so we can extract your AGI instantly — no manual entry needed.</p>
+          </div>
+          <span class="shrink-0 text-[10px] font-semibold text-[#265ddc] bg-[#eff4ff] border border-[#e5edff] px-2 py-0.5 rounded-full whitespace-nowrap">Speeds up review</span>
+        </div>
+        <div onclick="document.getElementById('mob-enroll-1040-input').click()"
+          class="border-2 border-dashed border-[#c5d8ff] bg-white rounded-xl px-4 py-4 text-center cursor-pointer hover:bg-[#eff4ff] hover:border-[#265ddc] transition-colors">
+          <div class="w-9 h-9 rounded-lg bg-[#eff4ff] border border-[#e5edff] flex items-center justify-center mx-auto mb-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <p class="text-sm font-semibold text-gray-900">Drop your Form 1040 here</p>
+          <p class="text-xs text-[#676d7a] mt-0.5">or tap to browse · PDF, JPG, PNG</p>
+        </div>
+        <input id="mob-enroll-1040-input" type="file" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="mobEnrollHandle1040(this)" />
+        <div id="mob-enroll-1040-success" class="hidden bg-[#ecfbf5] border border-[#b6eeda] rounded-xl px-3 py-2.5 flex items-center gap-2.5">
+          <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0d9e6e"/><path d="M5 8l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div><p class="text-xs font-semibold text-emerald-800">Income verified from Form 1040</p><p class="text-xs text-emerald-700">Line 11: $38,400</p></div>
+        </div>
+        <button onclick="document.getElementById('mob-enroll-1040-prompt')?.classList.add('hidden')" class="text-xs text-[#9ca3af] text-center hover:text-[#265ddc] transition-colors">I'll skip this for now →</button>
+      </div>`}
+
+      <!-- Amber note -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 flex items-start gap-2">
+        <svg class="shrink-0 mt-0.5 text-amber-500" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        <p class="text-xs text-gray-800 leading-relaxed"><strong>Note:</strong> If a payment is missed, your 9-payment clock may reset. Set up auto-pay once confirmed.</p>
+      </div>
+
+      <!-- Consent checkbox -->
+      <label class="flex items-start gap-2.5 cursor-pointer select-none">
+        <input type="checkbox" id="mob-consent-enroll" onchange="mobToggleEnrollBtn()" class="mt-0.5 w-4 h-4 accent-[#265ddc] cursor-pointer shrink-0">
+        <span class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${payment}.</span>
+      </label>
+
+      <!-- CTA -->
+      <button id="mob-enroll-cta" onclick="mobCompleteEnrollFromScreen(${payment})" disabled
+        class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold transition-all" style="opacity:0.4;cursor:not-allowed">
+        Confirm &amp; Enroll →
+      </button>`;
+
+    document.getElementById('mob-enroll').classList.add('active');
+  }
+
+  function mobCloseEnroll() {
+    document.getElementById('mob-enroll').classList.remove('active');
+  }
+
+  function mobToggleEnrollBtn() {
+    const checked = document.getElementById('mob-consent-enroll')?.checked;
+    const btn = document.getElementById('mob-enroll-cta');
+    if (!btn) return;
+    btn.disabled = !checked;
+    btn.style.opacity = checked ? '1' : '0.4';
+    btn.style.cursor  = checked ? 'pointer' : 'not-allowed';
+  }
+
+  function mobEnrollHandle1040(input) {
+    if (!input.files?.[0]) return;
+    setTimeout(() => {
+      document.getElementById('mob-enroll-1040-success')?.classList.remove('hidden');
+    }, 1500);
+  }
+
+  function mobCompleteEnrollFromScreen(payment) {
+    const btn = document.getElementById('mob-enroll-cta');
+    if (!btn || btn.disabled) return;
+    btn.disabled = true; btn.textContent = 'Submitting…'; btn.style.opacity = '0.7';
+    setTimeout(() => mobOpenAutoPay(payment), 600);
+  }
+
+  function mobTogglePayEnroll() {
+    const checked = document.getElementById('mob-consent-pay')?.checked;
+    const btn = document.getElementById('mob-pay-enroll-btn');
+    if (!btn) return;
+    btn.disabled = !checked;
+    btn.style.opacity = checked ? '1' : '0.4';
+    btn.style.cursor  = checked ? 'pointer' : 'not-allowed';
   }
 
   /* ─────────────────────────────────────────────
      OMB IE Form (full screen)
   ───────────────────────────────────────────── */
   function mobOpenIE(payment) {
-    mobCloseSheet();
+    mobCloseIncome();
     setTimeout(() => {
       document.getElementById('mob-ie-body').innerHTML = buildMobIEForm();
       document.getElementById('mob-ie').classList.add('active');
@@ -978,7 +1717,7 @@
     const inc = ['mob-ie-income','mob-ie-ss','mob-ie-other-inc']
       .reduce((s, id) => s + (parseInt(document.getElementById(id)?.value) || 0), 0);
     const exp = ['mob-ie-rent','mob-ie-util','mob-ie-food','mob-ie-transport',
-                 'mob-ie-medical','mob-ie-health','mob-ie-personal','mob-ie-other-exp']
+                 'mob-ie-medical','mob-ie-health','mob-ie-personal','mob-ie-recreation','mob-ie-other-exp']
       .reduce((s, id) => s + (parseInt(document.getElementById(id)?.value) || 0), 0);
     const ti = document.getElementById('mob-ie-total-inc');
     const te = document.getElementById('mob-ie-total-exp');
@@ -991,7 +1730,7 @@
     const inc = ['mob-ie-income','mob-ie-ss','mob-ie-other-inc']
       .reduce((s, id) => s + (parseInt(document.getElementById(id)?.value) || 0), 0);
     const exp = ['mob-ie-rent','mob-ie-util','mob-ie-food','mob-ie-transport',
-                 'mob-ie-medical','mob-ie-health','mob-ie-personal','mob-ie-other-exp']
+                 'mob-ie-medical','mob-ie-health','mob-ie-personal','mob-ie-recreation','mob-ie-other-exp']
       .reduce((s, id) => s + (parseInt(document.getElementById(id)?.value) || 0), 0);
     const disposable = Math.max(0, inc - exp);
     const payment    = Math.max(5, Math.round(disposable * 0.1));
@@ -1027,55 +1766,245 @@
     btn.classList.toggle('cursor-not-allowed', !checked);
   }
 
-  /* Final enrollment */
+  /* Final enrollment → open autopay setup flow */
   function mobCompleteEnrollment() {
     const payment = document.getElementById('mob-enroll-btn')?.dataset.payment || '74';
     const btn     = document.getElementById('mob-enroll-btn');
     if (!btn || btn.disabled) return;
-    btn.disabled  = true;
-    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+    btn.textContent = 'Setting up…';
+    setTimeout(() => mobOpenAutoPay(payment), 600);
+  }
 
-    setTimeout(() => {
-      // Update tip strip to success
-      const tip = document.getElementById('mob-ie-tip');
-      const tipText = document.getElementById('mob-ie-tip-text');
-      if (tip)  { tip.style.background = '#f0fbf7'; tip.style.borderColor = '#d4f5e8'; }
-      if (tipText) { tipText.style.color = '#0d9e6e'; tipText.textContent = 'You\'re enrolled! Here\'s what happens next.'; }
+  /* ─────────────────────────────────────────────
+     AUTO-PAY SETUP FLOW (3 steps + success)
+  ───────────────────────────────────────────── */
+  let autopayStep = 1;
+  let autopayPayment = 74;
+  let autopayRouting = '';
+  let autopayAccount = '';
 
-      document.getElementById('mob-auth-block').classList.add('hidden');
-      document.getElementById('mob-ie-body').innerHTML = `
-        <div class="flex flex-col items-center gap-5 py-8 text-center">
-          <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M7 14l4.5 4.5L21 8" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  function mobOpenAutoPay(payment) {
+    autopayPayment = payment || 74;
+    autopayStep = 1;
+    autopayRouting = '';
+    autopayAccount = '';
+    mobRenderAutopayStep();
+    document.getElementById('mob-autopay').classList.add('active');
+  }
+
+  function mobRenderAutopayStep() {
+    const body     = document.getElementById('mob-autopay-body');
+    const subtitle = document.getElementById('mob-autopay-subtitle');
+    const pill     = document.getElementById('mob-autopay-step-pill');
+    const backBtn  = document.getElementById('mob-autopay-back-btn');
+    const nextBtn  = document.getElementById('mob-autopay-next-btn');
+
+    // Steps: 1 = Bank + Auth, 2 = Confirm Schedule, 3 = Success
+    if (autopayStep < 3) {
+      pill.classList.remove('hidden');
+      pill.querySelector('p').textContent = autopayStep + ' of 2';
+    } else {
+      pill.classList.add('hidden');
+    }
+
+    // Show Cait bar on steps 1 & 2, hide on success
+    const caitBar = document.getElementById('mob-autopay-cait-bar');
+    if (caitBar) caitBar.style.display = autopayStep < 3 ? '' : 'none';
+
+    // ── Step 1: Bank details + Authorization (fused) ──
+    if (autopayStep === 1) {
+      subtitle.textContent = 'Set Up Auto-Pay';
+      // Hide pinned footer — CTAs live inside the body for step 1
+      document.getElementById('mob-autopay-footer').style.display = 'none';
+      body.innerHTML = `
+        <div class="flex flex-col pb-4">
+          <button onclick="mobAutopayBack()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc] self-start mb-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+          </button>
+          <h2 class="text-xl font-bold text-gray-900 leading-snug mb-1">Enter Funding Account</h2>
+          <p class="text-sm text-[#676d7a] leading-relaxed mb-4">Provide your bank details to set up recurring monthly payments.</p>
+
+
+          <div class="ap-field">
+            <label>Routing Number</label>
+            <input id="ap-routing" class="ap-input" type="tel" maxlength="9" placeholder="9-digit routing number"
+              oninput="this.classList.toggle('filled',this.value.length>0)" />
+          </div>
+          <div class="ap-field">
+            <label>Account Number</label>
+            <input id="ap-account" class="ap-input" type="tel" placeholder="Account number"
+              oninput="this.classList.toggle('filled',this.value.length>0)" />
+          </div>
+          <div class="ap-field">
+            <label>Confirm Account Number</label>
+            <input id="ap-account-confirm" class="ap-input" type="tel" placeholder="Re-enter account number"
+              oninput="this.classList.toggle('filled',this.value.length>0)" />
+          </div>
+
+          <!-- Security badge -->
+          <div class="flex items-center gap-3 bg-[#f0fbf7] border border-[#b6eeda] rounded-xl px-4 py-3 mb-5">
+            <div class="w-8 h-8 rounded-lg bg-[#027a42] flex items-center justify-center shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <p class="text-xs text-[#027a42] leading-relaxed">Your data is protected by Candidly's <strong>security policy</strong></p>
+          </div>
+
+          <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4 mt-4 mb-5">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="ap-auth-chk" onchange="mobToggleAutopayNext()"
+                class="mt-0.5 w-5 h-5 rounded accent-[#265ddc] cursor-pointer shrink-0" style="flex-shrink:0;margin-top:2px" />
+              <span class="text-sm text-gray-800 leading-relaxed">
+                I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
+              </span>
+            </label>
+          </div>
+
+          <!-- Inline CTAs -->
+          <div class="flex gap-3">
+            <button id="ap-inline-next" onclick="mobAutopayNext()" disabled
+              class="w-full rounded-full py-3.5 text-sm font-semibold text-white transition-colors" style="background:#9cb3f0">
+              Next →
+            </button>
+          </div>
+        </div>`;
+
+    // ── Step 2: Confirm Schedule ──
+    } else if (autopayStep === 2) {
+      subtitle.textContent = 'Confirm Schedule';
+      // Hide pinned footer — CTAs live inside the body for step 2
+      document.getElementById('mob-autopay-footer').style.display = 'none';
+      const d = new Date(); d.setDate(d.getDate() + 3);
+      const nextDate = (d.getMonth()+1).toString().padStart(2,'0') + '-' + d.getDate().toString().padStart(2,'0') + '-' + d.getFullYear();
+      const last4 = autopayAccount.length >= 4 ? autopayAccount.slice(-4) : '5678';
+      body.innerHTML = `
+        <div class="flex flex-col items-center gap-5">
+          <button onclick="mobAutopayBack()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc] self-start">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+          </button>
+          <div class="flex items-center justify-center w-20 h-20 rounded-full bg-[#f0f4ff] mt-2">
+            <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+              <rect x="8" y="6" width="28" height="36" rx="3" fill="#e5edff" stroke="#265ddc" stroke-width="1.8"/>
+              <path d="M14 18h20M14 24h14M14 30h10" stroke="#265ddc" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="37" cy="37" r="9" fill="#ecfbf5"/>
+              <path d="M33 37l3 3 5-5" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-900 text-center">Confirm schedule</h2>
+          <div class="w-full border border-[#f0f2f5] rounded-2xl overflow-hidden">
+            <div class="grid grid-cols-2 px-4 py-2.5 bg-[#fafbfc] border-b border-[#f0f2f5]">
+              <span class="ap-table-hdr">Title</span>
+              <span class="ap-table-hdr text-right">Value</span>
+            </div>
+            <div class="px-4">
+              <div class="ap-table-row"><span class="text-sm text-[#676d7a]">Amount</span><span class="text-sm font-semibold text-gray-900">$${autopayPayment}.00</span></div>
+              <div class="ap-table-row"><span class="text-sm text-[#676d7a]">Contribution Type</span><span class="text-sm font-semibold text-gray-900">Monthly</span></div>
+              <div class="ap-table-row"><span class="text-sm text-[#676d7a]">Duration</span><span class="text-sm font-semibold text-gray-900">9 consecutive months</span></div>
+              <div class="ap-table-row"><span class="text-sm text-[#676d7a]">Next Transfer</span><span class="text-sm font-semibold text-gray-900">${nextDate}</span></div>
+              <div class="ap-table-row"><span class="text-sm text-[#676d7a]">Funding Account</span><span class="text-sm font-semibold text-gray-900">${last4}</span></div>
+            </div>
+          </div>
+
+          <!-- Outcome callout -->
+          <div class="w-full flex items-start gap-3 bg-[#ecfbf5] border border-[#b6eeda] rounded-2xl px-4 py-3">
+            <div class="w-7 h-7 rounded-full bg-[#027a42] flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-[#027a42]">After 9 on-time payments</p>
+              <p class="text-xs text-[#027a42] leading-relaxed mt-0.5">Your default is <strong>permanently removed</strong> from all 3 credit bureaus — no more collections, no more Treasury offsets.</p>
+            </div>
+          </div>
+
+          <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you confirm this payment and agree to the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>.</p>
+
+          <!-- Inline CTAs -->
+          <div class="flex gap-3 w-full pb-2">
+            <button onclick="mobAutopayNext()"
+              class="w-full rounded-full py-3.5 text-sm font-semibold text-white transition-colors" style="background:#265ddc">
+              Confirm →
+            </button>
+          </div>
+        </div>`;
+
+    // ── Step 3: Success ──
+    } else if (autopayStep === 3) {
+      subtitle.textContent = "You\u2019re Enrolled";
+      backBtn.classList.add('hidden');
+      nextBtn.textContent = 'Done';
+      nextBtn.disabled = false;
+      nextBtn.style.background = '#265ddc';
+      body.innerHTML = `
+        <div class="flex flex-col items-center gap-5 py-6 text-center">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center" style="background:#ecfbf5">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <path d="M9 18l5.5 5.5L27 12" stroke="#027a42" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
           <div>
-            <p class="text-xl font-bold text-gray-900">You're enrolled in rehabilitation!</p>
-            <p class="text-sm text-[#676d7a] mt-1.5 leading-relaxed max-w-xs mx-auto">Your agreement has been submitted to the Default Resolution Group. Collections are now paused while your case is processed.</p>
+            <p class="text-2xl font-bold text-gray-900">You're all set!</p>
+            <p class="text-sm text-[#676d7a] mt-2 leading-relaxed max-w-xs mx-auto">Your rehabilitation agreement and auto-pay have been confirmed. Your <strong class="text-gray-900">$${autopayPayment}/month</strong> payments start on your next transfer date.</p>
           </div>
-          <div class="bg-[#fafbfc] rounded-2xl p-5 w-full text-left border border-[#f0f2f5]">
-            <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
-            <ul class="flex flex-col gap-3 text-sm text-gray-800">
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-                <span>The Default Resolution Group will confirm your <strong>$${payment}/month</strong> payment within 5–7 business days</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-                <span>Make your <strong>first payment</strong> to officially start the 9-payment clock</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-                <span>Set up <strong>auto-pay</strong> — a missed payment can reset your clock</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">✓</span>
-                <span style="color:#16a34a;font-weight:500">After 9 on-time payments — default permanently removed from your credit report</span>
-              </li>
-            </ul>
+          <div class="w-full bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4 text-left">
+            <p class="text-xs font-bold text-gray-900 uppercase tracking-wide mb-3">What happens next</p>
+            <div class="flex flex-col gap-3">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-[#e5edff] flex items-center justify-center shrink-0 mt-0.5"><span class="text-[10px] font-bold text-[#265ddc]">1</span></div>
+                <p class="text-sm text-gray-800 leading-snug">The Default Resolution Group will confirm your enrollment within <strong>5–7 business days</strong></p>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-[#e5edff] flex items-center justify-center shrink-0 mt-0.5"><span class="text-[10px] font-bold text-[#265ddc]">2</span></div>
+                <p class="text-sm text-gray-800 leading-snug">Your first <strong>$${autopayPayment} payment</strong> starts the 9-payment clock — auto-pay handles it automatically</p>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <p class="text-sm leading-snug" style="color:#027a42;font-weight:500">After 9 on-time payments — default permanently removed from all 3 credit bureaus</p>
+              </div>
+            </div>
           </div>
-          <p class="text-xs text-[#676d7a]">Questions? help@getcandidly.com · (866) 719-3437</p>
+          <p class="text-xs text-[#9ca3af]">Questions? help@getcandidly.com · (866) 719-3437</p>
         </div>`;
-    }, 1300);
+    }
+  }
+
+  function mobToggleAutopayNext() {
+    const chk = document.getElementById('ap-auth-chk');
+    // Step 1 uses an inline button; fall back to pinned footer button
+    const btn = document.getElementById('ap-inline-next') || document.getElementById('mob-autopay-next-btn');
+    if (!btn) return;
+    const ok = chk?.checked;
+    btn.disabled = !ok;
+    btn.style.background = ok ? '#265ddc' : '#9cb3f0';
+  }
+
+  function mobAutopayNext() {
+    if (autopayStep === 1) {
+      const routing = document.getElementById('ap-routing')?.value.trim();
+      const account = document.getElementById('ap-account')?.value.trim();
+      autopayRouting = routing || '021000021';
+      autopayAccount = account || '123456785678';
+      autopayStep = 2;
+    } else if (autopayStep === 2) {
+      autopayStep = 3;
+    } else if (autopayStep === 3) {
+      // Done — collapse all flow screens back to home
+      ['mob-autopay','mob-ie','mob-enroll','mob-income','mob-toohigh'].forEach(id => {
+        document.getElementById(id)?.classList.remove('active');
+      });
+      return;
+    }
+    mobRenderAutopayStep();
+  }
+
+  function mobAutopayBack() {
+    if (autopayStep <= 1) {
+      document.getElementById('mob-autopay').classList.remove('active');
+    } else {
+      autopayStep--;
+      mobRenderAutopayStep();
+    }
   }
 
   /* ─────────────────────────────────────────────
@@ -1161,14 +2090,36 @@
           <div class="ie-field-wrap"><label class="ie-label">Medical / Dental</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-medical" class="ie-input ie-money" value="80" type="number" oninput="mobUpdateTotals()" /></div></div>
           <div class="ie-field-wrap"><label class="ie-label">Health Insurance</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-health" class="ie-input ie-money" value="120" type="number" oninput="mobUpdateTotals()" /></div></div>
           <div class="ie-field-wrap"><label class="ie-label">Personal Care</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-personal" class="ie-input ie-money" value="50" type="number" oninput="mobUpdateTotals()" /></div></div>
-          <div class="ie-field-wrap"><label class="ie-label">Other Expenses</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-other-exp" class="ie-input ie-money" value="115" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Recreation &amp; Entertainment</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-recreation" class="ie-input ie-money" value="50" type="number" oninput="mobUpdateTotals()" /></div></div>
+          <div class="ie-field-wrap"><label class="ie-label">Other Expenses</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-other-exp" class="ie-input ie-money" value="65" type="number" oninput="mobUpdateTotals()" /></div></div>
           <div class="ie-total-row">
             <span class="text-xs font-bold text-gray-900">Total Monthly Expenses</span>
             <span id="mob-ie-total-exp" class="text-xs font-bold text-[#265ddc]">$2,465</span>
           </div>
+
+          <!-- Health insurance upload -->
+          <div class="mt-3 rounded-2xl border border-[#e2e4eb] overflow-hidden">
+            <div class="flex items-center justify-between px-3 py-2.5 bg-[#fafbfc] border-b border-[#e2e4eb]">
+              <div class="flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#676d7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span class="text-[11px] font-semibold text-gray-700">Health Insurance Statement</span>
+              </div>
+              <span class="text-[10px] font-medium text-[#e05c2e] bg-[#fff1ec] rounded-full px-2 py-0.5">Required</span>
+            </div>
+            <div id="ie-health-upload-area" onclick="mobFormSimulateUpload()" class="flex items-center gap-3 px-3 py-3 cursor-pointer hover:bg-[#f5f8ff] transition-colors">
+              <div class="w-8 h-8 rounded-xl bg-[#eff4ff] flex items-center justify-center shrink-0">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-[12px] font-semibold text-[#265ddc]">Tap to upload</p>
+                <p class="text-[10px] text-[#9ca3af]">PDF, PNG or JPG · premium statement or benefits letter</p>
+              </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b0b6c2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+          </div>
         </div>
         <div class="ie-sec-confirm">
-          <button onclick="mobIEReply(3)" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">Confirm →</button>
+          <button id="ie-exp-confirm-btn" onclick="mobIEReply(3)" disabled class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 opacity-40 cursor-not-allowed transition-all">Confirm →</button>
         </div>
       </div>
 
@@ -1196,15 +2147,18 @@
         </div>
       </div>
 
+      <p class="text-[10px] text-[#9ca3af] text-center pt-1 pb-2">OMB No. 1845-0120 · Exp. 11/30/2027 · U.S. Dept. of Education</p>
+
     </div>`;
   }
 
   // ?sheet shortcut — opens income form directly (for previewing)
   if (location.search.includes('sheet')) {
     setTimeout(() => {
-      document.getElementById('mob-sheet-body').innerHTML = buildMobIncomeForm();
-      document.getElementById('mob-sheet').classList.add('open');
-      document.getElementById('mob-overlay').classList.add('visible');
+      // First show chat screen so income can slide over it
+      document.getElementById('mob-home').classList.add('fading');
+      document.getElementById('mob-chat').classList.add('active');
+      mobOpenIncome();
     }, 300);
   }
 </script>
