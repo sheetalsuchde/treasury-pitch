@@ -2311,7 +2311,7 @@
           </button>
 
           <!-- Payment result card -->
-          <div class="border border-[#fde68a] rounded-xl p-4 flex flex-col gap-4" style="background:rgba(255,251,235,0.5)">
+          <div class="rounded-xl p-4 flex flex-col gap-4" style="background:#eff4ff">
             <div class="flex flex-col gap-1 items-center text-center">
               <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your RAP monthly payment</p>
               <p class="font-bold text-gray-900 leading-8" style="font-size:26px;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
@@ -2320,15 +2320,15 @@
 
             <!-- Stats row -->
             <div class="grid grid-cols-3 gap-2">
-              <div class="bg-white rounded-xl px-3 py-2.5 border border-[#e2e4eb] text-center">
+              <div class="bg-[#fafbfc] rounded-xl px-3 py-2.5 text-center">
                 <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Repayment term</p>
                 <p class="text-sm font-bold text-gray-900">${termYears} years</p>
               </div>
-              <div class="bg-white rounded-xl px-3 py-2.5 border border-[#e2e4eb] text-center">
+              <div class="bg-[#fafbfc] rounded-xl px-3 py-2.5 text-center">
                 <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Total paid</p>
                 <p class="text-sm font-bold text-gray-900">$${totalPaid.toLocaleString()}</p>
               </div>
-              <div class="bg-white rounded-xl px-3 py-2.5 border border-[#e2e4eb] text-center">
+              <div class="bg-[#fafbfc] rounded-xl px-3 py-2.5 text-center">
                 <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Amt. forgiven</p>
                 <p class="text-sm font-bold text-green-600">$${forgiven.toLocaleString()}</p>
               </div>
@@ -2362,10 +2362,16 @@
       document.getElementById('fp-body').innerHTML = `
         <div class="flex flex-col gap-4">
 
+          <!-- Back link -->
+          <button onclick="dSaveShowResults()" class="flex items-center gap-1.5 text-xs text-neutral-disabled hover:text-brand-primary transition-colors self-start -mb-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to payment results
+          </button>
+
           <!-- Plan summary -->
           <div class="rounded-xl p-4 flex flex-col gap-3" style="background:#fafbfc">
             <div>
-              <span class="text-xs font-bold text-amber-800 bg-amber-100 border border-amber-200 rounded-full px-2.5 py-0.5">RAP — Income-Driven</span>
+              <span class="text-xs font-bold text-[#265ddc] bg-[#eff4ff] border border-[#e5edff] rounded-full px-2.5 py-0.5">RAP — Income-Driven</span>
             </div>
             <div class="grid grid-cols-2 gap-2">
               <div>
@@ -2515,6 +2521,12 @@
         document.getElementById('fp-subtitle').textContent = 'Enter Funding Account · 1 of 2';
         body.innerHTML = `
           <div class="flex flex-col gap-5 pb-6">
+            <!-- Back link -->
+            <button onclick="showRAPEnrollPanel()" class="flex items-center gap-1.5 text-xs text-neutral-disabled hover:text-brand-primary transition-colors self-start -mb-1">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              Back to enrollment
+            </button>
+
             <!-- Enrolled banner — green matching Rehab -->
             <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;">
               <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
