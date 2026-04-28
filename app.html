@@ -1443,10 +1443,11 @@
       <!-- Comfort question -->
       <div class="flex flex-col gap-3">
         <p class="text-sm font-semibold text-gray-900">Does this monthly payment work for you?</p>
-        <div class="grid grid-cols-2 gap-2 items-start">
-          <!-- Both start neutral — no pre-selection -->
+        <div class="flex flex-col gap-2">
+
+          <!-- Option 1: Yes -->
           <button id="mob-yes-btn" onclick="mobYesManage(${monthly})"
-            class="rounded-xl border-2 border-[#e2e4eb] px-3 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left leading-snug flex flex-col gap-2">
+            class="w-full rounded-xl border-2 border-[#e2e4eb] px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left flex items-center gap-3">
             <div class="bg-[#f0f2f7] rounded-[6px] relative flex items-center justify-center shrink-0 overflow-hidden" style="width:32px;height:32px;padding:6.4px">
               <div class="relative shrink-0" style="width:19.2px;height:19.2px">
                 <img alt="" class="absolute block inset-0 max-w-none w-full h-full" src="https://www.figma.com/api/mcp/asset/ebc3c8df-7ae0-49ab-be48-fba9614be917" />
@@ -1454,14 +1455,25 @@
             </div>
             Yes, this works for me
           </button>
+
+          <!-- Option 2: Lower payment — with Cait callout -->
           <button id="mob-no-btn" onclick="mobTooHigh(${estMonthly})"
-            class="rounded-xl border-2 border-[#e2e4eb] px-3 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left leading-snug flex flex-col gap-2">
-            <div class="bg-[#f0f2f7] rounded-[6px] flex items-center justify-center shrink-0" style="width:32px;height:32px;padding:6.4px">
-              <img alt="" class="block w-full h-full max-w-none" src="https://www.figma.com/api/mcp/asset/7c806ca6-79db-4c3f-ad45-7381a8fe5bb3" />
+            class="w-full rounded-xl border-2 border-[#e2e4eb] px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left flex flex-col gap-3">
+            <div class="flex items-center gap-3">
+              <div class="bg-[#f0f2f7] rounded-[6px] flex items-center justify-center shrink-0" style="width:32px;height:32px;padding:6.4px">
+                <img alt="" class="block w-full h-full max-w-none" src="https://www.figma.com/api/mcp/asset/7c806ca6-79db-4c3f-ad45-7381a8fe5bb3" />
+              </div>
+              I need a lower payment
             </div>
-            <span>I need a lower payment</span>
-            <span class="text-[11px] font-normal text-[#9ca3af] leading-tight -mt-1">Cait can help — as low as $5/mo</span>
+            <!-- Cait callout -->
+            <div class="flex items-start gap-2.5 bg-[#EEEDFE] rounded-xl px-3 py-2.5 w-full">
+              <div class="w-5 h-5 rounded-full bg-[#534AB7] flex items-center justify-center shrink-0 mt-0.5">
+                <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+              </div>
+              <p class="text-xs font-normal text-[#3C3489] leading-relaxed">Cait can review your income &amp; expenses to find a lower payment — potentially as low as <strong>$5/mo</strong></p>
+            </div>
           </button>
+
         </div>
       </div>
 
