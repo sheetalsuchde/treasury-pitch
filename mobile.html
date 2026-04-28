@@ -65,17 +65,7 @@
       /* transform set by JS */
     }
 
-    /* Ambient glow behind the phone — #31ADF5 × #B380BC */
-    .phone-glow {
-      position: absolute;
-      inset: -80px;
-      background:
-        radial-gradient(ellipse at 35% 55%, rgba(49,173,245,0.28) 0%, transparent 55%),
-        radial-gradient(ellipse at 65% 45%, rgba(179,128,188,0.28) 0%, transparent 55%);
-      pointer-events: none;
-      z-index: -1;
-      filter: blur(18px);
-    }
+    .phone-glow { display: none; }
 
     /* Outer shell — Natural Titanium */
     .phone-shell {
