@@ -6,45 +6,78 @@
   <title>Candidly — Mobile Demo</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', sans-serif; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', sans-serif; }
 
     html, body {
       height: 100%;
-      overflow: hidden; /* lock outer scroll */
+      overflow: hidden;
     }
 
     body {
-      background: #f0f2f5;
+      background: #0d1117;
       height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 32px 16px;
     }
 
-    /* Candidly wordmark above phone */
+    /* ── Slim top bar ── */
+    .top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 200;
+    }
+
     .wordmark {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 28px;
+      gap: 7px;
     }
     .wordmark-dot {
-      width: 28px; height: 28px;
+      width: 22px; height: 22px;
       background: #265ddc;
-      border-radius: 8px;
+      border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
     }
-    .wordmark-dot-inner { width: 10px; height: 10px; border-radius: 50%; background: white; }
-    .wordmark-text { font-size: 18px; font-weight: 700; color: #181d29; }
+    .wordmark-dot-inner { width: 8px; height: 8px; border-radius: 50%; background: white; }
+    .wordmark-text { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.9); letter-spacing: -0.2px; }
 
-    /* ── iPhone 15 Pro frame ── */
+    .top-bar-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .top-bar-links a {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      letter-spacing: 0.2px;
+      transition: color 0.15s;
+    }
+    .top-bar-links a:hover { color: rgba(255,255,255,0.75); }
+    .top-bar-links .sep { color: rgba(255,255,255,0.15); }
+
+    /* ── Phone frame ── */
     .phone-wrap {
       position: relative;
       width: 393px;
       height: 852px;
       flex-shrink: 0;
+      /* transform set by JS */
+    }
+
+    /* Subtle ambient glow behind the phone */
+    .phone-glow {
+      position: absolute;
+      inset: -60px;
+      background: radial-gradient(ellipse at center, rgba(38,93,220,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
     }
 
     /* Outer shell */
@@ -52,12 +85,12 @@
       position: absolute;
       inset: 0;
       border-radius: 54px;
-      background: linear-gradient(160deg, #2a2a2a 0%, #1a1a1a 50%, #111 100%);
+      background: linear-gradient(160deg, #2e2e2e 0%, #1a1a1a 50%, #111 100%);
       box-shadow:
-        0 0 0 1px #444,
-        0 30px 80px rgba(0,0,0,0.55),
-        0 8px 24px rgba(0,0,0,0.4),
-        inset 0 1px 0 rgba(255,255,255,0.08);
+        0 0 0 1px #3a3a3a,
+        0 40px 100px rgba(0,0,0,0.8),
+        0 8px 32px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.1);
     }
 
     /* Side buttons */
@@ -66,16 +99,16 @@
       position: absolute;
       left: -3px; top: 140px;
       width: 3px; height: 36px;
-      background: #333;
+      background: #2a2a2a;
       border-radius: 3px 0 0 3px;
-      box-shadow: 0 54px 0 #333, 0 100px 0 #333;
+      box-shadow: 0 54px 0 #2a2a2a, 0 100px 0 #2a2a2a;
     }
     .phone-shell::after {
       content: '';
       position: absolute;
       right: -3px; top: 180px;
       width: 3px; height: 72px;
-      background: #333;
+      background: #2a2a2a;
       border-radius: 0 3px 3px 0;
     }
 
@@ -131,38 +164,26 @@
       border-radius: 3px;
       z-index: 10;
     }
-
-    /* URL hint below */
-    .hint {
-      margin-top: 24px;
-      font-size: 12px;
-      color: #9ca3af;
-      text-align: center;
-      letter-spacing: 0.3px;
-    }
-    .hint a { color: #265ddc; text-decoration: none; }
-    .hint a:hover { text-decoration: underline; }
-
-    /* Scale down on smaller screens */
-    @media (max-height: 980px) {
-      .phone-wrap { transform: scale(0.88); transform-origin: top center; }
-      body { padding-top: 16px; }
-    }
-    @media (max-height: 860px) {
-      .phone-wrap { transform: scale(0.76); transform-origin: top center; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Wordmark -->
-  <div class="wordmark">
-    <div class="wordmark-dot"><div class="wordmark-dot-inner"></div></div>
-    <span class="wordmark-text">Candidly</span>
+  <!-- Slim top bar -->
+  <div class="top-bar">
+    <div class="wordmark">
+      <div class="wordmark-dot"><div class="wordmark-dot-inner"></div></div>
+      <span class="wordmark-text">Candidly</span>
+    </div>
+    <div class="top-bar-links">
+      <a href="/">← All scenarios</a>
+      <span class="sep">·</span>
+      <a href="/desktop" target="_blank">Desktop view ↗</a>
+    </div>
   </div>
 
   <!-- iPhone frame -->
-  <div class="phone-wrap">
+  <div class="phone-wrap" id="phone-wrap">
+    <div class="phone-glow"></div>
     <div class="phone-shell"></div>
     <div class="phone-screen">
       <div class="dynamic-island">
@@ -170,7 +191,6 @@
       </div>
       <iframe id="main-iframe" src="/app.html" title="Candidly Mobile"></iframe>
       <script>
-        // Pass query string from /mobile?sheet → iframe src
         const qs = location.search;
         if (qs) document.getElementById('main-iframe').src = '/app.html' + qs;
       </script>
@@ -178,11 +198,21 @@
     </div>
   </div>
 
-  <p class="hint">
-    <a href="/mobile" target="_blank">treasury-pitch.vercel.app/mobile</a>
-    &nbsp;·&nbsp;
-    <a href="/" target="_blank">Desktop version ↗</a>
-  </p>
+  <script>
+    function scalePhone() {
+      const topBar   = 48;
+      const vPad     = 32; // breathing room top+bottom
+      const hPad     = 32;
+      const availH   = window.innerHeight - topBar - vPad;
+      const availW   = window.innerWidth - hPad;
+      const scale    = Math.min(availH / 852, availW / 393);
+      // Allow slight upscale on large screens (up to 1.05), clamp down on small
+      const clamped  = Math.min(Math.max(scale, 0.4), 1.05);
+      document.getElementById('phone-wrap').style.transform = `scale(${clamped})`;
+    }
+    scalePhone();
+    window.addEventListener('resize', scalePhone);
+  </script>
 
 </body>
 </html>

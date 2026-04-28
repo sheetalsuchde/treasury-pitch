@@ -708,6 +708,27 @@
     if (prompt) prompt.style.display = 'none';
   }
 
+  // ── Desktop custom dropdown helpers ──
+  function dskToggleDD(listId, e) {
+    e.stopPropagation();
+    var list = document.getElementById(listId);
+    if (list) list.classList.toggle('hidden');
+  }
+  function dskPickDD(lblId, listId, inputId, val) {
+    var lbl  = document.getElementById(lblId);
+    var inp  = document.getElementById(inputId);
+    var list = document.getElementById(listId);
+    if (lbl)  { lbl.textContent = val; lbl.className = 'text-[#181d29]'; }
+    if (inp)  inp.value = val;
+    if (list) list.classList.add('hidden');
+  }
+  document.addEventListener('click', function() {
+    ['form-marital-list', 'form-filing-list'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    });
+  });
+
   function clearFormResults() {
     // no-op: results now live in their own screen via calculateFormPayment()
   }
@@ -775,31 +796,45 @@
         <div class="grid grid-cols-2 gap-3">
           <div class="flex flex-col gap-1">
             <p class="${labelCls}">Current marital status</p>
-            <div class="relative">
-              <select id="form-marital" class="${selectCls}">
-                <option value="" disabled selected>Select</option>
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-                <option value="separated">Separated</option>
-                <option value="divorced">Divorced</option>
-                <option value="widowed">Widowed</option>
-              </select>
-              <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <div class="relative" id="form-marital-wrap">
+              <button type="button" id="form-marital-btn"
+                class="${inputCls} flex items-center justify-between cursor-pointer"
+                onclick="dskToggleDD('form-marital-list',event)">
+                <span id="form-marital-lbl" class="text-[#9ca3af]">Select</span>
+                <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div id="form-marital-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
+                <div class="py-1">
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Single')">Single</button>
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Married')">Married</button>
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Separated')">Separated</button>
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Divorced')">Divorced</button>
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Widowed')">Widowed</button>
+                </div>
+              </div>
             </div>
+            <input type="hidden" id="form-marital" value="" />
             <p class="${helperCls}">Improves repayment accuracy</p>
           </div>
           <div class="flex flex-col gap-1">
             <p class="${labelCls}">Tax filing status</p>
-            <div class="relative">
-              <select id="form-filing" class="${selectCls}">
-                <option value="" disabled selected>Select</option>
-                <option value="single">Single</option>
-                <option value="married_joint">Married filing jointly</option>
-                <option value="married_separate">Married filing separately</option>
-                <option value="head">Head of household</option>
-              </select>
-              <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <div class="relative" id="form-filing-wrap">
+              <button type="button" id="form-filing-btn"
+                class="${inputCls} flex items-center justify-between cursor-pointer"
+                onclick="dskToggleDD('form-filing-list',event)">
+                <span id="form-filing-lbl" class="text-[#9ca3af]">Select</span>
+                <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div id="form-filing-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
+                <div class="py-1">
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Single')">Single</button>
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Married filing jointly')">Married filing jointly</button>
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Married filing separately')">Married filing separately</button>
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Head of household')">Head of household</button>
+                </div>
+              </div>
             </div>
+            <input type="hidden" id="form-filing" value="" />
             <p class="${helperCls}">Most recent tax return status</p>
           </div>
         </div>
@@ -2249,31 +2284,45 @@
           <div class="grid grid-cols-2 gap-3">
             <div class="flex flex-col gap-1">
               <p class="${labelCls}">Current marital status</p>
-              <div class="relative">
-                <select id="form-marital" class="${selectCls}">
-                  <option value="" disabled selected>Select</option>
-                  <option value="single">Single</option>
-                  <option value="married">Married</option>
-                  <option value="separated">Separated</option>
-                  <option value="divorced">Divorced</option>
-                  <option value="widowed">Widowed</option>
-                </select>
-                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              <div class="relative" id="form-marital-wrap">
+                <button type="button" id="form-marital-btn"
+                  class="${inputCls} flex items-center justify-between cursor-pointer"
+                  onclick="dskToggleDD('form-marital-list',event)">
+                  <span id="form-marital-lbl" class="text-[#9ca3af]">Select</span>
+                  <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div id="form-marital-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
+                  <div class="py-1">
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Single')">Single</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Married')">Married</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Separated')">Separated</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Divorced')">Divorced</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Widowed')">Widowed</button>
+                  </div>
+                </div>
               </div>
+              <input type="hidden" id="form-marital" value="" />
               <p class="${helperCls}">Improves repayment accuracy</p>
             </div>
             <div class="flex flex-col gap-1">
               <p class="${labelCls}">Tax filing status</p>
-              <div class="relative">
-                <select id="form-filing" class="${selectCls}">
-                  <option value="" disabled selected>Select</option>
-                  <option value="single">Single</option>
-                  <option value="married_joint">Married filing jointly</option>
-                  <option value="married_separate">Married filing separately</option>
-                  <option value="head">Head of household</option>
-                </select>
-                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              <div class="relative" id="form-filing-wrap">
+                <button type="button" id="form-filing-btn"
+                  class="${inputCls} flex items-center justify-between cursor-pointer"
+                  onclick="dskToggleDD('form-filing-list',event)">
+                  <span id="form-filing-lbl" class="text-[#9ca3af]">Select</span>
+                  <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div id="form-filing-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
+                  <div class="py-1">
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Single')">Single</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Married filing jointly')">Married filing jointly</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Married filing separately')">Married filing separately</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Head of household')">Head of household</button>
+                  </div>
+                </div>
               </div>
+              <input type="hidden" id="form-filing" value="" />
               <p class="${helperCls}">Most recent tax return status</p>
             </div>
           </div>
@@ -3070,31 +3119,45 @@
           <div class="grid grid-cols-2 gap-3">
             <div class="flex flex-col gap-1">
               <p class="${labelCls}">Current marital status</p>
-              <div class="relative">
-                <select id="form-marital" class="${selectCls}">
-                  <option value="" disabled selected>Select</option>
-                  <option value="single">Single</option>
-                  <option value="married">Married</option>
-                  <option value="separated">Separated</option>
-                  <option value="divorced">Divorced</option>
-                  <option value="widowed">Widowed</option>
-                </select>
-                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              <div class="relative" id="form-marital-wrap">
+                <button type="button" id="form-marital-btn"
+                  class="${inputCls} flex items-center justify-between cursor-pointer"
+                  onclick="dskToggleDD('form-marital-list',event)">
+                  <span id="form-marital-lbl" class="text-[#9ca3af]">Select</span>
+                  <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div id="form-marital-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
+                  <div class="py-1">
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Single')">Single</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Married')">Married</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Separated')">Separated</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Divorced')">Divorced</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-marital-lbl','form-marital-list','form-marital','Widowed')">Widowed</button>
+                  </div>
+                </div>
               </div>
+              <input type="hidden" id="form-marital" value="" />
               <p class="${helperCls}">Improves repayment accuracy</p>
             </div>
             <div class="flex flex-col gap-1">
               <p class="${labelCls}">Tax filing status</p>
-              <div class="relative">
-                <select id="form-filing" class="${selectCls}">
-                  <option value="" disabled selected>Select</option>
-                  <option value="single">Single</option>
-                  <option value="married_joint">Married filing jointly</option>
-                  <option value="married_separate">Married filing separately</option>
-                  <option value="head">Head of household</option>
-                </select>
-                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              <div class="relative" id="form-filing-wrap">
+                <button type="button" id="form-filing-btn"
+                  class="${inputCls} flex items-center justify-between cursor-pointer"
+                  onclick="dskToggleDD('form-filing-list',event)">
+                  <span id="form-filing-lbl" class="text-[#9ca3af]">Select</span>
+                  <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div id="form-filing-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
+                  <div class="py-1">
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Single')">Single</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Married filing jointly')">Married filing jointly</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Married filing separately')">Married filing separately</button>
+                    <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="dskPickDD('form-filing-lbl','form-filing-list','form-filing','Head of household')">Head of household</button>
+                  </div>
+                </div>
               </div>
+              <input type="hidden" id="form-filing" value="" />
               <p class="${helperCls}">Most recent tax return status</p>
             </div>
           </div>
