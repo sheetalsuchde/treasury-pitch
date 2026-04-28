@@ -429,19 +429,19 @@
   const stepBodies = [
     // Step 1 — Your situation
     `<div class="flex flex-col gap-4">
-      <div class="grid grid-cols-3 gap-3">
+      <div id="dr-tiles" class="ds-sec grid grid-cols-3 gap-3">
         <div class="bg-surface-base rounded-xl p-4"><p class="text-xs text-neutral-disabled mb-1">Principal balance</p><p class="text-xl font-bold text-gray-900">$4,000</p></div>
         <div class="bg-surface-base rounded-xl p-4"><p class="text-xs text-neutral-disabled mb-1">Accrued interest</p><p class="text-xl font-bold text-gray-900">$1,283</p></div>
         <div class="bg-surface-base rounded-xl p-4"><p class="text-xs text-neutral-disabled mb-1">Total owed</p><p class="text-xl font-bold text-red-500">$5,284</p></div>
       </div>
 
-      <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
+      <div id="dr-alert" class="ds-sec bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
         <span class="font-bold">What happens if you don't act:</span> The government can garnish your <span class="font-semibold">income tax refund</span>, other federal payments, and your <span class="font-semibold">wages</span> to collect this debt.
  Treasury offset may begin in 44 days — act now.
       </div>
 
       <!-- ── How Loan Rehabilitation Works ── -->
-      <div class="bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4" id="how-rehab-works">
+      <div id="dr-howrehab" class="ds-sec bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4">
 
         <p class="text-base font-bold text-gray-900 leading-6">How Loan Rehabilitation Works</p>
 
@@ -449,7 +449,7 @@
         <div class="flex gap-3 items-stretch">
 
           <!-- Step 1 -->
-          <div class="flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+          <div id="dr-step1" class="ds-sec flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
             <div class="flex flex-col gap-3 p-4 h-full">
               <div class="w-9 h-9 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -462,7 +462,7 @@
           </div>
 
           <!-- Step 2 -->
-          <div class="flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+          <div id="dr-step2" class="ds-sec flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
             <div class="flex flex-col gap-3 p-4 h-full">
               <div class="w-9 h-9 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -475,7 +475,7 @@
           </div>
 
           <!-- Step 3 -->
-          <div class="flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+          <div id="dr-step3" class="ds-sec flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
             <div class="flex flex-col gap-3 p-4 h-full">
               <div class="w-9 h-9 rounded-lg bg-[#ecfbf5] flex items-center justify-center shrink-0">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
@@ -493,6 +493,53 @@
     </div>`,
   ];
 
+  /* ── Rehab form-panel skeleton ── */
+  function buildRehabPanelSkeleton() {
+    const bar = (w, h='h-3') => `<div class="bg-gray-200 rounded-full ${h} ${w}"></div>`;
+    const box = (h='h-10') => `<div class="bg-gray-200 rounded-xl ${h} w-full"></div>`;
+    return `
+      <div class="flex flex-col gap-5 animate-pulse">
+        <!-- pre-fill notice -->
+        <div class="flex items-center gap-2 bg-gray-100 rounded-xl px-3 py-2">
+          ${bar('w-4 h-4 rounded-full shrink-0')}
+          ${bar('w-56')}
+        </div>
+        <!-- income label + input -->
+        <div class="flex flex-col gap-2">
+          ${bar('w-40 h-4')}
+          ${bar('w-64 h-3')}
+          ${box('h-11')}
+        </div>
+        <!-- household section -->
+        <div class="flex flex-col gap-3">
+          ${bar('w-44 h-4')}
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1.5">${bar('w-20')}${box('h-11')}</div>
+            <div class="flex flex-col gap-1.5">${bar('w-28')}${box('h-11')}</div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1.5">${bar('w-32')}${box('h-11')}</div>
+            <div class="flex flex-col gap-1.5">${bar('w-24')}${box('h-11')}</div>
+          </div>
+        </div>
+        <!-- cait typing indicator -->
+        <div class="flex items-center gap-2 mt-2">
+          <div class="w-5 h-5 rounded-full bg-[#EEEDFE] flex items-center justify-center shrink-0">
+            <div class="w-1.5 h-1.5 rounded-full bg-[#265ddc]"></div>
+          </div>
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+          <span class="text-xs text-neutral-disabled">Cait is preparing your income form…</span>
+        </div>
+        <!-- 1040 upload placeholder -->
+        <div class="flex flex-col gap-2">
+          ${bar('w-48 h-4')}
+          ${box('h-24 rounded-xl')}
+        </div>
+        <!-- button placeholder -->
+        ${box('h-10 rounded-full mt-2')}
+      </div>`;
+  }
+
   /* ── Form panel ── */
   function openFormPanel() {
     const panel = document.getElementById('form-panel');
@@ -502,10 +549,27 @@
     panel.style.borderLeftWidth = '1px';
     main.style.flex  = '53 53 0px';
     main.style.width = '';
-    // Seed input screen if body is empty
+
+    document.getElementById('fp-title').textContent    = 'Loan Rehabilitation';
+    document.getElementById('fp-subtitle').textContent = 'Income & Payment Calculation';
+
     const body = document.getElementById('fp-body');
-    if (body && !body.children.length) body.innerHTML = buildInputScreenHTML();
-    updateChatChips('payment');
+    // Show skeleton immediately
+    body.style.transition = 'none';
+    body.style.opacity    = '1';
+    body.innerHTML = buildRehabPanelSkeleton();
+    updateChatChips([]);
+
+    // Fade out skeleton → fade in real form
+    setTimeout(() => {
+      body.style.transition = 'opacity 0.28s ease';
+      body.style.opacity    = '0';
+      setTimeout(() => {
+        body.innerHTML = buildInputScreenHTML();
+        body.style.opacity = '1';
+        updateChatChips('payment');
+      }, 280);
+    }, 1050);
   }
 
   function closeFormPanel() {
@@ -1657,8 +1721,50 @@
       </div>`;
   }
 
+  // ── Global word-streamer (shared by Rehab + SAVE flows) ──
+  function dStreamText(el, html, wordDelay, onDone) {
+    const parser = new DOMParser();
+    const doc    = parser.parseFromString(html, 'text/html');
+    const tokens = [];
+    doc.body.childNodes.forEach(node => {
+      if (node.nodeType === 3) {
+        node.textContent.split(' ').filter(w => w).forEach(w => tokens.push({ word: w, bold: false }));
+      } else if (node.nodeName === 'STRONG') {
+        tokens.push({ word: node.textContent, bold: true });
+      }
+    });
+    el.innerHTML = '';
+    tokens.forEach((t, i) => {
+      setTimeout(() => {
+        const span = document.createElement('span');
+        span.className = 'stream-word';
+        span.style.animationDelay = '0s';
+        if (t.bold) {
+          const strong = document.createElement('strong');
+          strong.className = 'font-semibold text-gray-900';
+          strong.textContent = t.word;
+          span.appendChild(strong);
+        } else {
+          span.textContent = t.word;
+        }
+        el.appendChild(span);
+        if (i < tokens.length - 1) el.appendChild(document.createTextNode(' '));
+        el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        if (i === tokens.length - 1 && onDone) setTimeout(onDone, 200);
+      }, i * wordDelay);
+    });
+  }
+
   function renderStep() {
     document.getElementById('step-body').innerHTML = stepBodies[0];
+    // Progressive reveal: tiles → alert → how-works → step1 → step2 → step3
+    const show = (id, ms) => setTimeout(() => document.getElementById(id)?.classList.add('ds-in'), ms);
+    show('dr-tiles',    60);
+    show('dr-alert',    280);
+    show('dr-howrehab', 500);
+    show('dr-step1',    660);
+    show('dr-step2',    820);
+    show('dr-step3',    980);
   }
 
   function showHomeScreen() {
@@ -1707,14 +1813,41 @@
   function showChatScreen() {
     document.getElementById('screen-home').classList.add('hidden');
     document.getElementById('screen-chat').classList.remove('hidden');
-    renderStep();
-    updateChatChips('resolution');
-    // Animate static Cait message lines on first show
-    const staticMsg = document.getElementById('static-cait-msg');
-    if (staticMsg && !staticMsg.dataset.animated) {
-      staticMsg.dataset.animated = '1';
-      revealLines(Array.from(staticMsg.querySelectorAll('.cait-line')), 500);
+    updateChatChips([]);
+
+    // Hide flow card immediately — will animate in after stream finishes
+    const flowCard = document.getElementById('step-body')?.closest('.rounded-lg');
+    if (flowCard) {
+      flowCard.style.transition  = 'none';
+      flowCard.style.opacity     = '0';
+      flowCard.style.transform   = 'translateY(14px)';
+      flowCard.style.pointerEvents = 'none';
     }
+
+    const staticMsg = document.getElementById('static-cait-msg');
+    if (!staticMsg) return;
+    staticMsg.dataset.animated = '';
+
+    // Stage 1 (0ms): typing dots
+    staticMsg.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
+
+    // Stage 2 (1500ms): clear dots → word-stream Cait response
+    setTimeout(() => {
+      staticMsg.innerHTML = `<p id="rehab-stream-el" class="text-base text-[#676d7a] leading-7"></p>`;
+      const streamEl = document.getElementById('rehab-stream-el');
+      const msg = 'Hi Jennifer — your loan is currently in default. Here are the five ways to resolve a defaulted federal student loan: Administrative loan discharge, Request for review, Loan consolidation, Pay off the debt, and <strong>Loan Rehabilitation</strong>.';
+      dStreamText(streamEl, msg, 42, () => {
+        // Stage 3: card-in reveal + progressive section stagger
+        if (flowCard) {
+          flowCard.style.cssText = '';
+          flowCard.classList.add('card-revealed');
+        }
+        setTimeout(() => {
+          renderStep();
+          setTimeout(() => updateChatChips('resolution'), 1050);
+        }, 200);
+      });
+    }, 1500);
   }
 
   /* ══════════════════════════════════════════════════════════════
@@ -1759,40 +1892,6 @@
           <button onclick="showChatScreen()" class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">What is RAP?</button>
           <button onclick="showChatScreen()" class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">What if I do nothing?</button>`;
       }
-    }
-
-    // ── Word-stream: exact port of mobile mobStreamText ──
-    function dStreamText(el, html, wordDelay, onDone) {
-      const parser = new DOMParser();
-      const doc    = parser.parseFromString(html, 'text/html');
-      const tokens = [];
-      doc.body.childNodes.forEach(node => {
-        if (node.nodeType === 3) {
-          node.textContent.split(' ').filter(w => w).forEach(w => tokens.push({ word: w, bold: false }));
-        } else if (node.nodeName === 'STRONG') {
-          tokens.push({ word: node.textContent, bold: true });
-        }
-      });
-      el.innerHTML = '';
-      tokens.forEach((t, i) => {
-        setTimeout(() => {
-          const span = document.createElement('span');
-          span.className = 'stream-word';
-          span.style.animationDelay = '0s';
-          if (t.bold) {
-            const strong = document.createElement('strong');
-            strong.className = 'font-semibold text-gray-900';
-            strong.textContent = t.word;
-            span.appendChild(strong);
-          } else {
-            span.textContent = t.word;
-          }
-          el.appendChild(span);
-          if (i < tokens.length - 1) el.appendChild(document.createTextNode(' '));
-          el.scrollIntoView({ behavior: 'smooth', block: 'end' });
-          if (i === tokens.length - 1 && onDone) setTimeout(onDone, 200);
-        }, i * wordDelay);
-      });
     }
 
     // ── Override showChatScreen — full mobile-style sequence ──
