@@ -1380,8 +1380,6 @@
         Calculate my payment →
       </button>
 
-      <!-- Income disclaimer -->
-      <p class="text-[11px] text-[#9ca3af] text-center leading-relaxed px-1">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
 
     </div>`;
   }
@@ -2444,6 +2442,14 @@
           Enroll in RAP →
         </button>
 
+        <!-- Income change prompt + disclaimer -->
+        <div class="flex flex-col items-center gap-2">
+          <button class="border border-[#b3c6f7] rounded-full px-4 py-1.5 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">
+            What if my income changes?
+          </button>
+          <p class="text-[11px] text-[#9ca3af] text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
+        </div>
+
       </div>`;
       fadeIn(document.getElementById('mob-income-body'));
     };
@@ -3022,6 +3028,14 @@
           class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold hover:bg-[#1e4fc2] transition-colors">
           Enroll in RAP →
         </button>
+
+        <!-- Income change prompt + disclaimer -->
+        <div class="flex flex-col items-center gap-2">
+          <button class="border border-[#b3c6f7] rounded-full px-4 py-1.5 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">
+            What if my income changes?
+          </button>
+          <p class="text-[11px] text-[#9ca3af] text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
+        </div>
 
       </div>`;
       fadeIn(document.getElementById('mob-income-body'));
