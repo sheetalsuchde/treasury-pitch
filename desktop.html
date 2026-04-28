@@ -877,7 +877,7 @@
           </label>
           <button id="form-enroll-btn" onclick="enrollFromForm(${amount})" disabled
             class="w-full bg-brand-primary text-white rounded-full py-2.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-colors">
-            Confirm &amp; Enroll →
+            Enroll &amp; Set Up Auto-Pay →
           </button>
         </div>`);
     } else {
@@ -902,29 +902,20 @@
   }
 
   function enrollFromForm(amount) {
-    closeFormPanel();
-    updateChatChips('enrolled');
-    document.getElementById('step-body').innerHTML = `
-      <div class="flex flex-col items-center gap-5 py-6 text-center">
-        <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div>
-          <p class="text-lg font-bold text-gray-900 mb-1">You're enrolled in rehabilitation!</p>
-          <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your agreement has been submitted to the Default Resolution Group. Collections actions are now paused while your case is processed.</p>
-        </div>
-        <div class="bg-surface-base rounded-2xl p-5 w-full text-left">
-          <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
-          <ul class="flex flex-col gap-3 text-sm text-gray-800">
-            <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-brand-light text-brand-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>The Default Resolution Group will confirm your <strong>$${amount}/month</strong> payment within 5–7 business days</li>
-            <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-brand-light text-brand-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>Make your <strong>first payment</strong> to officially start the 9-payment clock</li>
-            <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-brand-light text-brand-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>Set up <strong>auto-pay</strong> — a missed payment can reset your clock</li>
-            <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">✓</span><span style="color:#16a34a;font-weight:500;">After 9 on-time payments — default permanently removed from your credit report</span></li>
-          </ul>
-        </div>
-        <p class="text-xs text-neutral-disabled">Questions? Contact us at help@getcandidly.com or (866) 719-3437</p>
-      </div>`;
-    document.getElementById('btn-next').classList.add('hidden');
+    const btn = document.getElementById('form-enroll-btn');
+    if (!btn || btn.disabled) return;
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+    btn.style.opacity = '0.7';
+    setTimeout(() => {
+      dRehabAutopayPayment = amount;
+      dRehabAutopayStep = 1;
+      dRehabRouting = '';
+      dRehabAccount = '';
+      document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
+      document.getElementById('fp-subtitle').textContent = 'Enter Funding Account';
+      dRenderRehabAutopayStep();
+    }, 600);
   }
 
   /* ══════════════════════════════════════════
@@ -1204,71 +1195,201 @@
     if (!btn || btn.disabled) return;
     btn.disabled = true;
     btn.textContent = 'Submitting…';
-
+    btn.style.opacity = '0.7';
     setTimeout(() => {
+      dRehabAutopayPayment = payment;
+      dRehabAutopayStep = 1;
+      dRehabRouting = '';
+      dRehabAccount = '';
+      document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
+      document.getElementById('fp-subtitle').textContent = 'Enter Funding Account';
+      dRenderRehabAutopayStep();
+    }, 1200);
+  }
+
+  /* ── Rehab desktop autopay state ── */
+  let dRehabAutopayStep    = 1;
+  let dRehabAutopayPayment = 74;
+  let dRehabRouting        = '';
+  let dRehabAccount        = '';
+
+  function dRenderRehabAutopayStep() {
+    const body = document.getElementById('fp-body');
+
+    if (dRehabAutopayStep === 1) {
+      document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
+      document.getElementById('fp-subtitle').textContent = 'Enter Funding Account · 1 of 2';
+      body.innerHTML = `
+        <div class="flex flex-col gap-5 pb-6">
+          <!-- Enrolled banner -->
+          <div class="flex items-start gap-3 bg-[#e6faee] border border-[#a7f0c4] rounded-2xl px-4 py-3.5">
+            <div class="w-8 h-8 rounded-full bg-[#039852] flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-[#027a42]">You're enrolled! 🎉</p>
+              <p class="text-xs text-[#039852] leading-relaxed mt-0.5">Now protect your progress — set up auto-pay so you never miss a payment. A single missed payment can reset your 9-month clock.</p>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-base font-bold text-gray-900 mb-1">Enter Funding Account</h3>
+            <p class="text-sm text-[#676d7a] leading-relaxed">Link your bank account to automate your monthly rehabilitation payment.</p>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1.5">Routing Number</label>
+              <input id="d-rehab-routing" type="tel" maxlength="9" placeholder="9-digit routing number"
+                class="w-full border border-[#e2e4eb] rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#265ddc] focus:ring-1 focus:ring-[#265ddc] transition-colors"
+                oninput="dRehabCheckNext()" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1.5">Account Number</label>
+              <input id="d-rehab-account" type="tel" placeholder="Account number"
+                class="w-full border border-[#e2e4eb] rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#265ddc] focus:ring-1 focus:ring-[#265ddc] transition-colors"
+                oninput="dRehabCheckNext()" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1.5">Confirm Account Number</label>
+              <input id="d-rehab-account-confirm" type="tel" placeholder="Re-enter account number"
+                class="w-full border border-[#e2e4eb] rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#265ddc] focus:ring-1 focus:ring-[#265ddc] transition-colors"
+                oninput="dRehabCheckNext()" />
+            </div>
+          </div>
+
+          <!-- Security badge -->
+          <div class="flex items-center gap-3 bg-[#f0fbf7] border border-[#b6eeda] rounded-xl px-4 py-3">
+            <div class="w-8 h-8 rounded-lg bg-[#027a42] flex items-center justify-center shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <p class="text-xs text-[#027a42] leading-relaxed">Your data is protected by Candidly's <strong>security policy</strong></p>
+          </div>
+
+          <!-- Auth checkbox -->
+          <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="d-rehab-auth-chk" onchange="dRehabCheckNext()"
+                class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0" style="margin-top:3px" />
+              <span class="text-sm text-gray-800 leading-relaxed">
+                I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
+              </span>
+            </label>
+          </div>
+
+          <button id="d-rehab-next-btn" onclick="dRehabAutopayNext()" disabled
+            class="w-full bg-[#265ddc] text-white rounded-full py-2.5 text-sm font-semibold transition-colors opacity-40 cursor-not-allowed">
+            Next →
+          </button>
+        </div>`;
+
+    } else if (dRehabAutopayStep === 2) {
+      document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
+      document.getElementById('fp-subtitle').textContent = 'Confirm Schedule · 2 of 2';
+      const dt = new Date(); dt.setDate(dt.getDate() + 3);
+      const nextDate = (dt.getMonth()+1).toString().padStart(2,'0') + '/' + dt.getDate().toString().padStart(2,'0') + '/' + dt.getFullYear();
+      const last4 = dRehabAccount.length >= 4 ? dRehabAccount.slice(-4) : '5678';
+      body.innerHTML = `
+        <div class="flex flex-col gap-5 pb-6">
+          <div class="flex flex-col items-center gap-3 py-2">
+            <div class="w-16 h-16 rounded-full bg-[#f0f4ff] flex items-center justify-center">
+              <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+                <rect x="8" y="6" width="28" height="36" rx="3" fill="#e5edff" stroke="#265ddc" stroke-width="1.8"/>
+                <path d="M14 18h20M14 24h14M14 30h10" stroke="#265ddc" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="37" cy="37" r="9" fill="#ecfbf5"/>
+                <path d="M33 37l3 3 5-5" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="text-base font-bold text-gray-900">Confirm repayment information</h3>
+          </div>
+
+          <!-- Schedule table -->
+          <div class="border border-[#f0f2f5] rounded-2xl overflow-hidden">
+            <div class="grid grid-cols-2 px-4 py-2 bg-[#fafbfc] border-b border-[#f0f2f5]">
+              <span class="text-xs font-semibold text-[#9ca3af] uppercase tracking-wide">Title</span>
+              <span class="text-xs font-semibold text-[#9ca3af] uppercase tracking-wide text-right">Value</span>
+            </div>
+            <div class="divide-y divide-[#f0f2f5]">
+              <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Amount</span><span class="text-sm font-semibold text-gray-900 text-right">$${dRehabAutopayPayment}.00/mo</span></div>
+              <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Contribution Type</span><span class="text-sm font-semibold text-gray-900 text-right">Monthly</span></div>
+              <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Duration</span><span class="text-sm font-semibold text-gray-900 text-right">9 consecutive months</span></div>
+              <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Next Transfer</span><span class="text-sm font-semibold text-gray-900 text-right">${nextDate}</span></div>
+              <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Funding Account</span><span class="text-sm font-semibold text-gray-900 text-right">••••${last4}</span></div>
+            </div>
+          </div>
+
+          <!-- Outcome callout -->
+          <div class="flex items-start gap-3 bg-[#ecfbf5] border border-[#b6eeda] rounded-2xl px-4 py-3">
+            <div class="w-7 h-7 rounded-full bg-[#027a42] flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-[#027a42]">Default is resolved after 9 on-time payments</p>
+              <p class="text-xs text-[#027a42] leading-relaxed mt-0.5">Your loan is returned to good standing and the record of default is removed from your credit history.</p>
+            </div>
+          </div>
+
+          <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you agree to this repayment schedule and the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>.</p>
+
+          <div class="flex gap-3">
+            <button onclick="dRehabAutopayStep--; dRenderRehabAutopayStep()"
+              class="flex-1 border border-[#e2e4eb] bg-white text-gray-700 rounded-full py-2.5 text-sm font-semibold hover:bg-[#f5f6f8] transition-colors">
+              ← Back
+            </button>
+            <button onclick="dRehabAutopayNext()"
+              class="flex-1 bg-[#265ddc] hover:bg-[#1e4fc2] text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
+              Confirm →
+            </button>
+          </div>
+        </div>`;
+    }
+  }
+
+  function dRehabCheckNext() {
+    const routing = document.getElementById('d-rehab-routing')?.value.trim();
+    const account = document.getElementById('d-rehab-account')?.value.trim();
+    const confirm = document.getElementById('d-rehab-account-confirm')?.value.trim();
+    const authChk = document.getElementById('d-rehab-auth-chk')?.checked;
+    const btn     = document.getElementById('d-rehab-next-btn');
+    if (!btn) return;
+    const ok = !!(routing && account && confirm && authChk);
+    btn.disabled = !ok;
+    btn.style.opacity = ok ? '1' : '0.4';
+    btn.style.cursor  = ok ? 'pointer' : 'not-allowed';
+  }
+
+  function dRehabAutopayNext() {
+    if (dRehabAutopayStep === 1) {
+      dRehabRouting = document.getElementById('d-rehab-routing')?.value.trim() || '021000021';
+      dRehabAccount = document.getElementById('d-rehab-account')?.value.trim() || '123456785678';
+      dRehabAutopayStep = 2;
+      dRenderRehabAutopayStep();
+    } else if (dRehabAutopayStep === 2) {
       closeFormPanel();
       updateChatChips('enrolled');
-      // Closure hero card in chat
       setTimeout(() => {
-        const area = document.querySelector('#chat-main .py-6.flex.flex-col.gap-6');
-        if (!area) return;
-        area.insertAdjacentHTML('beforeend', `
-          <div class="pr-4 cait-line">
-            <div class="rounded-2xl overflow-hidden border border-[#f0f2f5] bg-white">
-              <!-- Header: checkmark + title + subtitle -->
-              <div class="flex flex-col items-center text-center gap-3 px-6 pt-6 pb-5">
-                <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M7 14l4.5 4.5L21 8" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
-                <div>
-                  <p class="text-lg font-bold text-[#181d29]">You're enrolled in rehabilitation!</p>
-                  <p class="text-sm text-[#676d7a] mt-1.5 leading-relaxed max-w-xs mx-auto">Your agreement has been submitted to the Default Resolution Group. Collections actions are now paused while your case is processed.</p>
-                </div>
-              </div>
-              <!-- What happens next -->
-              <div class="border-t border-[#f0f2f5] px-5 py-4 flex flex-col gap-3">
-                <p class="text-sm font-bold text-[#181d29]">What happens next</p>
-                <ul class="flex flex-col gap-3 text-sm text-[#2a2f3d]">
-                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>The Default Resolution Group will confirm your <strong>$${payment}/month</strong> payment within 5–7 business days</span></li>
-                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Make your <strong>first payment</strong> to officially start the 9-payment clock</span></li>
-                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span><span>Set up <strong>auto-pay</strong> — a missed payment can reset your clock</span></li>
-                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">✓</span><span style="color:#16a34a;font-weight:500;">After 9 on-time payments — default permanently removed from your credit report</span></li>
-                </ul>
-              </div>
-              <!-- Footer -->
-              <div class="border-t border-[#f0f2f5] px-5 py-3 text-center">
-                <p class="text-xs text-[#676d7a]">Questions? Contact us at help@getcandidly.com or (866) 719-3437</p>
-              </div>
+        document.getElementById('step-body').innerHTML = `
+          <div class="flex flex-col items-center gap-5 py-6 text-center">
+            <div class="w-16 h-16 rounded-full bg-[#ecfbf5] flex items-center justify-center">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-          </div>`);
-        const card = area.lastElementChild;
-        setTimeout(() => {
-          card.classList.add('revealed');
-          card.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }, 80);
-      }, 600);
-      document.getElementById('step-body').innerHTML = `
-        <div class="flex flex-col items-center gap-5 py-6 text-center">
-          <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <p class="text-lg font-bold text-gray-900 mb-1">You're enrolled in rehabilitation!</p>
-            <p class="text-sm text-[#676d7a] leading-relaxed max-w-sm mx-auto">Your agreement has been submitted to the Default Resolution Group. Collections actions are now paused while your case is processed.</p>
-          </div>
-          <div class="bg-[#fafbfc] rounded-2xl p-5 w-full text-left">
-            <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
-            <ul class="flex flex-col gap-3 text-sm text-gray-800">
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>The Default Resolution Group will confirm your <strong>$${payment}/month</strong> payment within 5–7 business days</li>
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>Make your <strong>first payment</strong> to officially start the 9-payment clock</li>
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>Set up <strong>auto-pay</strong> — a missed payment can reset your clock</li>
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">✓</span><span style="color:#16a34a;font-weight:500;">After 9 on-time payments — default permanently removed from your credit report</span></li>
-            </ul>
-          </div>
-          <p class="text-xs text-[#676d7a]">Questions? Contact us at help@getcandidly.com or (866) 719-3437</p>
-        </div>`;
-      document.getElementById('btn-next').classList.add('hidden');
-    }, 1200);
+            <div>
+              <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
+              <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your rehabilitation agreement and auto-pay have been confirmed. Your <strong class="text-gray-900">$${dRehabAutopayPayment}/month</strong> payments start on your next transfer date.</p>
+            </div>
+            <div class="bg-surface-base rounded-2xl p-5 w-full text-left">
+              <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
+              <ul class="flex flex-col gap-3 text-sm text-gray-800">
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>The Default Resolution Group will confirm your <strong>$${dRehabAutopayPayment}/month</strong> payment within 5–7 business days</li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>Your first <strong>$${dRehabAutopayPayment} payment</strong> begins the loan rehabilitation process. Your payment will automatically be drafted from your funding account.</li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 9 on-time monthly payments — default resolved, loans returned to good standing, and default removed from your credit report.</span></li>
+              </ul>
+            </div>
+            <p class="text-xs text-neutral-disabled">Questions? help@getcandidly.com · (866) 719-3437</p>
+          </div>`;
+        document.getElementById('btn-next').classList.add('hidden');
+      }, 300);
+    }
   }
 
   function toggleIESection(id) {
@@ -1516,7 +1637,7 @@
           </label>
           <button id="ie-enroll-btn" onclick="completeIEEnrollment()" disabled
             class="w-full bg-brand-primary text-white rounded-full py-2.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-colors">
-            Confirm &amp; Enroll →
+            Enroll &amp; Set Up Auto-Pay →
           </button>
         </div>
 
