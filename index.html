@@ -222,25 +222,38 @@
       color: #b0b6c2;
       text-align: center;
     }
+
+    /* ── Staggered entrance animation (mirrors mobile home-item-in) ── */
+    @keyframes home-item-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .di-1 { opacity:0; animation: home-item-in 0.55s cubic-bezier(0.25,0.46,0.45,0.94) 0.05s  forwards; }
+    .di-2 { opacity:0; animation: home-item-in 0.55s cubic-bezier(0.25,0.46,0.45,0.94) 0.18s  forwards; }
+    .di-3 { opacity:0; animation: home-item-in 0.50s cubic-bezier(0.25,0.46,0.45,0.94) 0.30s  forwards; }
+    .di-4 { opacity:0; animation: home-item-in 0.50s cubic-bezier(0.25,0.46,0.45,0.94) 0.42s  forwards; }
+    .di-5 { opacity:0; animation: home-item-in 0.50s cubic-bezier(0.25,0.46,0.45,0.94) 0.56s  forwards; }
+    .di-6 { opacity:0; animation: home-item-in 0.50s cubic-bezier(0.25,0.46,0.45,0.94) 0.70s  forwards; }
+    .di-7 { opacity:0; animation: home-item-in 0.45s cubic-bezier(0.25,0.46,0.45,0.94) 0.84s  forwards; }
   </style>
 </head>
 <body>
 
   <!-- Logo -->
-  <div class="logo">
+  <div class="logo di-1">
     <div class="logo-mark"><div class="logo-mark-dot"></div></div>
     <span class="logo-name">Candidly</span>
   </div>
-  <p class="tagline">Treasury Pitch · Interactive Demo</p>
+  <p class="tagline di-2">Treasury Pitch · Interactive Demo</p>
 
   <!-- Section label -->
-  <p class="section-label">Select a persona to preview</p>
+  <p class="section-label di-3">Select a persona to preview</p>
 
   <!-- 3 persona cards -->
   <div class="cards">
 
     <!-- 1. Rehab -->
-    <div class="card theme-rehab">
+    <div class="card theme-rehab di-4">
       <div class="card-bar"></div>
       <div class="card-status">
         <div class="card-status-dot"></div>
@@ -261,7 +274,7 @@
     </div>
 
     <!-- 2. SAVE -->
-    <div class="card theme-save">
+    <div class="card theme-save di-5">
       <div class="card-bar"></div>
       <div class="card-status">
         <div class="card-status-dot"></div>
@@ -282,7 +295,7 @@
     </div>
 
     <!-- 3. Delinquency -->
-    <div class="card theme-delinq">
+    <div class="card theme-delinq di-6">
       <div class="card-bar"></div>
       <div class="card-status">
         <div class="card-status-dot"></div>
@@ -306,8 +319,8 @@
 
   </div>
 
-  <hr class="divider" />
-  <p class="footer">Confidential · Candidly © 2026</p>
+  <hr class="divider di-7" />
+  <p class="footer di-7">Confidential · Candidly © 2026</p>
 
 </body>
 </html>
