@@ -24,23 +24,35 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      margin-bottom: 6px;
+    }
+    .logo-name { font-size: 24px; font-weight: 700; color: #181d29; letter-spacing: -0.4px; }
+
+    /* ── Hero header ── */
+    .hero-heading {
+      font-size: 28px;
+      font-weight: 700;
+      color: #181d29;
+      letter-spacing: -0.5px;
+      text-align: center;
+      line-height: 1.25;
       margin-bottom: 8px;
     }
-    .logo-mark {
-      width: 36px; height: 36px;
-      background: #265ddc;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
+    .hero-heading .gradient {
+      background: linear-gradient(90deg, #265ddc 0%, #4274eb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .logo-mark-dot { width: 12px; height: 12px; border-radius: 50%; background: white; }
-    .logo-name { font-size: 22px; font-weight: 700; color: #181d29; letter-spacing: -0.3px; }
 
     .tagline {
-      font-size: 13px;
-      color: #9ca3af;
+      font-size: 14px;
+      color: #676d7a;
       font-weight: 400;
-      margin-bottom: 44px;
-      letter-spacing: 0.2px;
+      margin-bottom: 40px;
+      letter-spacing: 0.1px;
+      text-align: center;
+      max-width: 420px;
     }
 
     /* ── Section label ── */
@@ -241,10 +253,20 @@
 
   <!-- Logo -->
   <div class="logo di-1">
-    <div class="logo-mark"><div class="logo-mark-dot"></div></div>
+    <!-- Candidly logo mark — inline SVG -->
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="10" fill="#265ddc"/>
+      <!-- outer ring -->
+      <circle cx="18" cy="18" r="10" stroke="white" stroke-width="2" stroke-opacity="0.35"/>
+      <!-- inner dot -->
+      <circle cx="18" cy="18" r="5" fill="white"/>
+    </svg>
     <span class="logo-name">Candidly</span>
   </div>
-  <p class="tagline di-2">Treasury Pitch · Interactive Demo</p>
+
+  <!-- Hero headline -->
+  <p class="hero-heading di-2">Student debt, <span class="gradient">simplified.</span></p>
+  <p class="tagline di-2">AI-powered guidance that helps borrowers understand, manage, and resolve their student loans.</p>
 
   <!-- Section label -->
   <p class="section-label di-3">Select a persona to preview</p>
