@@ -2715,6 +2715,818 @@
       saveDesktopInitHome();
     }
   })();
+
+  /* ═══════════════════════════════════════════════════════════════
+     DELINQUENCY PLAN DESKTOP OVERLAY  (?flow=delinquency)
+     ══════════════════════════════════════════════════════════════ */
+  ;(function() {
+    if (new URLSearchParams(location.search).get('flow') !== 'delinquency') return;
+
+    let _dRap = { monthly: 66, termYears: 20, totalPaid: 15840, forgiven: 36560, agi: 38400 };
+
+    function saveDesktopInitHome() {
+      // ── Alert banner → red delinquency alert ──
+      const banner = document.getElementById('alert-banner');
+      if (banner) {
+        banner.className = banner.className.replace('bg-[#fffbeb]', 'bg-[#fef2f2]').replace('border-[#fcd34d]', 'border-[#fca5a5]');
+        banner.style.background = '#fef2f2';
+        banner.style.borderColor = '#fca5a5';
+        banner.innerHTML = `
+          <svg class="shrink-0 text-red-500 mt-0.5" width="24" height="24" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+          <div class="flex-1 min-w-0">
+            <p class="text-base font-bold text-gray-900 leading-5">Action required: Your loans are delinquent</p>
+            <p class="text-base text-gray-900 leading-relaxed mt-0.5">You're 90+ days behind on payments and approaching default. Enrolling in RAP now can lower your monthly payment and stop collection activity.</p>
+          </div>
+          <button onclick="showChatScreen()"
+            class="shrink-0 border border-gray-900 text-gray-900 bg-transparent hover:bg-black hover:text-white rounded-full px-4 py-1 text-sm font-medium transition-colors whitespace-nowrap self-center" style="min-height:32px;min-width:96px;">
+            Prevent Default →
+          </button>
+          <button onclick="this.parentElement.remove()" class="shrink-0 p-1 rounded-full text-neutral-disabled hover:text-neutral-subtle self-center">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 3L3 11M3 3l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>`;
+      }
+
+      // ── Greeting → Marcus ──
+      const greeting = document.querySelector('#screen-home p.text-base.font-medium');
+      if (greeting) greeting.textContent = 'Hi, Marcus!';
+
+      // ── Home chips → delinquency context ──
+      const chipsArea = document.querySelector('#screen-home .flex.flex-wrap.items-center');
+      if (chipsArea) {
+        chipsArea.innerHTML = `
+          <button onclick="showChatScreen()" class="bg-transparent border border-red-300 rounded-full px-4 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 transition-colors flex items-center gap-1.5">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-red-500"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+            Help me avoid default
+          </button>
+          <button onclick="showChatScreen()" class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">What is RAP?</button>
+          <button onclick="showChatScreen()" class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">What happens if I default?</button>`;
+      }
+    }
+
+    // ── Override showChatScreen — full mobile-style sequence ──
+    window.showChatScreen = function() {
+      document.getElementById('screen-home').classList.add('hidden');
+      document.getElementById('screen-chat').classList.remove('hidden');
+      updateChatChips([]); // chips hidden while typing
+
+      // Update user bubble text → delinquency
+      const userBubbleTxt = document.querySelector('#screen-chat .flex.justify-end p');
+      if (userBubbleTxt) userBubbleTxt.textContent = 'Help me avoid default';
+
+      // Card header copy
+      const cardTitle = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-base.font-bold');
+      if (cardTitle) cardTitle.textContent = 'Your delinquent loan & recommended plan';
+      const cardSub = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-sm');
+      if (cardSub) cardSub.textContent = 'Review your loan status and enroll in RAP to stop delinquency.';
+
+      // Footer CTA
+      const btnNext = document.getElementById('btn-next');
+      if (btnNext) { btnNext.textContent = 'Prevent Default →'; btnNext.onclick = () => openFormPanel(); }
+
+      // ── Hide the entire flow card instantly (no transition yet) ──
+      const flowCard = document.getElementById('step-body')?.closest('.rounded-lg');
+      if (flowCard) {
+        flowCard.style.transition = 'none';
+        flowCard.style.opacity    = '0';
+        flowCard.style.transform  = 'translateY(14px)';
+        flowCard.style.pointerEvents = 'none';
+      }
+
+      const staticMsg = document.getElementById('static-cait-msg');
+      if (!staticMsg) return;
+      staticMsg.dataset.animated = '';
+
+      // ── Stage 1 (0ms): typing dots — exact mobile component ──
+      staticMsg.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
+
+      // ── Stage 2 (1500ms): clear dots → word-stream Cait response ──
+      setTimeout(() => {
+        staticMsg.innerHTML = `<p id="delinq-stream-el" class="text-base text-[#676d7a] leading-relaxed"></p>`;
+        const streamEl = document.getElementById('delinq-stream-el');
+        const msg = 'Hi Marcus — your student loans are currently delinquent. You\'re 90+ days behind on payments and approaching default. The <strong>Repayment Assistance Plan (RAP)</strong> can bring you current with an affordable income-based payment. I can help you enroll today.';
+        dStreamText(streamEl, msg, 42, () => {
+          // ── Stage 3: inject content first (sections start opacity:0 via ds-sec),
+          // then reveal card — CTA footer never shows on an empty body ──
+          if (btnNext) { btnNext.style.opacity = '0'; btnNext.style.transition = 'none'; }
+          renderStep();
+          setTimeout(() => {
+            if (flowCard) {
+              flowCard.style.cssText = '';
+              flowCard.classList.add('card-revealed');
+            }
+            // Reveal CTA after last section has appeared (~980ms stagger + card fade)
+            setTimeout(() => {
+              if (btnNext) { btnNext.style.transition = 'opacity 0.3s ease'; btnNext.style.opacity = '1'; }
+            }, 1100);
+            setTimeout(() => updateChatChips('delinq_resolution'), 1200);
+          }, 40);
+        });
+      }, 1500);
+    };
+
+    // ── Override renderStep → staged progressive reveal ──
+    window.renderStep = function() {
+      document.getElementById('step-body').innerHTML = `
+        <div class="flex flex-col gap-4">
+
+          <!-- Tiles: balance / plan / status -->
+          <div id="ds-tiles" class="ds-sec grid grid-cols-3 gap-3">
+            <div class="bg-surface-base rounded-xl p-4">
+              <p class="text-xs text-neutral-disabled mb-1">Total balance</p>
+              <p class="text-xl font-bold text-gray-900">$52,400</p>
+            </div>
+            <div class="bg-surface-base rounded-xl p-4">
+              <p class="text-xs text-neutral-disabled mb-1">Current plan</p>
+              <p class="text-xl font-bold text-gray-900">Standard</p>
+            </div>
+            <div class="bg-[#fef2f2] border border-[#fca5a5] rounded-xl p-4">
+              <p class="text-xs text-red-700 mb-1">Status</p>
+              <p class="text-xl font-bold text-red-700">Delinquent</p>
+            </div>
+          </div>
+
+          <!-- Delinquency risk alert -->
+          <div id="ds-alert" class="ds-sec bg-[#fef2f2] border border-[#fca5a5] rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
+            <span class="font-bold">Risk of default:</span> Your loans are 90+ days past due. Without action, your loans will enter default — triggering <span class="font-semibold">wage garnishment</span>, tax refund seizure, and lasting credit damage. RAP can resolve your delinquency with a payment as low as $66/month.
+          </div>
+
+          <!-- How RAP Works wrapper -->
+          <div id="ds-howrap" class="ds-sec bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4">
+            <p class="text-base font-bold text-gray-900 leading-6">How RAP Works</p>
+            <div class="flex gap-3 items-stretch">
+
+              <div id="ds-step1" class="ds-sec flex-1 rounded-xl" style="background:#fafbfc">
+                <div class="flex flex-col gap-3 p-4 h-full">
+                  <div class="w-9 h-9 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  </div>
+                  <div class="flex flex-col gap-1 flex-1">
+                    <p class="text-sm font-medium text-gray-900 leading-5">Share Your Income</p>
+                    <p class="text-sm text-gray-900 leading-snug">Share your income and household size — Cait calculates your RAP payment at 5% of discretionary income.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div id="ds-step2" class="ds-sec flex-1 rounded-xl" style="background:#eff4ff">
+                <div class="flex flex-col gap-3 p-4 h-full">
+                  <div class="w-9 h-9 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                  <div class="flex flex-col gap-1 flex-1">
+                    <p class="text-sm font-medium text-gray-900 leading-5">Make Monthly Payments</p>
+                    <p class="text-sm text-gray-900 leading-snug">Pay your income-based amount for up to 20 years — payments stay affordable even as your income changes.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div id="ds-step3" class="ds-sec flex-1 rounded-xl" style="background:#fafbfc">
+                <div class="flex flex-col gap-3 p-4 h-full">
+                  <div class="w-9 h-9 rounded-lg bg-[#ecfbf5] flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                  </div>
+                  <div class="flex flex-col gap-1 flex-1">
+                    <p class="text-sm font-medium text-gray-900 leading-5">Remaining Balance Forgiven</p>
+                    <p class="text-sm text-gray-900 leading-snug">After 20 years, any remaining balance is forgiven — you're fully protected throughout.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>`;
+
+      // ── Staggered reveal: tiles → alert → howrap → step1 → step2 → step3 ──
+      const show = (id, ms) => setTimeout(() => document.getElementById(id)?.classList.add('ds-in'), ms);
+      show('ds-tiles',  60);
+      show('ds-alert',  280);
+      show('ds-howrap', 500);
+      show('ds-step1',  660);
+      show('ds-step2',  820);
+      show('ds-step3',  980);
+    };
+
+    // ── Delinquency contextual chips ──
+    CHAT_CHIPS['delinq_resolution'] = [
+      { label: 'What happens if I default?',  fn: null },
+      { label: 'Will this hurt my credit?',   fn: null },
+      { label: 'Switch to RAP →',             fn: 'openFormPanel()' },
+    ];
+    CHAT_CHIPS['delinq_payment'] = [
+      { label: 'How is 5% discretionary calculated?', fn: null },
+      { label: 'What counts as income?',              fn: null },
+      { label: 'Can I recalculate?',                  fn: null },
+    ];
+    CHAT_CHIPS['delinq_confirm'] = [
+      { label: 'What happens to my forgiveness timeline?', fn: null },
+      { label: 'Is RAP the same as IBR?',                  fn: null },
+      { label: 'Will my interest capitalize?',             fn: null },
+    ];
+    CHAT_CHIPS['delinq_enroll'] = [
+      { label: 'What happens after I enroll?',      fn: null },
+      { label: 'Can I change my payment later?',    fn: null },
+      { label: 'How does 20-year forgiveness work?', fn: null },
+      { label: 'Is this legally binding?',          fn: null },
+    ];
+    CHAT_CHIPS['delinq_enrolled'] = [
+      { label: 'When does forgiveness happen?',  fn: null },
+      { label: 'Set up auto-pay reminders',      fn: null },
+      { label: 'What if my income changes?',     fn: null },
+    ];
+
+    // ── Skeleton shimmer HTML for form panel ──
+    function buildSavePanelSkeleton() {
+      const bar = (w, h='h-3') => `<div class="bg-gray-200 rounded-full ${h} ${w}"></div>`;
+      const box = (h='h-10') => `<div class="bg-gray-200 rounded-xl ${h} w-full"></div>`;
+      return `
+        <div class="flex flex-col gap-5 animate-pulse">
+          <!-- pre-fill notice -->
+          <div class="flex items-center gap-2 bg-gray-100 rounded-xl px-3 py-2">
+            ${bar('w-4 h-4 rounded-full shrink-0')}
+            ${bar('w-56')}
+          </div>
+          <!-- income label + input -->
+          <div class="flex flex-col gap-2">
+            ${bar('w-40 h-4')}
+            ${bar('w-64 h-3')}
+            ${box('h-11')}
+          </div>
+          <!-- household section -->
+          <div class="flex flex-col gap-3">
+            ${bar('w-44 h-4')}
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex flex-col gap-1.5">${bar('w-20')}${box('h-11')}</div>
+              <div class="flex flex-col gap-1.5">${bar('w-28')}${box('h-11')}</div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex flex-col gap-1.5">${bar('w-32')}${box('h-11')}</div>
+              <div class="flex flex-col gap-1.5">${bar('w-24')}${box('h-11')}</div>
+            </div>
+          </div>
+          <!-- cait typing indicator -->
+          <div class="flex items-center gap-2 mt-2">
+            <div class="w-5 h-5 rounded-full bg-[#EEEDFE] flex items-center justify-center shrink-0">
+              <div class="w-1.5 h-1.5 rounded-full bg-[#534AB7]"></div>
+            </div>
+            <div class="flex gap-1 items-end pb-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-gray-400" style="animation:save-dot-bounce 1.2s infinite ease-in-out 0s"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-gray-400" style="animation:save-dot-bounce 1.2s infinite ease-in-out 0.2s"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-gray-400" style="animation:save-dot-bounce 1.2s infinite ease-in-out 0.4s"></span>
+            </div>
+            <span class="text-xs text-neutral-disabled">Cait is preparing your income form…</span>
+          </div>
+          <!-- button placeholder -->
+          ${box('h-10 rounded-full mt-2')}
+        </div>`;
+    }
+
+    // ── Override openFormPanel → skeleton → dissolve → real form ──
+    window.openFormPanel = function() {
+      const panel = document.getElementById('form-panel');
+      const main  = document.getElementById('chat-main');
+      panel.style.flex  = '47 47 0px';
+      panel.style.width = '';
+      panel.style.borderLeftWidth = '1px';
+      main.style.flex  = '53 53 0px';
+      main.style.width = '';
+      document.getElementById('fp-title').textContent    = 'RAP Enrollment';
+      document.getElementById('fp-subtitle').textContent = 'Income & Payment Calculation';
+
+      const body = document.getElementById('fp-body');
+      // Show skeleton immediately
+      body.style.transition = 'none';
+      body.style.opacity    = '1';
+      body.innerHTML = buildSavePanelSkeleton();
+      updateChatChips([]);
+
+      // Fade out skeleton, fade in real form
+      setTimeout(() => {
+        body.style.transition = 'opacity 0.28s ease';
+        body.style.opacity    = '0';
+        setTimeout(() => {
+          body.innerHTML = buildSaveInputScreenHTML();
+          body.style.opacity = '1';
+          updateChatChips('delinq_payment');
+        }, 280);
+      }, 1050);
+    };
+
+    function buildSaveInputScreenHTML() {
+      const inputCls  = "w-full border border-[#e2e4eb] rounded-xl px-3.5 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors";
+      const selectCls = inputCls + " appearance-none cursor-pointer";
+      const helperCls = "text-xs text-[#676d7a] leading-relaxed";
+      const labelCls  = "text-xs font-semibold text-[#2a2f3d] mb-0.5";
+      return `
+        <!-- Pre-filled notice -->
+        <div class="flex items-center gap-2 bg-[#fafbfc] border border-[#f0f2f5] rounded-xl px-3 py-2 shrink-0">
+          <svg class="shrink-0" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#265ddc" stroke-width="1.2"/><path d="M4.5 7l1.8 1.8 3-3" stroke="#265ddc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="text-xs text-[#676d7a] whitespace-nowrap">Pre-filled from your Candidly profile — review and confirm</p>
+        </div>
+
+        <!-- Annual Income -->
+        <div class="flex flex-col gap-2">
+          <div>
+            <p class="text-sm font-bold text-[#181d29]">What was your annual income?</p>
+            <p class="${helperCls} mt-0.5">AGI — adjusted gross income is your income before taxes</p>
+          </div>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#676d7a] text-sm font-medium pointer-events-none select-none">$</span>
+            <input id="form-gross-income" type="number" value="38400"
+              oninput="document.getElementById('form-agi').value=this.value"
+              placeholder="0"
+              class="w-full border border-[#e2e4eb] rounded-xl pl-8 pr-4 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors" />
+          </div>
+        </div>
+
+        <!-- Household information -->
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-bold text-[#181d29]">Household information</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <p class="${labelCls}">Family size</p>
+              <input id="form-family" type="number" value="1" min="1" placeholder="1" class="${inputCls}" />
+              <p class="${helperCls}">Total people in your household</p>
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="${labelCls}">Number of dependents</p>
+              <input id="form-dependents" type="number" value="0" min="0" placeholder="0" class="${inputCls}" />
+              <p class="${helperCls}">Dependents you claim on taxes</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <p class="${labelCls}">Current marital status</p>
+              <div class="relative">
+                <select id="form-marital" class="${selectCls}">
+                  <option value="" disabled selected>Select</option>
+                  <option value="single">Single</option>
+                  <option value="married">Married</option>
+                  <option value="separated">Separated</option>
+                  <option value="divorced">Divorced</option>
+                  <option value="widowed">Widowed</option>
+                </select>
+                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <p class="${helperCls}">Improves repayment accuracy</p>
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="${labelCls}">Tax filing status</p>
+              <div class="relative">
+                <select id="form-filing" class="${selectCls}">
+                  <option value="" disabled selected>Select</option>
+                  <option value="single">Single</option>
+                  <option value="married_joint">Married filing jointly</option>
+                  <option value="married_separate">Married filing separately</option>
+                  <option value="head">Head of household</option>
+                </select>
+                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <p class="${helperCls}">Most recent tax return status</p>
+            </div>
+          </div>
+        </div>
+
+        <input id="form-agi" type="hidden" value="38400" />
+
+        <!-- Calculate button -->
+        <button onclick="calculateFormPayment()"
+          class="w-full bg-[#265ddc] hover:bg-[#1e4fc2] text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
+          Calculate My Monthly Payment →
+        </button>`;
+    }
+
+    // ── Override calculateFormPayment → 5% RAP formula, no comfort question ──
+    window.calculateFormPayment = function() {
+      const grossEl    = document.getElementById('form-gross-income');
+      const agi        = parseFloat(grossEl ? grossEl.value : null) || parseFloat(document.getElementById('form-agi')?.value) || 38400;
+      const familySize = parseInt(document.getElementById('form-family')?.value) || 1;
+
+      // 2025 federal poverty guidelines — RAP uses 5%
+      const poverty    = 15060 + (familySize - 1) * 5380;
+      const annual     = Math.max(0, agi - poverty * 1.5);
+      const monthly    = Math.max(5, Math.round(annual * 0.05 / 12));
+      const termYears  = 20;
+      const totalPaid  = monthly * termYears * 12;
+      const forgiven   = Math.max(0, 52400 - totalPaid);
+
+      _dRap = { monthly, termYears, totalPaid, forgiven, agi };
+
+      document.getElementById('fp-subtitle').textContent = 'Your Estimated Payment';
+      updateChatChips('delinq_confirm');
+
+      document.getElementById('fp-body').innerHTML = `
+        <div class="flex flex-col gap-4 h-full">
+
+          <!-- Back link -->
+          <button onclick="dSaveResetPaymentCalc()" class="flex items-center gap-1.5 text-xs text-neutral-disabled hover:text-brand-primary transition-colors self-start -mb-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to income details
+          </button>
+
+          <!-- Payment result card -->
+          <div class="rounded-xl p-4 flex flex-col gap-4" style="background:#eff4ff">
+            <div class="flex flex-col gap-1 items-center text-center">
+              <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your RAP monthly payment</p>
+              <p class="font-bold text-gray-900 leading-8" style="font-size:26px;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
+              <p class="text-xs font-medium text-[#676d7a]">5% of discretionary income · AGI $${agi.toLocaleString()}</p>
+            </div>
+
+            <!-- Stats row -->
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-[#fafbfc] rounded-xl px-3 py-2.5 text-center">
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Repayment term</p>
+                <p class="text-sm font-bold text-gray-900">${termYears} years</p>
+              </div>
+              <div class="bg-[#fafbfc] rounded-xl px-3 py-2.5 text-center">
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Total paid</p>
+                <p class="text-sm font-bold text-gray-900">$${totalPaid.toLocaleString()}</p>
+              </div>
+              <div class="bg-[#fafbfc] rounded-xl px-3 py-2.5 text-center">
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Amt. forgiven</p>
+                <p class="text-sm font-bold text-green-600">$${forgiven.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enroll CTA -->
+          <button onclick="showRAPEnrollPanel()"
+            class="w-full bg-[#265ddc] hover:bg-[#1e4fc2] text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
+            Enroll in RAP →
+          </button>
+
+        </div>`;
+      staggerIn(document.getElementById('fp-body'));
+    };
+
+    window.dSaveResetPaymentCalc = function() {
+      document.getElementById('fp-subtitle').textContent = 'Income & Payment Calculation';
+      document.getElementById('fp-body').innerHTML = buildSaveInputScreenHTML();
+      staggerIn(document.getElementById('fp-body'));
+      updateChatChips('delinq_payment');
+    };
+
+    // ── Enroll panel: plan summary + IE personal info + sig + consent ──
+    window.showRAPEnrollPanel = function() {
+      const d = _dRap;
+      document.getElementById('fp-title').textContent    = 'Confirm RAP Enrollment';
+      document.getElementById('fp-subtitle').textContent = 'Review & Sign';
+      updateChatChips('delinq_enroll');
+
+      document.getElementById('fp-body').innerHTML = `
+        <div class="flex flex-col gap-4">
+
+          <!-- Back link -->
+          <button onclick="dSaveShowResults()" class="flex items-center gap-1.5 text-xs text-neutral-disabled hover:text-brand-primary transition-colors self-start -mb-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to payment results
+          </button>
+
+          <!-- Plan summary -->
+          <div class="rounded-xl p-4 flex flex-col gap-3" style="background:#fafbfc">
+            <div>
+              <span class="text-xs font-bold text-[#265ddc] bg-[#eff4ff] border border-[#e5edff] rounded-full px-2.5 py-0.5">RAP — Income-Driven</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Monthly Payment</p>
+                <p class="text-lg font-bold text-gray-900">$${d.monthly}<span class="text-sm font-medium text-neutral-disabled">/mo</span></p>
+              </div>
+              <div>
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Repayment Term</p>
+                <p class="text-lg font-bold text-gray-900">${d.termYears} years</p>
+              </div>
+              <div>
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Total Paid</p>
+                <p class="text-base font-semibold text-gray-900">$${d.totalPaid.toLocaleString()}</p>
+              </div>
+              <div>
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Amt. Forgiven</p>
+                <p class="text-base font-semibold text-green-600">$${d.forgiven.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal info IE-accordion -->
+          <div id="d-save-info-sec" class="ie-section ie-active" style="flex-shrink:0">
+            <div class="ie-sec-hdr" onclick="toggleIESection('d-save-info-sec')">
+              <div class="flex items-center gap-2">
+                <span class="ie-sec-badge">1</span>
+                <span class="text-xs font-bold text-gray-900">Personal Information</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="d-save-info-status" class="ie-status ie-s-pending">Confirm details</span>
+                <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+              </div>
+            </div>
+            <div class="ie-sec-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="ie-field-wrap" style="grid-column:1/-1">
+                <label class="ie-label">Full Name</label>
+                <input id="d-save-name" class="ie-input" value="Marcus Webb" />
+              </div>
+              <div class="ie-field-wrap">
+                <label class="ie-label">SSN (Last 4)</label>
+                <input id="d-save-ssn" class="ie-input" value="●●●-●●-7734" />
+              </div>
+              <div class="ie-field-wrap">
+                <label class="ie-label">Phone</label>
+                <input id="d-save-phone" class="ie-input" value="(737) 555-0182" />
+              </div>
+              <div class="ie-field-wrap" style="grid-column:1/-1">
+                <label class="ie-label">Home Address</label>
+                <input id="d-save-addr" class="ie-input" value="2815 Lamar Blvd, Austin TX 78705" />
+              </div>
+            </div>
+            <div class="ie-sec-confirm">
+              <button onclick="dSaveConfirmPersonalInfo()" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">
+                Confirm →
+              </button>
+            </div>
+          </div>
+
+          <!-- Signature block -->
+          <div id="d-save-sig-block" class="flex flex-col gap-3">
+            <p class="text-sm font-bold text-gray-900">Signature</p>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-[#2a2f3d] mb-0.5">Your signature</label>
+                <input id="d-save-sig-input" type="text" placeholder="Type your full name"
+                  oninput="dSaveCheckEnrollReady()"
+                  class="w-full border border-[#e2e4eb] rounded-xl px-3.5 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors" />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-[#2a2f3d] mb-0.5">Date</label>
+                <input type="text" value="04/28/2026" readonly
+                  class="w-full border border-[#e2e4eb] rounded-xl px-3.5 py-2.5 text-sm text-[#676d7a] outline-none bg-[#fafbfc] cursor-default" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Consent -->
+          <label class="flex items-start gap-2.5 cursor-pointer select-none">
+            <input type="checkbox" id="d-save-consent-chk" onchange="dSaveCheckEnrollReady()"
+              class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
+            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="underline text-brand-primary">Terms of Service</a>.</span>
+          </label>
+
+          <!-- Enroll CTA -->
+          <button id="d-save-enroll-btn" disabled onclick="dEnrollInRAP()"
+            class="w-full bg-[#265ddc] text-white rounded-full py-2.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-colors">
+            Enroll &amp; Set Up Auto-Pay →
+          </button>
+
+        </div>`;
+      staggerIn(document.getElementById('fp-body'));
+    };
+
+    window.dSaveConfirmPersonalInfo = function() {
+      const sec = document.getElementById('d-save-info-sec');
+      if (!sec) return;
+      sec.classList.remove('ie-active');
+      sec.classList.add('ie-confirmed', 'ie-collapsed');
+      const badge = document.getElementById('d-save-info-status');
+      if (badge) { badge.textContent = '✓ Confirmed'; badge.className = 'ie-status ie-s-confirmed'; }
+      setTimeout(() => {
+        const sigBlock = document.getElementById('d-save-sig-block');
+        if (sigBlock) sigBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 200);
+    };
+
+    window.dSaveCheckEnrollReady = function() {
+      const sig    = (document.getElementById('d-save-sig-input')?.value || '').trim();
+      const consent = document.getElementById('d-save-consent-chk')?.checked;
+      const btn     = document.getElementById('d-save-enroll-btn');
+      if (!btn) return;
+      const ready = sig.length > 0 && consent;
+      btn.disabled = !ready;
+      btn.classList.toggle('opacity-40', !ready);
+      btn.classList.toggle('cursor-not-allowed', !ready);
+    };
+
+    // Desktop RAP autopay state
+    let dRapAutopayStep = 1;
+    let dRapRouting = '';
+    let dRapAccount = '';
+
+    window.dEnrollInRAP = function() {
+      const d   = _dRap;
+      const btn = document.getElementById('d-save-enroll-btn');
+      if (!btn || btn.disabled) return;
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+      btn.style.opacity = '0.7';
+
+      setTimeout(() => {
+        dRapAutopayStep = 1;
+        dRapRouting = '';
+        dRapAccount = '';
+        document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
+        document.getElementById('fp-subtitle').textContent = 'Enter Funding Account';
+        dRenderRapAutopayStep();
+      }, 600);
+    };
+
+    window.dRenderRapAutopayStep = function() {
+      const d   = _dRap;
+      const body = document.getElementById('fp-body');
+
+      if (dRapAutopayStep === 1) {
+        document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
+        document.getElementById('fp-subtitle').textContent = 'Enter Funding Account · 1 of 2';
+        body.innerHTML = `
+          <div class="flex flex-col gap-5 pb-6">
+            <!-- Back link -->
+            <button onclick="showRAPEnrollPanel()" class="flex items-center gap-1.5 text-xs text-neutral-disabled hover:text-brand-primary transition-colors self-start -mb-1">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              Back to enrollment
+            </button>
+
+            <!-- Enrolled banner — green matching Rehab -->
+            <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;">
+              <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
+                <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">You're enrolled in RAP! 🎉</p>
+                <p style="font-size:14px;font-weight:400;color:#000;line-height:1.5;">Now protect your progress — set up auto-pay so you never miss a payment and stay on track for forgiveness.</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-base font-bold text-gray-900 mb-1">Enter Funding Account</h3>
+              <p class="text-sm text-[#676d7a] leading-relaxed">Link your bank account to automate your monthly RAP payment.</p>
+            </div>
+
+            <div class="flex flex-col gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1.5">Routing Number</label>
+                <input id="d-ap-routing" type="tel" maxlength="9" placeholder="9-digit routing number"
+                  class="w-full border border-[#e2e4eb] rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#265ddc] focus:ring-1 focus:ring-[#265ddc] transition-colors"
+                  oninput="dRapCheckNext()" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1.5">Account Number</label>
+                <input id="d-ap-account" type="tel" placeholder="Account number"
+                  class="w-full border border-[#e2e4eb] rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#265ddc] focus:ring-1 focus:ring-[#265ddc] transition-colors"
+                  oninput="dRapCheckNext()" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1.5">Confirm Account Number</label>
+                <input id="d-ap-account-confirm" type="tel" placeholder="Re-enter account number"
+                  class="w-full border border-[#e2e4eb] rounded-xl px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-[#265ddc] focus:ring-1 focus:ring-[#265ddc] transition-colors"
+                  oninput="dRapCheckNext()" />
+              </div>
+            </div>
+
+            <!-- Security badge — green matching Rehab -->
+            <div style="background:#fafbfc;border:1px solid #f0f2f5;border-radius:12px;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 8px;">
+              <div style="background:#e6faee;border-radius:8px;padding:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                <div style="position:relative;width:20px;height:20px;overflow:hidden;flex-shrink:0;">
+                  <div style="position:absolute;top:12.89%;right:22.08%;bottom:12.73%;left:22.08%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/a45dc6b7-14f0-4c16-bfea-6245df62837f" /></div>
+                </div>
+              </div>
+              <p style="flex:1;font-size:13px;font-weight:400;color:#027a42;line-height:1.5;">Your data is protected by Candidly's <strong style="font-weight:700;">security policy</strong></p>
+              <div style="position:relative;width:20px;height:20px;overflow:hidden;flex-shrink:0;">
+                <div style="position:absolute;inset:16.67%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/8af3ace5-08d1-4683-b453-a5282a363c2f" /></div>
+              </div>
+            </div>
+
+            <!-- Auth checkbox — blue accent matching Rehab -->
+            <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="d-ap-auth-chk" onchange="dRapCheckNext()"
+                  class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0" style="margin-top:3px" />
+                <span class="text-sm text-gray-800 leading-relaxed">
+                  I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
+                </span>
+              </label>
+            </div>
+
+            <!-- Blue Next button matching Rehab -->
+            <button id="d-ap-next-btn" onclick="dRapAutopayNext()" disabled
+              class="w-full bg-[#265ddc] text-white rounded-full py-2.5 text-sm font-semibold transition-colors opacity-40 cursor-not-allowed">
+              Next →
+            </button>
+          </div>`;
+        staggerIn(body);
+
+      } else if (dRapAutopayStep === 2) {
+        document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
+        document.getElementById('fp-subtitle').textContent = 'Confirm RAP Schedule · 2 of 2';
+        const dt = new Date(); dt.setDate(dt.getDate() + 3);
+        const nextDate = (dt.getMonth()+1).toString().padStart(2,'0') + '/' + dt.getDate().toString().padStart(2,'0') + '/' + dt.getFullYear();
+        const last4 = dRapAccount.length >= 4 ? dRapAccount.slice(-4) : '5678';
+        body.innerHTML = `
+          <div class="flex flex-col gap-5 pb-6">
+            <div class="flex flex-col items-center gap-3 py-2">
+              <!-- Blue/green icon matching Rehab step 2 -->
+              <div class="w-16 h-16 rounded-full bg-[#f0f4ff] flex items-center justify-center">
+                <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+                  <rect x="8" y="6" width="28" height="36" rx="3" fill="#e5edff" stroke="#265ddc" stroke-width="1.8"/>
+                  <path d="M14 18h20M14 24h14M14 30h10" stroke="#265ddc" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="37" cy="37" r="9" fill="#ecfbf5"/>
+                  <path d="M33 37l3 3 5-5" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="text-base font-bold text-gray-900">Confirm repayment information</h3>
+            </div>
+
+            <!-- Schedule table -->
+            <div class="border border-[#f0f2f5] rounded-2xl overflow-hidden">
+              <div class="grid grid-cols-2 px-4 py-2 bg-[#fafbfc] border-b border-[#f0f2f5]">
+                <span class="text-xs font-semibold text-[#9ca3af] uppercase tracking-wide">Title</span>
+                <span class="text-xs font-semibold text-[#9ca3af] uppercase tracking-wide text-right">Value</span>
+              </div>
+              <div class="divide-y divide-[#f0f2f5]">
+                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Amount</span><span class="text-sm font-semibold text-gray-900 text-right">$${d.monthly}.00/mo</span></div>
+                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Contribution Type</span><span class="text-sm font-semibold text-gray-900 text-right">Monthly</span></div>
+                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Duration</span><span class="text-sm font-semibold text-gray-900 text-right">20 years</span></div>
+                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Next Transfer</span><span class="text-sm font-semibold text-gray-900 text-right">${nextDate}</span></div>
+                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Funding Account</span><span class="text-sm font-semibold text-gray-900 text-right">••••${last4}</span></div>
+              </div>
+            </div>
+
+            <!-- Outcome callout -->
+            <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;">
+              <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
+                <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">After 20 years, remaining balance is forgiven</p>
+                <p style="font-size:14px;font-weight:400;color:#000;line-height:1.5;">On RAP, your balance can never increase. Estimated balance forgiven: <strong style="font-weight:700;">$${d.forgiven.toLocaleString()}</strong>.</p>
+              </div>
+            </div>
+
+            <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you agree to this repayment schedule and the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>.</p>
+
+            <div class="flex gap-3">
+              <button onclick="dRapAutopayStep--; dRenderRapAutopayStep()"
+                class="flex-1 border border-[#e2e4eb] bg-white text-gray-700 rounded-full py-2.5 text-sm font-semibold hover:bg-[#f5f6f8] transition-colors">
+                ← Back
+              </button>
+              <button onclick="dRapAutopayNext()"
+                class="flex-1 bg-[#265ddc] hover:bg-[#1e4fc2] text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
+                Confirm →
+              </button>
+            </div>
+          </div>`;
+        staggerIn(body);
+      }
+    };
+
+    window.dRapCheckNext = function() {
+      const routing  = document.getElementById('d-ap-routing')?.value.trim();
+      const account  = document.getElementById('d-ap-account')?.value.trim();
+      const confirm  = document.getElementById('d-ap-account-confirm')?.value.trim();
+      const authChk  = document.getElementById('d-ap-auth-chk')?.checked;
+      const btn      = document.getElementById('d-ap-next-btn');
+      if (!btn) return;
+      const ok = !!(routing && account && confirm && authChk);
+      btn.disabled = !ok;
+      btn.style.opacity = ok ? '1' : '0.4';
+      btn.style.cursor  = ok ? 'pointer' : 'not-allowed';
+    };
+
+    window.dRapAutopayNext = function() {
+      const d = _dRap;
+      if (dRapAutopayStep === 1) {
+        dRapRouting = document.getElementById('d-ap-routing')?.value.trim() || '021000021';
+        dRapAccount = document.getElementById('d-ap-account')?.value.trim() || '123456785678';
+        dRapAutopayStep = 2;
+        dRenderRapAutopayStep();
+      } else if (dRapAutopayStep === 2) {
+        // Close panel → show success in step-body
+        closeFormPanel();
+        updateChatChips('delinq_enrolled');
+        setTimeout(() => {
+          document.getElementById('step-body').innerHTML = `
+            <div class="flex flex-col items-center gap-5 py-6 text-center">
+              <div class="w-16 h-16 rounded-full bg-[#ecfbf5] flex items-center justify-center">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
+                <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your RAP enrollment and auto-pay have been confirmed. Your <strong class="text-gray-900">$${d.monthly}/month</strong> payments start on your next transfer date.</p>
+              </div>
+              <div class="bg-surface-base rounded-2xl p-5 w-full text-left">
+                <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
+                <ul class="flex flex-col gap-3 text-sm text-gray-800">
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>Your servicer will confirm your <strong style="white-space:nowrap">$${d.monthly}/month</strong> RAP enrollment within 5–7 business days</span></li>
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} payment</strong> starts your 20-year repayment clock. Payments are automatically drafted from your funding account.</span></li>
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 20 years, your remaining balance of <strong>$${d.forgiven.toLocaleString()}</strong> is forgiven — your balance can never grow while on RAP.</span></li>
+                </ul>
+              </div>
+              <p class="text-xs text-neutral-disabled">Questions? help@getcandidly.com · (866) 719-3437</p>
+            </div>`;
+          document.getElementById('btn-next').classList.add('hidden');
+        }, 300);
+      }
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', saveDesktopInitHome);
+    } else {
+      saveDesktopInitHome();
+    }
+  })();
 </script>
 </body>
 </html>
