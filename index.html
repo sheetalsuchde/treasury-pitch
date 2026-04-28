@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Candidly — Treasury Pitch</title>
+  <title>Candidly — Demo Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'DM Sans', sans-serif;
-      background: #f5f7fb;
+      background: #f0f2f7;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 24px;
+      padding: 48px 24px 40px;
     }
 
     /* ── Logo ── */
@@ -24,7 +24,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     .logo-mark {
       width: 36px; height: 36px;
@@ -36,141 +36,188 @@
     .logo-name { font-size: 22px; font-weight: 700; color: #181d29; letter-spacing: -0.3px; }
 
     .tagline {
-      font-size: 14px;
+      font-size: 13px;
       color: #9ca3af;
       font-weight: 400;
-      margin-bottom: 52px;
-      letter-spacing: 0.1px;
+      margin-bottom: 44px;
+      letter-spacing: 0.2px;
     }
 
-    /* ── Cards row ── */
+    /* ── Section label ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #b0b6c2;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      align-self: flex-start;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* ── Cards grid ── */
     .cards {
-      display: flex;
-      gap: 20px;
-      align-items: stretch;
+      display: grid;
+      grid-template-columns: repeat(3, 280px);
+      gap: 18px;
+      width: 100%;
+      max-width: 900px;
     }
 
+    @media (max-width: 900px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 600px) {
-      .cards { flex-direction: column; gap: 16px; }
+      .cards { grid-template-columns: 1fr; }
     }
 
+    /* ── Persona card ── */
     .card {
-      width: 260px;
       background: white;
       border: 1.5px solid #e2e4eb;
-      border-radius: 24px;
-      padding: 32px 28px 28px;
-      text-decoration: none;
+      border-radius: 20px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
       gap: 0;
-      cursor: pointer;
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s;
       position: relative;
       overflow: hidden;
     }
     .card:hover {
-      border-color: #265ddc;
-      box-shadow: 0 8px 32px rgba(38,93,220,0.1);
-      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(38,93,220,0.09);
+      transform: translateY(-2px);
     }
-    .card:active { transform: translateY(-1px); }
 
-    /* Subtle gradient background wash on hover */
-    .card::before {
-      content: '';
+    /* top accent bar */
+    .card-bar {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(38,93,220,0.03) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.2s;
-      pointer-events: none;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 20px 20px 0 0;
     }
-    .card:hover::before { opacity: 1; }
 
-    .card-icon {
-      width: 48px; height: 48px;
-      border-radius: 14px;
-      background: #eff4ff;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px;
-      transition: background 0.2s;
-    }
-    .card:hover .card-icon { background: #e0eaff; }
-
-    .card-label {
+    /* status pill */
+    .card-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       font-size: 11px;
       font-weight: 600;
-      color: #9ca3af;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .card-status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
     }
 
     .card-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       color: #181d29;
       letter-spacing: -0.3px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .card-desc {
-      font-size: 13px;
+      font-size: 12.5px;
       color: #676d7a;
-      line-height: 1.55;
-      flex: 1;
-      margin-bottom: 24px;
-    }
-
-    .card-cta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #265ddc;
-      margin-top: auto;
-    }
-    .card-cta svg {
-      transition: transform 0.18s;
-    }
-    .card:hover .card-cta svg {
-      transform: translateX(3px);
-    }
-
-    /* Preview thumbnails inside cards */
-    .card-preview {
-      width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #e2e4eb;
+      line-height: 1.6;
       margin-bottom: 20px;
-      background: #f0f2f5;
+      flex: 1;
+    }
+
+    /* ── Launch buttons ── */
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    .card-preview.mobile-preview {
-      height: 80px;
       gap: 6px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.12s;
+      cursor: pointer;
     }
-    .card-preview.desktop-preview {
-      height: 56px;
-    }
+    .btn:active { transform: scale(0.97); }
 
-    /* Mini phone silhouette */
-    .mini-phone {
-      width: 28px; height: 52px;
+    .btn-primary {
       background: #265ddc;
-      border-radius: 6px;
-      opacity: 0.15;
+      color: white;
+    }
+    .btn-primary:hover { background: #1e4fc2; }
+
+    .btn-secondary {
+      background: #f0f2f7;
+      color: #374151;
+      border: 1px solid #e2e4eb;
+    }
+    .btn-secondary:hover { background: #e5e8f0; }
+
+    .btn-disabled {
+      background: #f5f6f8;
+      color: #b0b6c2;
+      border: 1px solid #e9eaee;
+      cursor: not-allowed;
+      pointer-events: none;
     }
 
-    /* Footer */
+    /* coming soon chip */
+    .coming-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #9ca3af;
+      background: #f5f6f8;
+      border: 1px solid #e2e4eb;
+      border-radius: 6px;
+      padding: 2px 7px;
+      margin-left: 4px;
+      letter-spacing: 0.2px;
+    }
+
+    /* ── Persona color themes ── */
+
+    /* Rehab — blue */
+    .theme-rehab .card-bar   { background: linear-gradient(90deg, #265ddc, #4274eb); }
+    .theme-rehab .card-status { background: #eff4ff; color: #265ddc; }
+    .theme-rehab .card-status-dot { background: #265ddc; }
+
+    /* SAVE — amber */
+    .theme-save .card-bar   { background: linear-gradient(90deg, #d97706, #f59e0b); }
+    .theme-save .card-status { background: #fffbeb; color: #b45309; }
+    .theme-save .card-status-dot { background: #f59e0b; }
+
+    /* Delinquency — rose */
+    .theme-delinq .card-bar   { background: linear-gradient(90deg, #dc2626, #ef4444); }
+    .theme-delinq .card-status { background: #fff1f2; color: #b91c1c; }
+    .theme-delinq .card-status-dot { background: #ef4444; }
+
+    /* ── Divider ── */
+    .divider {
+      width: 100%;
+      max-width: 900px;
+      border: none;
+      border-top: 1px solid #e2e4eb;
+      margin: 32px 0 24px;
+    }
+
+    /* ── Footer ── */
     .footer {
-      margin-top: 48px;
       font-size: 12px;
       color: #b0b6c2;
       text-align: center;
@@ -179,51 +226,89 @@
 </head>
 <body>
 
+  <!-- Logo -->
   <div class="logo">
-    <img src="https://www.figma.com/api/mcp/asset/2a4d19d9-f386-485b-9fb7-79bfa7d404cb" alt="Candidly" style="height:28px; width:28px; object-fit:contain; display:block;" />
+    <div class="logo-mark"><div class="logo-mark-dot"></div></div>
     <span class="logo-name">Candidly</span>
   </div>
   <p class="tagline">Treasury Pitch · Interactive Demo</p>
 
+  <!-- Section label -->
+  <p class="section-label">Select a persona to preview</p>
+
+  <!-- 3 persona cards -->
   <div class="cards">
 
-    <!-- Mobile card -->
-    <a href="/mobile" class="card">
-      <div class="card-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="5" y="2" width="14" height="20" rx="3"/>
-          <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/>
-        </svg>
+    <!-- 1. Rehab -->
+    <div class="card theme-rehab">
+      <div class="card-bar"></div>
+      <div class="card-status">
+        <div class="card-status-dot"></div>
+        In Default
       </div>
-      <div class="card-label">Experience</div>
-      <div class="card-title">Mobile</div>
-      <p class="card-desc">Full iPhone prototype inside a device frame. Best for showing the real end-user experience.</p>
-      <div class="card-cta">
-        Open mobile
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <div class="card-title">Rehabilitation</div>
+      <p class="card-desc">Borrower in default on federal loans. Cait guides them through income verification, payment calculation, and enrollment into a 9-month rehab plan.</p>
+      <div class="card-actions">
+        <a href="/mobile?flow=rehab" class="btn btn-primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
+          Mobile
+        </a>
+        <a href="/desktop?flow=rehab" class="btn btn-secondary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Desktop
+        </a>
       </div>
-    </a>
+    </div>
 
-    <!-- Desktop card -->
-    <a href="/desktop" class="card">
-      <div class="card-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2"/>
-          <line x1="8" y1="21" x2="16" y2="21"/>
-          <line x1="12" y1="17" x2="12" y2="21"/>
-        </svg>
+    <!-- 2. SAVE -->
+    <div class="card theme-save">
+      <div class="card-bar"></div>
+      <div class="card-status">
+        <div class="card-status-dot"></div>
+        Plan Paused
       </div>
-      <div class="card-label">Experience</div>
-      <div class="card-title">Desktop</div>
-      <p class="card-desc">Full-screen web view without the device frame. Great for walkthroughs on a laptop or external display.</p>
-      <div class="card-cta">
-        Open desktop
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <div class="card-title">SAVE Plan</div>
+      <p class="card-desc">Borrower enrolled in SAVE — now in forbearance due to court injunction. Cait explains the situation and helps them evaluate switching to IBR or another IDR plan.</p>
+      <div class="card-actions">
+        <a href="/mobile?flow=save" class="btn btn-disabled">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
+          Mobile
+          <span class="coming-soon">Soon</span>
+        </a>
+        <a href="/desktop?flow=save" class="btn btn-disabled">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Desktop
+          <span class="coming-soon">Soon</span>
+        </a>
       </div>
-    </a>
+    </div>
+
+    <!-- 3. Delinquency -->
+    <div class="card theme-delinq">
+      <div class="card-bar"></div>
+      <div class="card-status">
+        <div class="card-status-dot"></div>
+        Past Due
+      </div>
+      <div class="card-title">Delinquency</div>
+      <p class="card-desc">Borrower is behind on payments and approaching default. Cait surfaces urgency, calculates an affordable IDR payment, and helps them enroll before the 270-day threshold.</p>
+      <div class="card-actions">
+        <a href="/mobile?flow=delinquency" class="btn btn-disabled">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
+          Mobile
+          <span class="coming-soon">Soon</span>
+        </a>
+        <a href="/desktop?flow=delinquency" class="btn btn-disabled">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Desktop
+          <span class="coming-soon">Soon</span>
+        </a>
+      </div>
+    </div>
 
   </div>
 
+  <hr class="divider" />
   <p class="footer">Confidential · Candidly © 2026</p>
 
 </body>
