@@ -2317,21 +2317,95 @@
         .replace('Loan rehabilitation payment', 'RAP monthly payment');
     };
 
-    /* 6 ── Payment results: update RAP framing ──────────────────── */
-    const _origMobCalculatePayment = mobCalculatePayment;
+    /* 6 ── Payment results: full RAP breakdown ──────────────────── */
     window.mobCalculatePayment = function() {
-      _origMobCalculatePayment();
-      // Patch "× 9 consecutive months" label → RAP framing
-      const totalLine = document.querySelector('#mob-income-body .text-xs.font-medium.text-\\[\\#676d7a\\]');
-      if (totalLine && totalLine.textContent.includes('consecutive months')) {
-        totalLine.textContent = 'Income-driven · adjusts if your income changes';
+      const agi       = parseInt(document.getElementById('mob-agi')?.value) || 38400;
+      const household = parseInt(document.getElementById('mob-household')?.value) || 1;
+      const poverty   = 15060 + (household - 1) * 5380;
+      // RAP uses 5% of discretionary income (vs rehab's 15%)
+      const discretionary = Math.max(0, agi - poverty * 1.5);
+      const monthly   = Math.max(5, Math.round(discretionary * 0.05 / 12));
+      const termYears = 20;
+      const termMonths = termYears * 12;
+      const totalPaid = monthly * termMonths;
+      const loanBalance = 52400;
+      // Estimate remaining balance at year 20 (interest-subsidised, balance protected)
+      const annualRate  = 0.055;
+      const mRate       = annualRate / 12;
+      let bal = loanBalance;
+      for (let i = 0; i < termMonths; i++) {
+        const interest = bal * mRate;
+        const principal = Math.max(0, monthly - interest);
+        bal = Math.max(0, bal - principal); // balance can't grow on RAP (interest subsidy)
       }
-      // Patch "for 9 months" comfort question
-      const comfortQ = document.querySelector('#mob-income-body p.text-sm.font-semibold');
-      if (comfortQ && comfortQ.textContent.includes('9 months')) {
-        const m = comfortQ.textContent.match(/\$\d+/)?.[0] || '';
-        comfortQ.innerHTML = `Are you comfortable with <strong>${m}/month</strong> for your RAP payment?`;
-      }
+      const forgiven = Math.round(bal);
+      const familyLabel = household === 1 ? '1 person' : household + ' people';
+
+      document.getElementById('mob-income-body').innerHTML = `
+      <div class="flex flex-col gap-4 pb-8">
+
+        <button onclick="mobOpenIncome()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc] self-start">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Back
+        </button>
+
+        <!-- Monthly payment hero -->
+        <div class="border border-[#e5edff] rounded-xl p-4 flex flex-col items-center gap-1 text-center" style="background:rgba(239,244,255,0.22)">
+          <p class="text-xs font-semibold text-[#676d7a] uppercase tracking-wide">Your estimated RAP payment</p>
+          <p class="font-bold text-gray-900 leading-none" style="font-size:40px">$${monthly}<span class="text-xl font-semibold text-[#676d7a]">/mo</span></p>
+          <p class="text-xs text-[#676d7a] mt-0.5">Income-driven · adjusts if your income changes</p>
+        </div>
+
+        <!-- Repayment breakdown grid -->
+        <div class="grid grid-cols-3 gap-2">
+          <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-1">
+            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Repayment term</p>
+            <p class="text-sm font-bold text-gray-900">${termYears} years</p>
+          </div>
+          <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-1">
+            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Total paid</p>
+            <p class="text-sm font-bold text-gray-900">$${totalPaid.toLocaleString()}</p>
+          </div>
+          <div class="bg-${forgiven > 0 ? '[#ecfbf5] border-[#b6eeda]' : 'white border-[#f0f2f5]'} border rounded-xl p-3 flex flex-col gap-1">
+            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Forgiven</p>
+            <p class="text-sm font-bold text-${forgiven > 0 ? '[#027a42]' : 'gray-900'}">$${forgiven > 0 ? forgiven.toLocaleString() : '—'}</p>
+          </div>
+        </div>
+
+        <!-- Based on -->
+        <div class="grid grid-cols-2 gap-2">
+          <div class="bg-white border border-[#f0f2f5] rounded-xl px-3 py-2.5">
+            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide mb-0.5 font-medium">Based on income</p>
+            <p class="text-sm font-bold text-gray-900">$${agi.toLocaleString()}/yr</p>
+          </div>
+          <div class="bg-white border border-[#f0f2f5] rounded-xl px-3 py-2.5">
+            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide mb-0.5 font-medium">Family size</p>
+            <p class="text-sm font-bold text-gray-900">${familyLabel}</p>
+          </div>
+        </div>
+
+        <!-- Comfort question -->
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-semibold text-gray-900">Are you comfortable with <strong>$${monthly}/month</strong> for RAP?</p>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="mob-yes-btn" onclick="mobYesManage(${monthly})"
+              class="rounded-xl border-2 border-[#265ddc] px-3 py-3 text-sm font-semibold text-[#265ddc] hover:bg-[#eff4ff] transition-colors text-left leading-snug flex flex-col gap-2">
+              <div class="w-8 h-8 bg-[#eff4ff] rounded-lg flex items-center justify-center shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              Yes, let's enroll
+            </button>
+            <button id="mob-no-btn" onclick="mobTooHigh(${Math.max(5, Math.round(discretionary * 0.03 / 12))})"
+              class="rounded-xl border-2 border-[#e2e4eb] px-3 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left leading-snug flex flex-col gap-2">
+              <div class="w-8 h-8 bg-[#f5f6f8] rounded-lg flex items-center justify-center shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#676d7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </div>
+              This is too high
+            </button>
+          </div>
+        </div>
+
+      </div>`;
     };
 
     /* 7 ── Enroll screen: RAP copy ──────────────────────────────── */
