@@ -1940,7 +1940,12 @@
           }
           // Reveal CTA after last section has appeared (~980ms stagger + card fade)
           setTimeout(() => {
-            if (btnNext) { btnNext.style.transition = 'opacity 0.3s ease'; btnNext.style.opacity = '1'; }
+            if (btnNext) {
+              btnNext.style.transition = 'opacity 0.3s ease';
+              btnNext.style.opacity = '1';
+              // Scroll CTA into view once it's visible
+              setTimeout(() => btnNext.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 350);
+            }
           }, 1100);
           setTimeout(() => updateChatChips('resolution'), 1200);
         }, 40);
