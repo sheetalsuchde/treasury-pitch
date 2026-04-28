@@ -84,6 +84,7 @@
     .cait-line{opacity:0}
     @keyframes cait-line-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
     .cait-line.revealed{animation:cait-line-in 0.38s ease forwards}
+    @keyframes save-dot-bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
     .i2-sec-hdr-l{display:flex;align-items:center;gap:10px}
     .i2-sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .i2-sec-title{font-size:13px;font-weight:500;color:#181d29}
@@ -1619,15 +1620,15 @@
       renderStep();
       updateChatChips('save_resolution');
 
-      // Cait opening message — SAVE copy
+      // Cait opening message — 3 staggered lines (same pattern as mobile)
       const staticMsg = document.getElementById('static-cait-msg');
       if (staticMsg) {
+        staticMsg.dataset.animated = ''; // reset so we always re-animate on SAVE
         staticMsg.innerHTML = `
-          <p class="cait-line text-base text-[#676d7a] leading-7">Hi Marcus — your SAVE plan is currently <strong class="font-bold text-gray-900">paused</strong> due to a federal court injunction. You're in forbearance, but interest may start accruing soon. The best path forward is switching to <strong class="font-bold text-gray-900">RAP (Repayment Assistance Plan)</strong> — it locks in income-driven payments and keeps your forgiveness timeline on track.</p>`;
-        if (!staticMsg.dataset.animated) {
-          staticMsg.dataset.animated = '1';
-          revealLines(Array.from(staticMsg.querySelectorAll('.cait-line')), 500);
-        }
+          <p class="cait-line text-base text-[#676d7a] leading-7">Hi Marcus — your SAVE plan is currently <strong class="font-bold text-gray-900">paused</strong> due to a federal court injunction.</p>
+          <p class="cait-line text-base text-[#676d7a] leading-7">You're in forbearance right now, but <strong class="font-bold text-gray-900">interest may start accruing</strong> soon and your forgiveness timeline could be at risk.</p>
+          <p class="cait-line text-base text-[#676d7a] leading-7">The best path forward is switching to <strong class="font-bold text-gray-900">RAP (Repayment Assistance Plan)</strong> — it locks in income-driven payments at 5% of your discretionary income and keeps you protected.</p>`;
+        revealLines(Array.from(staticMsg.querySelectorAll('.cait-line')), 480);
       }
 
       // Update card title + subtitle
@@ -1741,7 +1742,53 @@
       { label: 'What if my income changes?',     fn: null },
     ];
 
-    // ── Override openFormPanel → RAP header + income form ──
+    // ── Skeleton shimmer HTML for form panel ──
+    function buildSavePanelSkeleton() {
+      const bar = (w, h='h-3') => `<div class="bg-gray-200 rounded-full ${h} ${w}"></div>`;
+      const box = (h='h-10') => `<div class="bg-gray-200 rounded-xl ${h} w-full"></div>`;
+      return `
+        <div class="flex flex-col gap-5 animate-pulse">
+          <!-- pre-fill notice -->
+          <div class="flex items-center gap-2 bg-gray-100 rounded-xl px-3 py-2">
+            ${bar('w-4 h-4 rounded-full shrink-0')}
+            ${bar('w-56')}
+          </div>
+          <!-- income label + input -->
+          <div class="flex flex-col gap-2">
+            ${bar('w-40 h-4')}
+            ${bar('w-64 h-3')}
+            ${box('h-11')}
+          </div>
+          <!-- household section -->
+          <div class="flex flex-col gap-3">
+            ${bar('w-44 h-4')}
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex flex-col gap-1.5">${bar('w-20')}${box('h-11')}</div>
+              <div class="flex flex-col gap-1.5">${bar('w-28')}${box('h-11')}</div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex flex-col gap-1.5">${bar('w-32')}${box('h-11')}</div>
+              <div class="flex flex-col gap-1.5">${bar('w-24')}${box('h-11')}</div>
+            </div>
+          </div>
+          <!-- cait typing indicator -->
+          <div class="flex items-center gap-2 mt-2">
+            <div class="w-5 h-5 rounded-full bg-[#EEEDFE] flex items-center justify-center shrink-0">
+              <div class="w-1.5 h-1.5 rounded-full bg-[#534AB7]"></div>
+            </div>
+            <div class="flex gap-1 items-end pb-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-gray-400" style="animation:save-dot-bounce 1.2s infinite ease-in-out 0s"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-gray-400" style="animation:save-dot-bounce 1.2s infinite ease-in-out 0.2s"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-gray-400" style="animation:save-dot-bounce 1.2s infinite ease-in-out 0.4s"></span>
+            </div>
+            <span class="text-xs text-neutral-disabled">Cait is preparing your income form…</span>
+          </div>
+          <!-- button placeholder -->
+          ${box('h-10 rounded-full mt-2')}
+        </div>`;
+    }
+
+    // ── Override openFormPanel → skeleton → dissolve → real form ──
     window.openFormPanel = function() {
       const panel = document.getElementById('form-panel');
       const main  = document.getElementById('chat-main');
@@ -1752,9 +1799,24 @@
       main.style.width = '';
       document.getElementById('fp-title').textContent    = 'RAP Enrollment';
       document.getElementById('fp-subtitle').textContent = 'Income & Payment Calculation';
+
       const body = document.getElementById('fp-body');
-      if (body && !body.children.length) body.innerHTML = buildSaveInputScreenHTML();
-      updateChatChips('save_payment');
+      // Show skeleton immediately
+      body.style.transition = 'none';
+      body.style.opacity    = '1';
+      body.innerHTML = buildSavePanelSkeleton();
+      updateChatChips([]);
+
+      // Fade out skeleton, fade in real form
+      setTimeout(() => {
+        body.style.transition = 'opacity 0.28s ease';
+        body.style.opacity    = '0';
+        setTimeout(() => {
+          body.innerHTML = buildSaveInputScreenHTML();
+          body.style.opacity = '1';
+          updateChatChips('save_payment');
+        }, 280);
+      }, 1050);
     };
 
     function buildSaveInputScreenHTML() {
