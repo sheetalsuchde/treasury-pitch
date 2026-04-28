@@ -1294,13 +1294,20 @@
           </div>
           <div class="flex flex-col gap-1.5">
             <label class="text-xs font-semibold text-[#2a2f3d]">State</label>
-            <div class="relative">
-              <select id="mob-state" class="ie-input appearance-none bg-white pr-7">
-                <option value="" disabled selected>Select</option>
-                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
-              </select>
-              <svg class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[#676d7a]" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <div class="relative" id="mob-state-wrap">
+              <button type="button" id="mob-state-btn"
+                class="ie-input w-full text-left flex items-center justify-between bg-white"
+                onclick="mobToggleState(event)">
+                <span id="mob-state-lbl" class="text-[#9ca3af]">Select</span>
+                <svg class="shrink-0 text-[#676d7a]" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div id="mob-state-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
+                <div class="py-1">
+                  <button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('AL')">AL</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('AK')">AK</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('AZ')">AZ</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('AR')">AR</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('CA')">CA</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('CO')">CO</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('CT')">CT</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('DE')">DE</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('FL')">FL</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('GA')">GA</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('HI')">HI</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('ID')">ID</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('IL')">IL</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('IN')">IN</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('IA')">IA</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('KS')">KS</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('KY')">KY</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('LA')">LA</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('ME')">ME</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('MD')">MD</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('MA')">MA</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('MI')">MI</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('MN')">MN</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('MS')">MS</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('MO')">MO</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('MT')">MT</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('NE')">NE</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('NV')">NV</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('NH')">NH</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('NJ')">NJ</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('NM')">NM</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('NY')">NY</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('NC')">NC</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('ND')">ND</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('OH')">OH</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('OK')">OK</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('OR')">OR</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('PA')">PA</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('RI')">RI</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('SC')">SC</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('SD')">SD</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('TN')">TN</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('TX')">TX</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('UT')">UT</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('VT')">VT</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('VA')">VA</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('WA')">WA</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('WV')">WV</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('WI')">WI</button><button type="button" class="w-full px-3 py-2 text-sm text-gray-900 hover:bg-[#f5f7fb] text-left" onclick="mobPickState('WY')">WY</button>
+                </div>
+              </div>
             </div>
+            <input type="hidden" id="mob-state" value="" />
             <p class="text-[10px] text-[#676d7a]">State of residence</p>
           </div>
         </div>
@@ -3383,6 +3390,25 @@
       delinqInitHome();
     }
   })();
+
+  // ── Custom state dropdown helpers ──
+  function mobToggleState(e) {
+    e.stopPropagation();
+    var list = document.getElementById('mob-state-list');
+    if (list) list.classList.toggle('hidden');
+  }
+  function mobPickState(val) {
+    var lbl  = document.getElementById('mob-state-lbl');
+    var inp  = document.getElementById('mob-state');
+    var list = document.getElementById('mob-state-list');
+    if (lbl)  { lbl.textContent = val; lbl.className = 'text-gray-900'; }
+    if (inp)  inp.value = val;
+    if (list) list.classList.add('hidden');
+  }
+  document.addEventListener('click', function() {
+    var list = document.getElementById('mob-state-list');
+    if (list) list.classList.add('hidden');
+  });
 
   // ?sheet shortcut — opens income form directly (for previewing)
   if (location.search.includes('sheet')) {
