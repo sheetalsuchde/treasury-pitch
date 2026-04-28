@@ -1396,15 +1396,6 @@
     const estMonthly = Math.max(5, Math.round(((agi / 12) - 2465) * 0.1));
     const familyLabel = household === 1 ? '1 person' : household + ' people';
 
-    const lightbulbHint = estMonthly < monthly ? `
-      <div class="bg-[#eff4ff] border border-[#e5edff] rounded-lg flex gap-2 items-start pl-2 pr-4 py-2 w-full">
-        <div class="overflow-hidden relative shrink-0 w-5 h-5 mt-0.5">
-          <div class="absolute" style="inset:10% 20% 7.5% 20%">
-            <img alt="lightbulb" class="absolute block inset-0 max-w-none w-full h-full" src="https://www.figma.com/api/mcp/asset/5342e21b-f505-4a67-a52c-0dfde35ce33d" />
-          </div>
-        </div>
-        <p class="text-sm text-gray-900 leading-relaxed">With expense verification, Cait may reduce this to <strong class="font-semibold">$${estMonthly}/mo</strong></p>
-      </div>` : '';
 
     document.getElementById('mob-income-body').innerHTML = `
     <div class="flex flex-col gap-4 pb-8">
@@ -1425,7 +1416,6 @@
           <p class="text-xs font-medium text-[#676d7a]">× 9 consecutive months = $${total.toLocaleString()} total</p>
         </div>
 
-        ${lightbulbHint}
       </div>
 
       <!-- Based on / family size -->
@@ -1466,21 +1456,13 @@
               No, this is too high for me
             </div>
             <!-- Figma Results Trigger component (node 139:1302) -->
-            <div style="position:relative;overflow:hidden;background:white;border:1px solid #d6effe;border-radius:8px;padding:12px;display:flex;gap:8px;align-items:flex-start;width:100%;">
-              <!-- Decorative gradient sweep (right side) -->
-              <div style="position:absolute;bottom:-1px;right:-1px;top:-1px;width:252px;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-                <div style="transform:rotate(-90deg);flex:none;width:100%;height:100%;">
-                  <div style="opacity:0.5;position:relative;width:100%;height:100%;mix-blend-mode:multiply;overflow:hidden;">
-                    <img alt="" style="position:absolute;height:100%;left:-390%;max-width:none;top:0;width:878%;" src="https://www.figma.com/api/mcp/asset/6ba02d16-dca9-4277-b3b5-bbf28c167128" />
-                  </div>
-                </div>
-              </div>
+            <div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#ebf8ff 0%,#fdf0ff 100%);border:1px solid #d6effe;border-radius:8px;padding:12px;display:flex;gap:8px;align-items:flex-start;width:100%;">
               <!-- Icon -->
-              <div style="background:#ebf8ff;border-radius:4px;padding:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;">
+              <div style="background:rgba(255,255,255,0.7);border-radius:4px;padding:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
                 <img alt="" style="width:20px;height:20px;display:block;" src="https://www.figma.com/api/mcp/asset/c4e9e884-5eac-47ab-a886-47388b7a14ce" />
               </div>
               <!-- Text -->
-              <p style="font-size:12px;font-weight:500;color:#2a2f3d;line-height:18px;position:relative;">Cait can review your income &amp; expenses to find a lower payment — potentially as low as <strong>$5/mo</strong></p>
+              <p style="font-size:13px;font-weight:500;color:#2a2f3d;line-height:19px;">Cait can review your income &amp; expenses to find a lower payment — potentially as low as <strong>$5/mo</strong></p>
             </div>
           </button>
 
