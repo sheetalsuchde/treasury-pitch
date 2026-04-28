@@ -41,8 +41,8 @@
     }
     /* Content dissolve — for dynamically populated screen bodies */
     @keyframes content-in {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* Screens */
@@ -804,12 +804,32 @@
       el.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }, i * step));
   }
-  /* Subtle dissolve for dynamically injected content */
+  /* Progressive stagger for dynamically injected content.
+     Animates direct children one by one so each section loads in sequence.
+     If the container holds a single wrapper div, it stagers that div's children
+     instead (handles the common body > wrapper-div > sections pattern). */
   function fadeIn(el) {
     if (!el) return;
-    el.style.animation = 'none';
-    el.offsetHeight; // force reflow
-    el.style.animation = 'content-in 0.32s ease both';
+    // Determine which level to stagger
+    var target = el;
+    if (el.children.length === 1 && el.firstElementChild &&
+        el.firstElementChild.children.length > 1) {
+      target = el.firstElementChild;
+    }
+    var items = Array.from(target.children);
+    if (!items.length) {
+      // Fallback: fade the container itself
+      el.style.animation = 'none';
+      el.offsetHeight;
+      el.style.animation = 'content-in 0.32s ease both';
+      return;
+    }
+    items.forEach(function(child, i) {
+      child.style.opacity   = '0';
+      child.style.animation = 'none';
+      void child.offsetHeight; // flush styles so delay is respected
+      child.style.animation = 'content-in 0.32s ease ' + (i * 65) + 'ms both';
+    });
   }
 
   /* ─────────────────────────────────────────────

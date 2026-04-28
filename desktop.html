@@ -144,6 +144,11 @@
     .i2-sec-footer{display:flex;justify-content:flex-end;margin-top:12px}
     .i2-done-btn{font-size:12px;font-weight:500;color:#fff;background:#534AB7;border:none;border-radius:8px;padding:6px 14px;cursor:pointer}
     .i2-done-btn:hover{background:#3C3489}
+    /* Content progressive stagger for dynamic panel content */
+    @keyframes content-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body class="bg-white min-h-screen">
@@ -433,6 +438,25 @@
 </div>
 
 <script>
+  /* Progressive stagger for dynamically injected panel content.
+     Each direct child (or grandchild if single-wrapper) appears in sequence. */
+  function staggerIn(el) {
+    if (!el) return;
+    var target = el;
+    if (el.children.length === 1 && el.firstElementChild &&
+        el.firstElementChild.children.length > 1) {
+      target = el.firstElementChild;
+    }
+    var items = Array.from(target.children);
+    if (!items.length) return;
+    items.forEach(function(child, i) {
+      child.style.opacity   = '0';
+      child.style.animation = 'none';
+      void child.offsetHeight;
+      child.style.animation = 'content-in 0.32s ease ' + (i * 65) + 'ms both';
+    });
+  }
+
   /* ── Loan overview card content ── */
   const stepBodies = [
     // Step 1 — Your situation
@@ -574,6 +598,7 @@
       body.style.opacity    = '0';
       setTimeout(() => {
         body.innerHTML = buildInputScreenHTML();
+        staggerIn(body);
         body.style.opacity = '1';
         updateChatChips('payment');
       }, 280);
@@ -914,6 +939,7 @@
 
       </div>
     `;
+    staggerIn(document.getElementById('fp-body'));
   }
 
   function confirmPayment(comfortable, amount) {
@@ -1038,6 +1064,7 @@
     document.getElementById('fp-title').textContent    = 'Form OMB No. 1845-0120';
     document.getElementById('fp-subtitle').textContent = 'Income & Expense Statement';
     document.getElementById('fp-body').innerHTML       = buildIEFormHTML();
+    staggerIn(document.getElementById('fp-body'));
     ieActivateSection('ie-sec-a');
     updateChatChips([]); // clear chips while message loads
     setTimeout(() => ieAddMsg('cait',
@@ -1384,6 +1411,7 @@
             Next →
           </button>
         </div>`;
+      staggerIn(body);
 
     } else if (dRehabAutopayStep === 2) {
       document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
@@ -1444,6 +1472,7 @@
             </button>
           </div>
         </div>`;
+      staggerIn(body);
     }
   }
 
@@ -2309,11 +2338,13 @@
           </button>
 
         </div>`;
+      staggerIn(document.getElementById('fp-body'));
     };
 
     window.dSaveResetPaymentCalc = function() {
       document.getElementById('fp-subtitle').textContent = 'Income & Payment Calculation';
       document.getElementById('fp-body').innerHTML = buildSaveInputScreenHTML();
+      staggerIn(document.getElementById('fp-body'));
       updateChatChips('save_payment');
     };
 
@@ -2420,6 +2451,7 @@
           </button>
 
         </div>`;
+      staggerIn(document.getElementById('fp-body'));
     };
 
     window.dSaveConfirmPersonalInfo = function() {
@@ -2547,6 +2579,7 @@
               Next →
             </button>
           </div>`;
+        staggerIn(body);
 
       } else if (dRapAutopayStep === 2) {
         document.getElementById('fp-title').textContent    = 'Set Up Auto-Pay';
@@ -2608,6 +2641,7 @@
               </button>
             </div>
           </div>`;
+        staggerIn(body);
       }
     };
 
