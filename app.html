@@ -1501,17 +1501,16 @@
     // Reset both buttons to default styles
     const yesBtn = document.getElementById('mob-yes-btn');
     const noBtn  = document.getElementById('mob-no-btn');
-    if (yesBtn) { yesBtn.style.opacity='1'; yesBtn.style.background=''; yesBtn.style.borderColor='#e2e4eb'; yesBtn.style.color=''; }
-    if (noBtn)  { noBtn.style.opacity='1'; noBtn.style.background=''; noBtn.style.borderColor='#e2e4eb'; noBtn.style.color=''; }
+    if (yesBtn) { yesBtn.style.opacity='1'; yesBtn.style.background=''; yesBtn.style.borderColor='#e2e4eb'; yesBtn.style.borderWidth=''; yesBtn.style.color=''; }
+    if (noBtn)  { noBtn.style.opacity='1'; noBtn.style.background=''; noBtn.style.borderColor='#e2e4eb'; noBtn.style.borderWidth=''; noBtn.style.color=''; }
   }
 
   function mobTooHigh(estPayment) {
     mobComfortReset();
-    // Highlight "This is too high", dim "Yes"
     const noBtn  = document.getElementById('mob-no-btn');
     const yesBtn = document.getElementById('mob-yes-btn');
-    if (noBtn)  { noBtn.style.borderColor = '#181d29'; noBtn.style.background = '#f5f5f5'; }
-    if (yesBtn) { yesBtn.style.opacity = '0.4'; yesBtn.style.borderColor = '#e2e4eb'; }
+    if (noBtn)  { noBtn.style.borderColor = '#265ddc'; noBtn.style.borderWidth = '1.5px'; noBtn.style.background = ''; }
+    if (yesBtn) { yesBtn.style.opacity = '0.4'; yesBtn.style.borderColor = '#e2e4eb'; yesBtn.style.borderWidth = ''; }
     // Store payment for the IE form
     document.getElementById('mob-toohigh-start-btn').dataset.payment = estPayment;
     setTimeout(() => document.getElementById('mob-toohigh').classList.add('active'), 120);
@@ -1536,11 +1535,10 @@
 
   function mobYesManage(payment) {
     mobComfortReset();
-    // Highlight "Yes" in blue on selection, dim "No"
     const yesBtn = document.getElementById('mob-yes-btn');
     const noBtn  = document.getElementById('mob-no-btn');
-    if (yesBtn) { yesBtn.style.borderColor = '#265ddc'; yesBtn.style.background = '#eff4ff'; yesBtn.style.color = '#265ddc'; }
-    if (noBtn)  { noBtn.style.opacity = '0.4'; }
+    if (yesBtn) { yesBtn.style.borderColor = '#265ddc'; yesBtn.style.borderWidth = '1.5px'; yesBtn.style.background = ''; }
+    if (noBtn)  { noBtn.style.opacity = '0.4'; noBtn.style.borderColor = '#e2e4eb'; noBtn.style.borderWidth = ''; }
     // Navigate to enroll screen
     setTimeout(() => mobOpenEnroll(payment), 120);
   }

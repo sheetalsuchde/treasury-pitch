@@ -881,7 +881,7 @@
           <div class="flex flex-col gap-2">
 
             <!-- Option 1: Yes -->
-            <button onclick="confirmPayment(true,${monthly})" class="w-full rounded-xl border-2 border-[#e2e4eb] px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left flex items-center gap-3">
+            <button id="ds-yes-btn" onclick="confirmPayment(true,${monthly})" class="w-full rounded-xl border-2 border-[#e2e4eb] px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left flex items-center gap-3">
               <div class="bg-[#f0f2f7] rounded-[6px] relative flex items-center justify-center shrink-0 overflow-hidden" style="width:32px;height:32px;padding:6.4px">
                 <div class="relative shrink-0" style="width:19.2px;height:19.2px">
                   <img alt="" class="absolute block inset-0 max-w-none w-full h-full" src="https://www.figma.com/api/mcp/asset/ebc3c8df-7ae0-49ab-be48-fba9614be917" />
@@ -891,7 +891,7 @@
             </button>
 
             <!-- Option 2: Too high — with Figma Results Trigger callout -->
-            <button onclick="confirmPayment(false,${monthly})" class="w-full rounded-xl border-2 border-[#e2e4eb] px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left flex flex-col gap-3">
+            <button id="ds-no-btn" onclick="confirmPayment(false,${monthly})" class="w-full rounded-xl border-2 border-[#e2e4eb] px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left flex flex-col gap-3">
               <div class="flex items-center gap-3">
                 <div class="bg-[#f0f2f7] rounded-[6px] flex items-center justify-center shrink-0" style="width:32px;height:32px;padding:6.4px">
                   <img alt="" class="block w-full h-full max-w-none" src="https://www.figma.com/api/mcp/asset/7c806ca6-79db-4c3f-ad45-7381a8fe5bb3" />
@@ -920,9 +920,18 @@
     const section = document.getElementById('form-comfort-section');
     // Guard: prevent duplicate blocks if button clicked more than once
     if (document.getElementById('enroll-block') || document.getElementById('ie-block')) return;
-    // Hide the Yes/No choice buttons after selection
-    const choiceGrid = section.querySelector('.grid.grid-cols-2');
-    if (choiceGrid) choiceGrid.style.display = 'none';
+
+    // Flash blue selection stroke on chosen button, dim the other
+    const yesBtn = document.getElementById('ds-yes-btn');
+    const noBtn  = document.getElementById('ds-no-btn');
+    const chosen = comfortable ? yesBtn : noBtn;
+    const other  = comfortable ? noBtn  : yesBtn;
+    if (chosen) { chosen.style.borderColor = '#265ddc'; chosen.style.borderWidth = '1.5px'; }
+    if (other)  { other.style.opacity = '0.4'; }
+
+    // Hide the Yes/No choice buttons after a brief moment
+    const choiceGrid = section.querySelector('.flex.flex-col.gap-2');
+    setTimeout(() => { if (choiceGrid) choiceGrid.style.display = 'none'; }, 220);
 
     if (comfortable) {
       section.insertAdjacentHTML('beforeend', `
