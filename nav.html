@@ -187,44 +187,69 @@
 
   <div class="cards">
 
-    <!-- Mobile card -->
-    <a href="/mobile" class="card">
+    <!-- Rehab card -->
+    <div class="card">
       <div class="card-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="5" y="2" width="14" height="20" rx="3"/>
-          <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/>
-        </svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       </div>
-      <div class="card-label">Experience</div>
-      <div class="card-title">Mobile</div>
-      <p class="card-desc">Full iPhone prototype inside a device frame. Best for showing the real end-user experience.</p>
-      <div class="card-cta">
-        Open mobile
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <div class="card-label">Scenario</div>
+      <div class="card-title">Rehabilitation</div>
+      <p class="card-desc">Borrower in default guided through income verification and a 9-month rehab plan.</p>
+      <div style="display:flex;gap:8px;margin-top:auto">
+        <a href="/mobile" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:#265ddc;color:white;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:600;text-decoration:none;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
+          Mobile
+        </a>
+        <a href="/" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:#f0f2f5;color:#2a2f3d;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:600;text-decoration:none;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Desktop
+        </a>
       </div>
-    </a>
+    </div>
 
-    <!-- Desktop card -->
-    <a href="/" class="card">
-      <div class="card-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="3" width="20" height="14" rx="2"/>
-          <line x1="8" y1="21" x2="16" y2="21"/>
-          <line x1="12" y1="17" x2="12" y2="21"/>
-        </svg>
+    <!-- SAVE card -->
+    <div class="card">
+      <div class="card-icon" style="background:#fff8eb">
+        <svg width="22" height="22" viewBox="0 0 20 20" fill="currentColor" style="color:#d97706"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
       </div>
-      <div class="card-label">Experience</div>
-      <div class="card-title">Desktop</div>
-      <p class="card-desc">Full-screen web view without the device frame. Great for walkthroughs on a laptop or external display.</p>
-      <div class="card-cta">
-        Open desktop
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <div class="card-label">Scenario</div>
+      <div class="card-title">SAVE Plan</div>
+      <p class="card-desc">Borrower on SAVE — plan paused by court. Cait helps them switch to RAP before interest resumes.</p>
+      <div style="display:flex;gap:8px;margin-top:auto">
+        <a href="/mobile?flow=save" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:#265ddc;color:white;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:600;text-decoration:none;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
+          Mobile
+        </a>
+        <a href="/desktop?flow=save" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:#f0f2f5;color:#2a2f3d;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:600;text-decoration:none;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Desktop
+        </a>
       </div>
-    </a>
+    </div>
+
+    <!-- Delinquency card -->
+    <div class="card">
+      <div class="card-icon" style="background:#fef2f2">
+        <svg width="22" height="22" viewBox="0 0 20 20" fill="currentColor" style="color:#dc2626"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+      </div>
+      <div class="card-label">Scenario</div>
+      <div class="card-title">Delinquency</div>
+      <p class="card-desc">Borrower 90+ days behind on payments, approaching default. Cait guides them to RAP enrollment before the 270-day threshold.</p>
+      <div style="display:flex;gap:8px;margin-top:auto">
+        <a href="/mobile?flow=delinquency" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:#265ddc;color:white;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:600;text-decoration:none;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
+          Mobile
+        </a>
+        <a href="/desktop?flow=delinquency" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:#f0f2f5;color:#2a2f3d;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:600;text-decoration:none;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Desktop
+        </a>
+      </div>
+    </div>
 
   </div>
 
-  <p class="footer">Confidential · Candidly © 2025</p>
+  <p class="footer">Confidential · Candidly © 2026</p>
 
 </body>
 </html>
