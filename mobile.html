@@ -38,13 +38,7 @@
       align-items: center;
       gap: 7px;
     }
-    .wordmark-dot {
-      width: 22px; height: 22px;
-      background: #265ddc;
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .wordmark-dot-inner { width: 8px; height: 8px; border-radius: 50%; background: white; }
+    .wordmark img { width: 22px; height: 22px; display: block; }
     .wordmark-text { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.9); letter-spacing: -0.2px; }
 
     .top-bar-links {
@@ -71,13 +65,16 @@
       /* transform set by JS */
     }
 
-    /* Subtle ambient glow behind the phone */
+    /* Ambient glow behind the phone — #31ADF5 × #B380BC */
     .phone-glow {
       position: absolute;
-      inset: -60px;
-      background: radial-gradient(ellipse at center, rgba(38,93,220,0.18) 0%, transparent 70%);
+      inset: -80px;
+      background:
+        radial-gradient(ellipse at 35% 55%, rgba(49,173,245,0.28) 0%, transparent 55%),
+        radial-gradient(ellipse at 65% 45%, rgba(179,128,188,0.28) 0%, transparent 55%);
       pointer-events: none;
       z-index: -1;
+      filter: blur(18px);
     }
 
     /* Outer shell — Natural Titanium */
@@ -171,7 +168,7 @@
   <!-- Slim top bar -->
   <div class="top-bar">
     <div class="wordmark">
-      <div class="wordmark-dot"><div class="wordmark-dot-inner"></div></div>
+      <img src="https://www.figma.com/api/mcp/asset/c423cb29-7ed9-4a09-beac-8b107e19eba2" alt="Candidly" />
       <span class="wordmark-text">Candidly</span>
     </div>
     <div class="top-bar-links">
