@@ -2348,6 +2348,11 @@
       { label: 'What if I miss the deadline?', fn: null },
       { label: 'Switch to RAP →', fn: 'mobOpenIncome()' },
     ];
+    MOB_CHIPS['rap_results'] = [
+      { label: 'What if my income changes?', fn: null },
+      { label: 'How is my payment calculated?', fn: null },
+      { label: 'When does forgiveness happen?',  fn: null },
+    ];
 
     /* 5 ── OMB form: SAVE persona + RAP label ───────────────────── */
     const _origBuildMobIEForm = buildMobIEForm;
@@ -2408,12 +2413,14 @@
           <p class="text-xs text-[#676d7a] mt-0.5">Income-driven · adjusts if your income changes</p>
         </div>
 
-        <!-- Repayment breakdown grid -->
-        <div class="grid grid-cols-3 gap-2">
-          <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-1">
-            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Repayment term</p>
-            <p class="text-sm font-bold text-gray-900">${termYears} years</p>
-          </div>
+        <!-- Repayment term — full width -->
+        <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-1">
+          <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Repayment term</p>
+          <p class="text-sm font-bold text-gray-900">${termYears} years</p>
+        </div>
+
+        <!-- Total paid + Forgiven — 2 col -->
+        <div class="grid grid-cols-2 gap-2">
           <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-1">
             <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Total paid</p>
             <p class="text-sm font-bold text-gray-900">$${totalPaid.toLocaleString()}</p>
@@ -2442,16 +2449,12 @@
           Enroll in RAP →
         </button>
 
-        <!-- Income change prompt + disclaimer -->
-        <div class="flex flex-col items-center gap-2">
-          <button class="border border-[#b3c6f7] rounded-full px-4 py-1.5 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">
-            What if my income changes?
-          </button>
-          <p class="text-[11px] text-[#9ca3af] text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
-        </div>
+        <!-- Disclaimer -->
+        <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
 
       </div>`;
       fadeIn(document.getElementById('mob-income-body'));
+      mobUpdateChips('rap_results');
     };
 
     /* 7 ── Enroll screen: full RAP confirmation ─────────────────── */
@@ -2995,12 +2998,14 @@
           <p class="text-xs text-[#676d7a] mt-0.5">Income-driven · adjusts if your income changes</p>
         </div>
 
-        <!-- Repayment breakdown grid -->
-        <div class="grid grid-cols-3 gap-2">
-          <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-1">
-            <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Repayment term</p>
-            <p class="text-sm font-bold text-gray-900">${termYears} years</p>
-          </div>
+        <!-- Repayment term — full width -->
+        <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-1">
+          <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Repayment term</p>
+          <p class="text-sm font-bold text-gray-900">${termYears} years</p>
+        </div>
+
+        <!-- Total paid + Forgiven — 2 col -->
+        <div class="grid grid-cols-2 gap-2">
           <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-1">
             <p class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium">Total paid</p>
             <p class="text-sm font-bold text-gray-900">$${totalPaid.toLocaleString()}</p>
@@ -3029,16 +3034,12 @@
           Enroll in RAP →
         </button>
 
-        <!-- Income change prompt + disclaimer -->
-        <div class="flex flex-col items-center gap-2">
-          <button class="border border-[#b3c6f7] rounded-full px-4 py-1.5 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">
-            What if my income changes?
-          </button>
-          <p class="text-[11px] text-[#9ca3af] text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
-        </div>
+        <!-- Disclaimer -->
+        <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
 
       </div>`;
       fadeIn(document.getElementById('mob-income-body'));
+      mobUpdateChips('rap_results');
     };
 
     /* 7 ── Enroll screen: full RAP confirmation ─────────────────── */
