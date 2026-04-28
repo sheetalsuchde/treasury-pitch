@@ -1675,12 +1675,13 @@
       const btnNext = document.getElementById('btn-next');
       if (btnNext) { btnNext.textContent = 'Switch to RAP →'; btnNext.onclick = () => openFormPanel(); }
 
-      // ── Hide the entire flow card until streaming is done ──
-      const flowCard = document.querySelector('#screen-chat .bg-white.border.border-border-subtle.rounded-lg');
+      // ── Hide the entire flow card instantly (no transition yet) ──
+      const flowCard = document.getElementById('step-body')?.closest('.rounded-lg');
       if (flowCard) {
-        flowCard.style.opacity   = '0';
-        flowCard.style.transform = 'translateY(12px)';
-        flowCard.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+        flowCard.style.transition = 'none';
+        flowCard.style.opacity    = '0';
+        flowCard.style.transform  = 'translateY(14px)';
+        flowCard.style.pointerEvents = 'none';
       }
 
       const staticMsg = document.getElementById('static-cait-msg');
@@ -1715,15 +1716,19 @@
           const streamEl = document.getElementById('save-stream-el');
           const msg = 'Hi Marcus — your SAVE Plan is being discontinued due to federal court rulings. The good news: the new <strong>Repayment Assistance Plan (RAP)</strong> is available now, and it may lower your monthly payment even further. I can help you switch today.';
           dStreamText(streamEl, msg, 42, () => {
-            // ── Stage 3: fade in card, then progressively reveal sections ──
+            // ── Stage 3: fade-in card AFTER message is fully streamed ──
             if (flowCard) {
-              flowCard.style.opacity   = '1';
-              flowCard.style.transform = 'translateY(0)';
+              // Enable transition only now, for the reveal
+              flowCard.style.transition    = 'opacity 0.45s ease, transform 0.45s ease';
+              flowCard.style.opacity       = '1';
+              flowCard.style.transform     = 'translateY(0)';
+              flowCard.style.pointerEvents = '';
             }
+            // Let card fade in, then progressively reveal inner sections
             setTimeout(() => {
               renderStep();
               setTimeout(() => updateChatChips('save_resolution'), 1050);
-            }, 150);
+            }, 200);
           });
         }, 190);
       }, 1500);
