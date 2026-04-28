@@ -110,21 +110,20 @@
       border-radius: 20px 20px 0 0;
     }
 
-    /* status pill */
+    /* scenario pill — neutral, same across all themes */
     .card-status {
       display: inline-flex;
       align-items: center;
       gap: 5px;
       font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      padding: 3px 9px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      padding: 3px 9px 3px 7px;
       border-radius: 20px;
       margin-bottom: 14px;
-    }
-    .card-status-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
+      background: #f0f2f7;
+      color: #676d7a;
+      border: 1px solid #e2e4eb;
     }
 
     .card-title {
@@ -202,22 +201,16 @@
       letter-spacing: 0.2px;
     }
 
-    /* ── Persona color themes ── */
+    /* ── Persona color themes — accent bar only ── */
 
     /* Rehab — blue */
-    .theme-rehab .card-bar   { background: linear-gradient(90deg, #265ddc, #4274eb); }
-    .theme-rehab .card-status { background: #eff4ff; color: #265ddc; }
-    .theme-rehab .card-status-dot { background: #265ddc; }
+    .theme-rehab .card-bar { background: linear-gradient(90deg, #265ddc, #4274eb); }
 
     /* SAVE — amber */
-    .theme-save .card-bar   { background: linear-gradient(90deg, #d97706, #f59e0b); }
-    .theme-save .card-status { background: #fffbeb; color: #b45309; }
-    .theme-save .card-status-dot { background: #f59e0b; }
+    .theme-save .card-bar { background: linear-gradient(90deg, #d97706, #f59e0b); }
 
     /* Delinquency — rose */
-    .theme-delinq .card-bar   { background: linear-gradient(90deg, #dc2626, #ef4444); }
-    .theme-delinq .card-status { background: #fff1f2; color: #b91c1c; }
-    .theme-delinq .card-status-dot { background: #ef4444; }
+    .theme-delinq .card-bar { background: linear-gradient(90deg, #dc2626, #ef4444); }
 
     /* ── Divider ── */
     .divider {
@@ -271,8 +264,8 @@
     <div class="card theme-rehab di-4">
       <div class="card-bar"></div>
       <div class="card-status">
-        <div class="card-status-dot"></div>
-        In Default
+        <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zM4 17c0-3.314 2.686-5 6-5s6 1.686 6 5"/></svg>
+        Borrower in default
       </div>
       <div class="card-title">Rehabilitation</div>
       <p class="card-desc">Borrower in default on federal loans. Cait guides them through income verification, payment calculation, and enrollment into a 9-month rehab plan.</p>
@@ -292,8 +285,8 @@
     <div class="card theme-save di-5">
       <div class="card-bar"></div>
       <div class="card-status">
-        <div class="card-status-dot"></div>
-        Plan Paused
+        <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zM4 17c0-3.314 2.686-5 6-5s6 1.686 6 5"/></svg>
+        Borrower on SAVE
       </div>
       <div class="card-title">SAVE Plan</div>
       <p class="card-desc">Borrower enrolled in SAVE — now in forbearance due to court injunction. Cait explains the situation and helps them evaluate switching to IBR or another IDR plan.</p>
@@ -313,8 +306,8 @@
     <div class="card theme-delinq di-6">
       <div class="card-bar"></div>
       <div class="card-status">
-        <div class="card-status-dot"></div>
-        Past Due
+        <svg width="11" height="11" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zM4 17c0-3.314 2.686-5 6-5s6 1.686 6 5"/></svg>
+        Borrower past due
       </div>
       <div class="card-title">Delinquency</div>
       <p class="card-desc">Borrower is behind on payments and approaching default. Cait surfaces urgency, calculates an affordable IDR payment, and helps them enroll before the 270-day threshold.</p>
