@@ -1665,15 +1665,23 @@
       const userBubbleTxt = document.querySelector('#screen-chat .flex.justify-end p');
       if (userBubbleTxt) userBubbleTxt.textContent = 'Switch me to RAP';
 
-      // Card header copy (set now, body loaded progressively)
+      // Card header copy
       const cardTitle = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-base.font-bold');
       if (cardTitle) cardTitle.textContent = 'Your loan & recommended plan';
-      const cardSub   = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-sm');
-      if (cardSub)   cardSub.textContent   = 'Review your balance and switch to RAP to protect your payments.';
+      const cardSub = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-sm');
+      if (cardSub) cardSub.textContent = 'Review your balance and switch to RAP to protect your payments.';
 
       // Footer CTA
       const btnNext = document.getElementById('btn-next');
       if (btnNext) { btnNext.textContent = 'Switch to RAP →'; btnNext.onclick = () => openFormPanel(); }
+
+      // ── Hide the entire flow card until streaming is done ──
+      const flowCard = document.querySelector('#screen-chat .bg-white.border.border-border-subtle.rounded-lg');
+      if (flowCard) {
+        flowCard.style.opacity   = '0';
+        flowCard.style.transform = 'translateY(12px)';
+        flowCard.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+      }
 
       const staticMsg = document.getElementById('static-cait-msg');
       if (!staticMsg) return;
@@ -1702,14 +1710,20 @@
               <div class="w-7 h-7 rounded-full bg-[#EEEDFE] flex items-center justify-center shrink-0 mt-1">
                 <div class="w-2 h-2 rounded-full bg-[#534AB7]"></div>
               </div>
-              <p id="save-stream-el" class="text-base text-[#676d7a] leading-7 flex-1"></p>
+              <p id="save-stream-el" class="text-base text-gray-900 leading-7 flex-1"></p>
             </div>`;
           const streamEl = document.getElementById('save-stream-el');
           const msg = 'Hi Marcus — your SAVE Plan is being discontinued due to federal court rulings. The good news: the new <strong>Repayment Assistance Plan (RAP)</strong> is available now, and it may lower your monthly payment even further. I can help you switch today.';
           dStreamText(streamEl, msg, 42, () => {
-            // ── Stage 3: progressive card reveal ──
-            renderStep();
-            setTimeout(() => updateChatChips('save_resolution'), 900);
+            // ── Stage 3: fade in card, then progressively reveal sections ──
+            if (flowCard) {
+              flowCard.style.opacity   = '1';
+              flowCard.style.transform = 'translateY(0)';
+            }
+            setTimeout(() => {
+              renderStep();
+              setTimeout(() => updateChatChips('save_resolution'), 1050);
+            }, 150);
           });
         }, 190);
       }, 1500);
