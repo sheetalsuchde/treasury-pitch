@@ -1442,23 +1442,25 @@
 
       <!-- Comfort question -->
       <div class="flex flex-col gap-3">
-        <p class="text-sm font-semibold text-gray-900">Are you comfortable with <strong>$${monthly}/month</strong> for 9 months?</p>
-        <div class="grid grid-cols-2 gap-2">
+        <p class="text-sm font-semibold text-gray-900">Does this monthly payment work for you?</p>
+        <div class="grid grid-cols-2 gap-2 items-start">
+          <!-- Both start neutral — no pre-selection -->
           <button id="mob-yes-btn" onclick="mobYesManage(${monthly})"
-            class="rounded-xl border-2 border-[#265ddc] px-3 py-3 text-sm font-semibold text-[#265ddc] hover:bg-[#eff4ff] transition-colors text-left leading-snug flex flex-col gap-2">
-            <div class="bg-[#eff4ff] rounded-[6px] relative flex items-center justify-center shrink-0 overflow-hidden" style="width:32px;height:32px;padding:6.4px">
+            class="rounded-xl border-2 border-[#e2e4eb] px-3 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left leading-snug flex flex-col gap-2">
+            <div class="bg-[#f0f2f7] rounded-[6px] relative flex items-center justify-center shrink-0 overflow-hidden" style="width:32px;height:32px;padding:6.4px">
               <div class="relative shrink-0" style="width:19.2px;height:19.2px">
                 <img alt="" class="absolute block inset-0 max-w-none w-full h-full" src="https://www.figma.com/api/mcp/asset/ebc3c8df-7ae0-49ab-be48-fba9614be917" />
               </div>
             </div>
-            Yes, I can manage this
+            Yes, this works for me
           </button>
           <button id="mob-no-btn" onclick="mobTooHigh(${estMonthly})"
             class="rounded-xl border-2 border-[#e2e4eb] px-3 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left leading-snug flex flex-col gap-2">
-            <div class="bg-[#eff4ff] rounded-[6px] flex items-center justify-center shrink-0" style="width:32px;height:32px;padding:6.4px">
+            <div class="bg-[#f0f2f7] rounded-[6px] flex items-center justify-center shrink-0" style="width:32px;height:32px;padding:6.4px">
               <img alt="" class="block w-full h-full max-w-none" src="https://www.figma.com/api/mcp/asset/7c806ca6-79db-4c3f-ad45-7381a8fe5bb3" />
             </div>
-            This is too high for me
+            <span>I need a lower payment</span>
+            <span class="text-[11px] font-normal text-[#9ca3af] leading-tight -mt-1">Cait can help — as low as $5/mo</span>
           </button>
         </div>
       </div>
@@ -1480,8 +1482,8 @@
     // Reset both buttons to default styles
     const yesBtn = document.getElementById('mob-yes-btn');
     const noBtn  = document.getElementById('mob-no-btn');
-    if (yesBtn) { yesBtn.style.opacity='1'; yesBtn.style.background=''; yesBtn.style.borderColor='#265ddc'; yesBtn.style.color='#265ddc'; }
-    if (noBtn)  { yesBtn && (noBtn.style.opacity='1'); noBtn.style.background=''; noBtn.style.borderColor='#e2e4eb'; noBtn.style.color=''; }
+    if (yesBtn) { yesBtn.style.opacity='1'; yesBtn.style.background=''; yesBtn.style.borderColor='#e2e4eb'; yesBtn.style.color=''; }
+    if (noBtn)  { noBtn.style.opacity='1'; noBtn.style.background=''; noBtn.style.borderColor='#e2e4eb'; noBtn.style.color=''; }
   }
 
   function mobTooHigh(estPayment) {
@@ -1514,11 +1516,11 @@
 
   function mobYesManage(payment) {
     mobComfortReset();
-    // Highlight "Yes", dim "No"
+    // Highlight "Yes" in blue on selection, dim "No"
     const yesBtn = document.getElementById('mob-yes-btn');
     const noBtn  = document.getElementById('mob-no-btn');
-    if (yesBtn) { yesBtn.style.background = '#eff4ff'; }
-    if (noBtn)  { noBtn.style.opacity = '0.4'; noBtn.style.borderColor = '#e2e4eb'; }
+    if (yesBtn) { yesBtn.style.borderColor = '#265ddc'; yesBtn.style.background = '#eff4ff'; yesBtn.style.color = '#265ddc'; }
+    if (noBtn)  { noBtn.style.opacity = '0.4'; }
     // Navigate to enroll screen
     setTimeout(() => mobOpenEnroll(payment), 120);
   }
