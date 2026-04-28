@@ -198,14 +198,14 @@
 
   <script>
     function scalePhone() {
-      const topBar   = 48;
-      const vPad     = 32; // breathing room top+bottom
-      const hPad     = 32;
-      const availH   = window.innerHeight - topBar - vPad;
-      const availW   = window.innerWidth - hPad;
-      const scale    = Math.min(availH / 852, availW / 393);
-      // Allow slight upscale on large screens (up to 1.05), clamp down on small
-      const clamped  = Math.min(Math.max(scale, 0.4), 1.05);
+      const topBar = 48;
+      const vPad   = 8;  // minimal breathing room — let phone fill the height
+      const hPad   = 16;
+      const availH = window.innerHeight - topBar - vPad;
+      const availW = window.innerWidth - hPad;
+      const scale  = Math.min(availH / 852, availW / 393);
+      // Upscale freely on large screens — portrait phone is always height-constrained
+      const clamped = Math.min(Math.max(scale, 0.4), 1.6);
       document.getElementById('phone-wrap').style.transform = `scale(${clamped})`;
     }
     scalePhone();
