@@ -2111,6 +2111,12 @@
       { label: 'Is RAP the same as IBR?',                  fn: null },
       { label: 'Will my interest capitalize?',             fn: null },
     ];
+    CHAT_CHIPS['save_enroll'] = [
+      { label: 'What happens after I enroll?',      fn: null },
+      { label: 'Can I change my payment later?',    fn: null },
+      { label: 'How does 20-year forgiveness work?', fn: null },
+      { label: 'Is this legally binding?',          fn: null },
+    ];
     CHAT_CHIPS['save_enrolled'] = [
       { label: 'When does forgiveness happen?',  fn: null },
       { label: 'Set up auto-pay reminders',      fn: null },
@@ -2353,6 +2359,7 @@
       const d = _dRap;
       document.getElementById('fp-title').textContent    = 'Confirm RAP Enrollment';
       document.getElementById('fp-subtitle').textContent = 'Review & Sign';
+      updateChatChips('save_enroll');
 
       document.getElementById('fp-body').innerHTML = `
         <div class="flex flex-col gap-4">
