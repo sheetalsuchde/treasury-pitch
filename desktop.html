@@ -1567,6 +1567,518 @@
       revealLines(Array.from(staticMsg.querySelectorAll('.cait-line')), 500);
     }
   }
+
+  /* ══════════════════════════════════════════════════════════════
+     SAVE PLAN DESKTOP OVERLAY  (?flow=save)
+     ══════════════════════════════════════════════════════════════ */
+  ;(function() {
+    if (new URLSearchParams(location.search).get('flow') !== 'save') return;
+
+    let _dRap = { monthly: 66, termYears: 20, totalPaid: 15840, forgiven: 36560, agi: 38400 };
+
+    function saveDesktopInitHome() {
+      // ── Alert banner → amber / SAVE copy ──
+      const banner = document.getElementById('alert-banner');
+      if (banner) {
+        banner.innerHTML = `
+          <svg class="shrink-0 text-amber-500 mt-0.5" width="24" height="24" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+          <div class="flex-1 min-w-0">
+            <p class="text-base font-bold text-gray-900 leading-5">Action required:</p>
+            <p class="text-base text-gray-900 leading-relaxed mt-0.5">Your SAVE plan is paused due to a court injunction. Switch to RAP before interest starts accruing.</p>
+          </div>
+          <button onclick="showChatScreen()"
+            class="shrink-0 border border-gray-900 text-gray-900 bg-transparent hover:bg-black hover:text-white rounded-full px-4 py-1 text-sm font-medium transition-colors whitespace-nowrap self-center" style="min-height:32px;min-width:96px;">
+            Switch to RAP →
+          </button>
+          <button onclick="this.parentElement.remove()" class="shrink-0 p-1 rounded-full text-neutral-disabled hover:text-neutral-subtle self-center">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 3L3 11M3 3l8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>`;
+      }
+
+      // ── Greeting → Marcus ──
+      const greeting = document.querySelector('#screen-home p.text-base.font-medium');
+      if (greeting) greeting.textContent = 'Hi, Marcus!';
+
+      // ── Home chips → SAVE context ──
+      const chipsArea = document.querySelector('#screen-home .flex.flex-wrap.items-center');
+      if (chipsArea) {
+        chipsArea.innerHTML = `
+          <button onclick="showChatScreen()" class="bg-transparent border border-amber-300 rounded-full px-4 py-2 text-sm font-semibold text-amber-800 hover:bg-[#FFF8EB] transition-colors flex items-center gap-1.5">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-amber-500"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            Switch me to RAP
+          </button>
+          <button onclick="showChatScreen()" class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">What is RAP?</button>
+          <button onclick="showChatScreen()" class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">What if I do nothing?</button>`;
+      }
+    }
+
+    // ── Override showChatScreen ──
+    window.showChatScreen = function() {
+      document.getElementById('screen-home').classList.add('hidden');
+      document.getElementById('screen-chat').classList.remove('hidden');
+      renderStep();
+      updateChatChips('save_resolution');
+
+      // Cait opening message — SAVE copy
+      const staticMsg = document.getElementById('static-cait-msg');
+      if (staticMsg) {
+        staticMsg.innerHTML = `
+          <p class="cait-line text-base text-[#676d7a] leading-7">Hi Marcus — your SAVE plan is currently <strong class="font-bold text-gray-900">paused</strong> due to a federal court injunction. You're in forbearance, but interest may start accruing soon. The best path forward is switching to <strong class="font-bold text-gray-900">RAP (Repayment Assistance Plan)</strong> — it locks in income-driven payments and keeps your forgiveness timeline on track.</p>`;
+        if (!staticMsg.dataset.animated) {
+          staticMsg.dataset.animated = '1';
+          revealLines(Array.from(staticMsg.querySelectorAll('.cait-line')), 500);
+        }
+      }
+
+      // Update card title + subtitle
+      const cardTitle = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-base.font-bold');
+      if (cardTitle) cardTitle.textContent = 'Your loan & recommended plan';
+      const cardSub = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-sm');
+      if (cardSub) cardSub.textContent = 'Review your balance and switch to RAP to protect your payments.';
+
+      // Footer CTA
+      const btnNext = document.getElementById('btn-next');
+      if (btnNext) {
+        btnNext.textContent = 'Switch to RAP →';
+        btnNext.onclick = function() { openFormPanel(); };
+      }
+    };
+
+    // ── Override renderStep → SAVE balance card + How RAP Works ──
+    window.renderStep = function() {
+      document.getElementById('step-body').innerHTML = `
+        <div class="flex flex-col gap-4">
+
+          <!-- Balance / plan / status tiles -->
+          <div class="grid grid-cols-3 gap-3">
+            <div class="bg-surface-base rounded-xl p-4">
+              <p class="text-xs text-neutral-disabled mb-1">Total balance</p>
+              <p class="text-xl font-bold text-gray-900">$52,400</p>
+            </div>
+            <div class="bg-surface-base rounded-xl p-4">
+              <p class="text-xs text-neutral-disabled mb-1">Current plan</p>
+              <p class="text-xl font-bold text-gray-900">SAVE</p>
+            </div>
+            <div class="bg-[#fff8eb] border border-[#fed684] rounded-xl p-4">
+              <p class="text-xs text-amber-700 mb-1">Status</p>
+              <p class="text-xl font-bold text-amber-700">Paused</p>
+            </div>
+          </div>
+
+          <!-- Why paused alert -->
+          <div class="bg-[#fff8eb] border border-[#fed684] rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
+            <span class="font-bold">Why your plan is paused:</span> A federal court blocked the SAVE plan in 2024. Your payments are in forbearance — but <span class="font-semibold">interest may resume</span>. Switching to <span class="font-semibold">RAP</span> locks in income-driven payments and keeps you on track for forgiveness.
+          </div>
+
+          <!-- How RAP Works -->
+          <div class="bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4">
+            <p class="text-base font-bold text-gray-900 leading-6">How RAP Works</p>
+            <div class="flex gap-3 items-stretch">
+
+              <!-- Step 1 -->
+              <div class="flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+                <div class="flex flex-col gap-3 p-4 h-full">
+                  <div class="w-9 h-9 rounded-lg bg-[#fff8eb] flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  </div>
+                  <div class="flex flex-col gap-1 flex-1">
+                    <p class="text-sm font-medium text-gray-900 leading-5">Share Your Income</p>
+                    <p class="text-sm text-gray-900 leading-snug">Share your income and household size — Cait calculates your RAP payment at 5% of discretionary income.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+                <div class="flex flex-col gap-3 p-4 h-full">
+                  <div class="w-9 h-9 rounded-lg bg-[#fff8eb] flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                  <div class="flex flex-col gap-1 flex-1">
+                    <p class="text-sm font-medium text-gray-900 leading-5">Make Monthly Payments</p>
+                    <p class="text-sm text-gray-900 leading-snug">Pay your income-based amount for up to 20 years — payments stay affordable even as your income changes.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="flex-1 rounded-xl overflow-hidden bg-gradient-to-b from-[#fafbfc] to-white">
+                <div class="flex flex-col gap-3 p-4 h-full">
+                  <div class="w-9 h-9 rounded-lg bg-[#ecfbf5] flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                  </div>
+                  <div class="flex flex-col gap-1 flex-1">
+                    <p class="text-sm font-medium text-gray-900 leading-5">Remaining Balance Forgiven</p>
+                    <p class="text-sm text-gray-900 leading-snug">After 20 years, any remaining balance is forgiven — you're fully protected throughout.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>`;
+    };
+
+    // ── SAVE contextual chips ──
+    CHAT_CHIPS['save_resolution'] = [
+      { label: 'What is RAP?',              fn: null },
+      { label: 'Will my payment change?',   fn: null },
+      { label: 'Switch me to RAP →',        fn: 'openFormPanel()' },
+    ];
+    CHAT_CHIPS['save_payment'] = [
+      { label: 'How is 5% discretionary calculated?', fn: null },
+      { label: 'What counts as income?',              fn: null },
+      { label: 'Can I recalculate?',                  fn: null },
+    ];
+    CHAT_CHIPS['save_confirm'] = [
+      { label: 'What happens to my forgiveness timeline?', fn: null },
+      { label: 'Is RAP the same as IBR?',                  fn: null },
+      { label: 'Will my interest capitalize?',             fn: null },
+    ];
+    CHAT_CHIPS['save_enrolled'] = [
+      { label: 'When does forgiveness happen?',  fn: null },
+      { label: 'Set up auto-pay reminders',      fn: null },
+      { label: 'What if my income changes?',     fn: null },
+    ];
+
+    // ── Override openFormPanel → RAP header + income form ──
+    window.openFormPanel = function() {
+      const panel = document.getElementById('form-panel');
+      const main  = document.getElementById('chat-main');
+      panel.style.flex  = '47 47 0px';
+      panel.style.width = '';
+      panel.style.borderLeftWidth = '1px';
+      main.style.flex  = '53 53 0px';
+      main.style.width = '';
+      document.getElementById('fp-title').textContent    = 'RAP Enrollment';
+      document.getElementById('fp-subtitle').textContent = 'Income & Payment Calculation';
+      const body = document.getElementById('fp-body');
+      if (body && !body.children.length) body.innerHTML = buildSaveInputScreenHTML();
+      updateChatChips('save_payment');
+    };
+
+    function buildSaveInputScreenHTML() {
+      const inputCls  = "w-full border border-[#e2e4eb] rounded-xl px-3.5 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors";
+      const selectCls = inputCls + " appearance-none cursor-pointer";
+      const helperCls = "text-xs text-[#676d7a] leading-relaxed";
+      const labelCls  = "text-xs font-semibold text-[#2a2f3d] mb-0.5";
+      return `
+        <!-- Pre-filled notice -->
+        <div class="flex items-center gap-2 bg-[#fafbfc] border border-[#f0f2f5] rounded-xl px-3 py-2 shrink-0">
+          <svg class="shrink-0" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#265ddc" stroke-width="1.2"/><path d="M4.5 7l1.8 1.8 3-3" stroke="#265ddc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="text-xs text-[#676d7a] whitespace-nowrap">Pre-filled from your Candidly profile — review and confirm</p>
+        </div>
+
+        <!-- Annual Income -->
+        <div class="flex flex-col gap-2">
+          <div>
+            <p class="text-sm font-bold text-[#181d29]">What was your annual income?</p>
+            <p class="${helperCls} mt-0.5">AGI — adjusted gross income is your income before taxes</p>
+          </div>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#676d7a] text-sm font-medium pointer-events-none select-none">$</span>
+            <input id="form-gross-income" type="number" value="38400"
+              oninput="document.getElementById('form-agi').value=this.value"
+              placeholder="0"
+              class="w-full border border-[#e2e4eb] rounded-xl pl-8 pr-4 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors" />
+          </div>
+        </div>
+
+        <!-- Household information -->
+        <div class="flex flex-col gap-3">
+          <p class="text-sm font-bold text-[#181d29]">Household information</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <p class="${labelCls}">Family size</p>
+              <input id="form-family" type="number" value="1" min="1" placeholder="1" class="${inputCls}" />
+              <p class="${helperCls}">Total people in your household</p>
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="${labelCls}">Number of dependents</p>
+              <input id="form-dependents" type="number" value="0" min="0" placeholder="0" class="${inputCls}" />
+              <p class="${helperCls}">Dependents you claim on taxes</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <p class="${labelCls}">Current marital status</p>
+              <div class="relative">
+                <select id="form-marital" class="${selectCls}">
+                  <option value="" disabled selected>Select</option>
+                  <option value="single">Single</option>
+                  <option value="married">Married</option>
+                  <option value="separated">Separated</option>
+                  <option value="divorced">Divorced</option>
+                  <option value="widowed">Widowed</option>
+                </select>
+                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <p class="${helperCls}">Improves repayment accuracy</p>
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="${labelCls}">Tax filing status</p>
+              <div class="relative">
+                <select id="form-filing" class="${selectCls}">
+                  <option value="" disabled selected>Select</option>
+                  <option value="single">Single</option>
+                  <option value="married_joint">Married filing jointly</option>
+                  <option value="married_separate">Married filing separately</option>
+                  <option value="head">Head of household</option>
+                </select>
+                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <p class="${helperCls}">Most recent tax return status</p>
+            </div>
+          </div>
+        </div>
+
+        <input id="form-agi" type="hidden" value="38400" />
+
+        <!-- Calculate button -->
+        <button onclick="calculateFormPayment()"
+          class="w-full bg-[#d97706] hover:bg-[#b45309] text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
+          Calculate My Monthly Payment →
+        </button>`;
+    }
+
+    // ── Override calculateFormPayment → 5% RAP formula, no comfort question ──
+    window.calculateFormPayment = function() {
+      const grossEl    = document.getElementById('form-gross-income');
+      const agi        = parseFloat(grossEl ? grossEl.value : null) || parseFloat(document.getElementById('form-agi')?.value) || 38400;
+      const familySize = parseInt(document.getElementById('form-family')?.value) || 1;
+
+      // 2025 federal poverty guidelines — RAP uses 5%
+      const poverty    = 15060 + (familySize - 1) * 5380;
+      const annual     = Math.max(0, agi - poverty * 1.5);
+      const monthly    = Math.max(5, Math.round(annual * 0.05 / 12));
+      const termYears  = 20;
+      const totalPaid  = monthly * termYears * 12;
+      const forgiven   = Math.max(0, 52400 - totalPaid);
+
+      _dRap = { monthly, termYears, totalPaid, forgiven, agi };
+
+      document.getElementById('fp-subtitle').textContent = 'Your Estimated Payment';
+      updateChatChips('save_confirm');
+
+      document.getElementById('fp-body').innerHTML = `
+        <div class="flex flex-col gap-4 h-full">
+
+          <!-- Back link -->
+          <button onclick="dSaveResetPaymentCalc()" class="flex items-center gap-1.5 text-xs text-neutral-disabled hover:text-brand-primary transition-colors self-start -mb-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to income details
+          </button>
+
+          <!-- Payment result card -->
+          <div class="border border-[#fde68a] rounded-xl p-4 flex flex-col gap-4" style="background:rgba(255,251,235,0.5)">
+            <div class="flex flex-col gap-1 items-center text-center">
+              <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your RAP monthly payment</p>
+              <p class="font-bold text-gray-900 leading-8" style="font-size:26px;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
+              <p class="text-xs font-medium text-[#676d7a]">5% of discretionary income · AGI $${agi.toLocaleString()}</p>
+            </div>
+
+            <!-- Stats row -->
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-white rounded-xl px-3 py-2.5 border border-[#e2e4eb] text-center">
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Repayment term</p>
+                <p class="text-sm font-bold text-gray-900">${termYears} years</p>
+              </div>
+              <div class="bg-white rounded-xl px-3 py-2.5 border border-[#e2e4eb] text-center">
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Total paid</p>
+                <p class="text-sm font-bold text-gray-900">$${totalPaid.toLocaleString()}</p>
+              </div>
+              <div class="bg-white rounded-xl px-3 py-2.5 border border-[#e2e4eb] text-center">
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Amt. forgiven</p>
+                <p class="text-sm font-bold text-green-600">$${forgiven.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enroll CTA -->
+          <button onclick="showRAPEnrollPanel()"
+            class="w-full bg-[#d97706] hover:bg-[#b45309] text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
+            Enroll in RAP →
+          </button>
+
+        </div>`;
+    };
+
+    window.dSaveResetPaymentCalc = function() {
+      document.getElementById('fp-subtitle').textContent = 'Income & Payment Calculation';
+      document.getElementById('fp-body').innerHTML = buildSaveInputScreenHTML();
+      updateChatChips('save_payment');
+    };
+
+    // ── Enroll panel: plan summary + IE personal info + sig + consent ──
+    window.showRAPEnrollPanel = function() {
+      const d = _dRap;
+      document.getElementById('fp-title').textContent    = 'Confirm RAP Enrollment';
+      document.getElementById('fp-subtitle').textContent = 'Review & Sign';
+
+      document.getElementById('fp-body').innerHTML = `
+        <div class="flex flex-col gap-4">
+
+          <!-- Plan summary -->
+          <div class="border border-[#fde68a] rounded-xl p-4 flex flex-col gap-3" style="background:rgba(255,251,235,0.5)">
+            <div>
+              <span class="text-xs font-bold text-amber-800 bg-amber-100 border border-amber-200 rounded-full px-2.5 py-0.5">RAP — Income-Driven</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Monthly Payment</p>
+                <p class="text-lg font-bold text-gray-900">$${d.monthly}<span class="text-sm font-medium text-neutral-disabled">/mo</span></p>
+              </div>
+              <div>
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Repayment Term</p>
+                <p class="text-lg font-bold text-gray-900">${d.termYears} years</p>
+              </div>
+              <div>
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Total Paid</p>
+                <p class="text-base font-semibold text-gray-900">$${d.totalPaid.toLocaleString()}</p>
+              </div>
+              <div>
+                <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Amt. Forgiven</p>
+                <p class="text-base font-semibold text-green-600">$${d.forgiven.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal info IE-accordion -->
+          <div id="d-save-info-sec" class="ie-section ie-active" style="flex-shrink:0">
+            <div class="ie-sec-hdr" onclick="toggleIESection('d-save-info-sec')">
+              <div class="flex items-center gap-2">
+                <span class="ie-sec-badge">1</span>
+                <span class="text-xs font-bold text-gray-900">Personal Information</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="d-save-info-status" class="ie-status ie-s-pending">Confirm details</span>
+                <svg class="ie-sec-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+              </div>
+            </div>
+            <div class="ie-sec-body" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div class="ie-field-wrap" style="grid-column:1/-1">
+                <label class="ie-label">Full Name</label>
+                <input id="d-save-name" class="ie-input" value="Marcus Webb" />
+              </div>
+              <div class="ie-field-wrap">
+                <label class="ie-label">SSN (Last 4)</label>
+                <input id="d-save-ssn" class="ie-input" value="●●●-●●-7734" />
+              </div>
+              <div class="ie-field-wrap">
+                <label class="ie-label">Phone</label>
+                <input id="d-save-phone" class="ie-input" value="(737) 555-0182" />
+              </div>
+              <div class="ie-field-wrap" style="grid-column:1/-1">
+                <label class="ie-label">Home Address</label>
+                <input id="d-save-addr" class="ie-input" value="2815 Lamar Blvd, Austin TX 78705" />
+              </div>
+            </div>
+            <div class="ie-sec-confirm">
+              <button onclick="dSaveConfirmPersonalInfo()" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">
+                Confirm →
+              </button>
+            </div>
+          </div>
+
+          <!-- Signature block -->
+          <div id="d-save-sig-block" class="flex flex-col gap-3">
+            <p class="text-sm font-bold text-gray-900">Signature</p>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-[#2a2f3d] mb-0.5">Your signature</label>
+                <input id="d-save-sig-input" type="text" placeholder="Type your full name"
+                  oninput="dSaveCheckEnrollReady()"
+                  class="w-full border border-[#e2e4eb] rounded-xl px-3.5 py-2.5 text-sm text-[#181d29] outline-none bg-white focus:border-[#265ddc] focus:ring-2 focus:ring-[rgba(38,93,220,0.1)] transition-colors" />
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-[#2a2f3d] mb-0.5">Date</label>
+                <input type="text" value="04/28/2026" readonly
+                  class="w-full border border-[#e2e4eb] rounded-xl px-3.5 py-2.5 text-sm text-[#676d7a] outline-none bg-[#fafbfc] cursor-default" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Consent -->
+          <label class="flex items-start gap-2.5 cursor-pointer select-none">
+            <input type="checkbox" id="d-save-consent-chk" onchange="dSaveCheckEnrollReady()"
+              class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
+            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="underline text-brand-primary">Terms of Service</a>.</span>
+          </label>
+
+          <!-- Enroll CTA -->
+          <button id="d-save-enroll-btn" disabled onclick="dEnrollInRAP()"
+            class="w-full bg-[#d97706] text-white rounded-full py-2.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-colors">
+            Enroll in RAP →
+          </button>
+
+        </div>`;
+    };
+
+    window.dSaveConfirmPersonalInfo = function() {
+      const sec = document.getElementById('d-save-info-sec');
+      if (!sec) return;
+      sec.classList.remove('ie-active');
+      sec.classList.add('ie-confirmed', 'ie-collapsed');
+      const badge = document.getElementById('d-save-info-status');
+      if (badge) { badge.textContent = '✓ Confirmed'; badge.className = 'ie-status ie-s-confirmed'; }
+      setTimeout(() => {
+        const sigBlock = document.getElementById('d-save-sig-block');
+        if (sigBlock) sigBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 200);
+    };
+
+    window.dSaveCheckEnrollReady = function() {
+      const sig    = (document.getElementById('d-save-sig-input')?.value || '').trim();
+      const consent = document.getElementById('d-save-consent-chk')?.checked;
+      const btn     = document.getElementById('d-save-enroll-btn');
+      if (!btn) return;
+      const ready = sig.length > 0 && consent;
+      btn.disabled = !ready;
+      btn.classList.toggle('opacity-40', !ready);
+      btn.classList.toggle('cursor-not-allowed', !ready);
+    };
+
+    window.dEnrollInRAP = function() {
+      const d   = _dRap;
+      const btn = document.getElementById('d-save-enroll-btn');
+      if (!btn || btn.disabled) return;
+      btn.disabled = true;
+      btn.textContent = 'Enrolling…';
+
+      setTimeout(() => {
+        closeFormPanel();
+        updateChatChips('save_enrolled');
+
+        document.getElementById('step-body').innerHTML = `
+          <div class="flex flex-col items-center gap-5 py-6 text-center">
+            <div class="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#d97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <p class="text-lg font-bold text-gray-900 mb-1">You're enrolled in RAP!</p>
+              <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your plan switch from SAVE to RAP has been submitted. Your income-driven payments are now locked in and your forgiveness timeline is protected.</p>
+            </div>
+            <div class="bg-surface-base rounded-2xl p-5 w-full text-left">
+              <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
+              <ul class="flex flex-col gap-3 text-sm text-gray-800">
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>Your servicer will confirm your <strong>$${d.monthly}/month</strong> RAP payment within 5–7 business days</li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>Make your <strong>first payment</strong> to start your 20-year repayment clock</li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>Set up <strong>auto-pay</strong> to stay on track for forgiveness</li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-green-100 text-green-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">✓</span><span style="color:#16a34a;font-weight:500;">After 20 years — remaining balance of $${d.forgiven.toLocaleString()} forgiven</span></li>
+              </ul>
+            </div>
+            <p class="text-xs text-neutral-disabled">Questions? Contact us at help@getcandidly.com or (866) 719-3437</p>
+          </div>`;
+        document.getElementById('btn-next').classList.add('hidden');
+      }, 1200);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', saveDesktopInitHome);
+    } else {
+      saveDesktopInitHome();
+    }
+  })();
 </script>
 </body>
 </html>
