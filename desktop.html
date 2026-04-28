@@ -1944,16 +1944,21 @@
         const streamEl = document.getElementById('save-stream-el');
         const msg = 'Hi Marcus — your SAVE Plan is being discontinued due to federal court rulings. The new <strong>Repayment Assistance Plan (RAP)</strong> is available now, and it may lower your monthly payment even further. I can help you switch today.';
         dStreamText(streamEl, msg, 42, () => {
-          // ── Stage 3: reveal card with same card-in animation as mobile ──
-          if (flowCard) {
-            flowCard.style.cssText = ''; // clear inline hide styles
-            flowCard.classList.add('card-revealed');
-          }
-          // Progressively reveal inner sections after card fades in
+          // ── Stage 3: inject content first (sections start opacity:0 via ds-sec),
+          // then reveal card — CTA footer never shows on an empty body ──
+          if (btnNext) { btnNext.style.opacity = '0'; btnNext.style.transition = 'none'; }
+          renderStep();
           setTimeout(() => {
-            renderStep();
-            setTimeout(() => updateChatChips('save_resolution'), 1050);
-          }, 200);
+            if (flowCard) {
+              flowCard.style.cssText = '';
+              flowCard.classList.add('card-revealed');
+            }
+            // Reveal CTA after last section has appeared (~980ms stagger + card fade)
+            setTimeout(() => {
+              if (btnNext) { btnNext.style.transition = 'opacity 0.3s ease'; btnNext.style.opacity = '1'; }
+            }, 1100);
+            setTimeout(() => updateChatChips('save_resolution'), 1200);
+          }, 40);
         });
       }, 1500);
     };
