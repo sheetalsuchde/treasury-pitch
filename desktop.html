@@ -1618,18 +1618,7 @@
       document.getElementById('screen-home').classList.add('hidden');
       document.getElementById('screen-chat').classList.remove('hidden');
       renderStep();
-      updateChatChips('save_resolution');
-
-      // Cait opening message — 3 staggered lines (same pattern as mobile)
-      const staticMsg = document.getElementById('static-cait-msg');
-      if (staticMsg) {
-        staticMsg.dataset.animated = ''; // reset so we always re-animate on SAVE
-        staticMsg.innerHTML = `
-          <p class="cait-line text-base text-[#676d7a] leading-7">Hi Marcus — your SAVE plan is currently <strong class="font-bold text-gray-900">paused</strong> due to a federal court injunction.</p>
-          <p class="cait-line text-base text-[#676d7a] leading-7">You're in forbearance right now, but <strong class="font-bold text-gray-900">interest may start accruing</strong> soon and your forgiveness timeline could be at risk.</p>
-          <p class="cait-line text-base text-[#676d7a] leading-7">The best path forward is switching to <strong class="font-bold text-gray-900">RAP (Repayment Assistance Plan)</strong> — it locks in income-driven payments at 5% of your discretionary income and keeps you protected.</p>`;
-        revealLines(Array.from(staticMsg.querySelectorAll('.cait-line')), 480);
-      }
+      updateChatChips([]); // clear chips while Cait is "typing"
 
       // Update card title + subtitle
       const cardTitle = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-base.font-bold');
@@ -1643,6 +1632,40 @@
         btnNext.textContent = 'Switch to RAP →';
         btnNext.onclick = function() { openFormPanel(); };
       }
+
+      // ── Step 1: show typing dots ──
+      const staticMsg = document.getElementById('static-cait-msg');
+      if (!staticMsg) return;
+      staticMsg.dataset.animated = '';
+      staticMsg.innerHTML = `
+        <div id="save-typing-ind" class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-full bg-[#EEEDFE] flex items-center justify-center shrink-0">
+            <div class="w-2 h-2 rounded-full bg-[#534AB7]"></div>
+          </div>
+          <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-[0_10px_10px_10px] px-4 py-3 flex items-center gap-1.5">
+            <span style="width:7px;height:7px;border-radius:50%;background:#9ca3af;display:inline-block;animation:save-dot-bounce 1.1s infinite ease-in-out 0s"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:#9ca3af;display:inline-block;animation:save-dot-bounce 1.1s infinite ease-in-out 0.18s"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:#9ca3af;display:inline-block;animation:save-dot-bounce 1.1s infinite ease-in-out 0.36s"></span>
+          </div>
+        </div>`;
+
+      // ── Step 2: after typing delay, dissolve dots → reveal lines ──
+      setTimeout(() => {
+        const ind = document.getElementById('save-typing-ind');
+        if (ind) {
+          ind.style.transition = 'opacity 0.18s ease';
+          ind.style.opacity = '0';
+        }
+        setTimeout(() => {
+          staticMsg.innerHTML = `
+            <p class="cait-line text-base text-[#676d7a] leading-7">Hi Marcus — your SAVE Plan is being discontinued due to federal court rulings.</p>
+            <p class="cait-line text-base text-[#676d7a] leading-7">The good news: the new <strong class="font-bold text-gray-900">Repayment Assistance Plan (RAP)</strong> is available now, and it may lower your monthly payment even further.</p>
+            <p class="cait-line text-base text-[#676d7a] leading-7">I can help you switch today.</p>`;
+          revealLines(Array.from(staticMsg.querySelectorAll('.cait-line')), 460);
+          // Chips appear after last line lands
+          setTimeout(() => updateChatChips('save_resolution'), 460 * 2 + 600);
+        }, 190);
+      }, 1400);
     };
 
     // ── Override renderStep → SAVE balance card + How RAP Works ──
