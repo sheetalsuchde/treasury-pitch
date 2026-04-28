@@ -1837,15 +1837,23 @@
       const streamEl = document.getElementById('rehab-stream-el');
       const msg = 'Hi Jennifer — your loan is currently in default. Here are the five ways to resolve a defaulted federal student loan: Administrative loan discharge, Request for review, Loan consolidation, Pay off the debt, and <strong>Loan Rehabilitation</strong>.';
       dStreamText(streamEl, msg, 42, () => {
-        // Stage 3: card-in reveal + progressive section stagger
-        if (flowCard) {
-          flowCard.style.cssText = '';
-          flowCard.classList.add('card-revealed');
-        }
+        // Stage 3: inject content first (sections start as opacity:0 via ds-sec),
+        // then reveal the card — so the CTA footer never shows on an empty body
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) { btnNext.style.opacity = '0'; btnNext.style.transition = 'none'; }
+        renderStep();
+        // Small tick so the DOM paints ds-sec=invisible before card animates in
         setTimeout(() => {
-          renderStep();
-          setTimeout(() => updateChatChips('resolution'), 1050);
-        }, 200);
+          if (flowCard) {
+            flowCard.style.cssText = '';
+            flowCard.classList.add('card-revealed');
+          }
+          // Reveal CTA after last section has appeared (~980ms stagger + card fade)
+          setTimeout(() => {
+            if (btnNext) { btnNext.style.transition = 'opacity 0.3s ease'; btnNext.style.opacity = '1'; }
+          }, 1100);
+          setTimeout(() => updateChatChips('resolution'), 1200);
+        }, 40);
       });
     }, 1500);
   }
