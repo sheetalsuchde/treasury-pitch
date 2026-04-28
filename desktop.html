@@ -1959,7 +1959,7 @@
   ;(function() {
     if (new URLSearchParams(location.search).get('flow') !== 'save') return;
 
-    let _dRap = { monthly: 66, termYears: 20, totalPaid: 15840, forgiven: 36560, agi: 38400 };
+    let _dRap = { monthly: 66, termYears: 30, totalPaid: 23760, forgiven: 36560, agi: 38400 };
 
     function saveDesktopInitHome() {
       // ── Alert banner → amber / SAVE copy ──
@@ -2112,7 +2112,7 @@
                   </div>
                   <div class="flex flex-col gap-1 flex-1">
                     <p class="text-sm font-medium text-gray-900 leading-5">Make Monthly Payments</p>
-                    <p class="text-sm text-gray-900 leading-snug">Pay your income-based amount for up to 20 years — payments stay affordable even as your income changes.</p>
+                    <p class="text-sm text-gray-900 leading-snug">Pay your income-based amount for up to 30 years — payments stay affordable even as your income changes.</p>
                   </div>
                 </div>
               </div>
@@ -2124,7 +2124,7 @@
                   </div>
                   <div class="flex flex-col gap-1 flex-1">
                     <p class="text-sm font-medium text-gray-900 leading-5">Remaining Balance Forgiven</p>
-                    <p class="text-sm text-gray-900 leading-snug">After 20 years, any remaining balance is forgiven — you're fully protected throughout.</p>
+                    <p class="text-sm text-gray-900 leading-snug">After 30 years, any remaining balance is forgiven — you're fully protected throughout.</p>
                   </div>
                 </div>
               </div>
@@ -2162,7 +2162,7 @@
     CHAT_CHIPS['save_enroll'] = [
       { label: 'What happens after I enroll?',      fn: null },
       { label: 'Can I change my payment later?',    fn: null },
-      { label: 'How does 20-year forgiveness work?', fn: null },
+      { label: 'How does 30-year forgiveness work?', fn: null },
       { label: 'Is this legally binding?',          fn: null },
     ];
     CHAT_CHIPS['save_enrolled'] = [
@@ -2358,7 +2358,7 @@
       const poverty    = 15060 + (familySize - 1) * 5380;
       const annual     = Math.max(0, agi - poverty * 1.5);
       const monthly    = Math.max(5, Math.round(annual * 0.05 / 12));
-      const termYears  = 20;
+      const termYears  = 30;
       const totalPaid  = monthly * termYears * 12;
       const forgiven   = Math.max(0, 52400 - totalPaid);
 
@@ -2700,7 +2700,7 @@
               <div class="divide-y divide-[#f0f2f5]">
                 <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Amount</span><span class="text-sm font-semibold text-gray-900 text-right">$${d.monthly}.00/mo</span></div>
                 <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Contribution Type</span><span class="text-sm font-semibold text-gray-900 text-right">Monthly</span></div>
-                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Duration</span><span class="text-sm font-semibold text-gray-900 text-right">20 years</span></div>
+                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Duration</span><span class="text-sm font-semibold text-gray-900 text-right">30 years</span></div>
                 <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Next Transfer</span><span class="text-sm font-semibold text-gray-900 text-right">${nextDate}</span></div>
                 <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Funding Account</span><span class="text-sm font-semibold text-gray-900 text-right">••••${last4}</span></div>
               </div>
@@ -2712,7 +2712,7 @@
                 <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
               </div>
               <div style="flex:1;min-width:0;">
-                <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">After 20 years, remaining balance is forgiven</p>
+                <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">After 30 years, remaining balance is forgiven</p>
                 <p style="font-size:14px;font-weight:400;color:#000;line-height:1.5;">On RAP, your balance can never increase. Estimated balance forgiven: <strong style="font-weight:700;">$${d.forgiven.toLocaleString()}</strong>.</p>
               </div>
             </div>
@@ -2772,7 +2772,7 @@
                 <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
                 <ul class="flex flex-col gap-3 text-sm text-gray-800">
                   <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>Your servicer will confirm your <strong style="white-space:nowrap">$${d.monthly}/month</strong> RAP enrollment within 5–7 business days</span></li>
-                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} payment</strong> starts your 20-year repayment clock. Payments are automatically drafted from your funding account.</span></li>
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} payment</strong> starts your 30-year repayment clock. Payments are automatically drafted from your funding account.</span></li>
                   <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 20 years, your remaining balance of <strong>$${d.forgiven.toLocaleString()}</strong> is forgiven — your balance can never grow while on RAP.</span></li>
                 </ul>
               </div>
@@ -2796,7 +2796,7 @@
   ;(function() {
     if (new URLSearchParams(location.search).get('flow') !== 'delinquency') return;
 
-    let _dRap = { monthly: 66, termYears: 20, totalPaid: 15840, forgiven: 36560, agi: 38400 };
+    let _dRap = { monthly: 66, termYears: 30, totalPaid: 23760, forgiven: 36560, agi: 38400 };
 
     function saveDesktopInitHome() {
       // ── Alert banner → red delinquency alert ──
@@ -2951,7 +2951,7 @@
                   </div>
                   <div class="flex flex-col gap-1 flex-1">
                     <p class="text-sm font-medium text-gray-900 leading-5">Make Monthly Payments</p>
-                    <p class="text-sm text-gray-900 leading-snug">Pay your income-based amount for up to 20 years — payments stay affordable even as your income changes.</p>
+                    <p class="text-sm text-gray-900 leading-snug">Pay your income-based amount for up to 30 years — payments stay affordable even as your income changes.</p>
                   </div>
                 </div>
               </div>
@@ -2963,7 +2963,7 @@
                   </div>
                   <div class="flex flex-col gap-1 flex-1">
                     <p class="text-sm font-medium text-gray-900 leading-5">Remaining Balance Forgiven</p>
-                    <p class="text-sm text-gray-900 leading-snug">After 20 years, any remaining balance is forgiven — you're fully protected throughout.</p>
+                    <p class="text-sm text-gray-900 leading-snug">After 30 years, any remaining balance is forgiven — you're fully protected throughout.</p>
                   </div>
                 </div>
               </div>
@@ -3001,7 +3001,7 @@
     CHAT_CHIPS['delinq_enroll'] = [
       { label: 'What happens after I enroll?',      fn: null },
       { label: 'Can I change my payment later?',    fn: null },
-      { label: 'How does 20-year forgiveness work?', fn: null },
+      { label: 'How does 30-year forgiveness work?', fn: null },
       { label: 'Is this legally binding?',          fn: null },
     ];
     CHAT_CHIPS['delinq_enrolled'] = [
@@ -3197,7 +3197,7 @@
       const poverty    = 15060 + (familySize - 1) * 5380;
       const annual     = Math.max(0, agi - poverty * 1.5);
       const monthly    = Math.max(5, Math.round(annual * 0.05 / 12));
-      const termYears  = 20;
+      const termYears  = 30;
       const totalPaid  = monthly * termYears * 12;
       const forgiven   = Math.max(0, 52400 - totalPaid);
 
@@ -3539,7 +3539,7 @@
               <div class="divide-y divide-[#f0f2f5]">
                 <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Amount</span><span class="text-sm font-semibold text-gray-900 text-right">$${d.monthly}.00/mo</span></div>
                 <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Contribution Type</span><span class="text-sm font-semibold text-gray-900 text-right">Monthly</span></div>
-                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Duration</span><span class="text-sm font-semibold text-gray-900 text-right">20 years</span></div>
+                <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Duration</span><span class="text-sm font-semibold text-gray-900 text-right">30 years</span></div>
                 <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Next Transfer</span><span class="text-sm font-semibold text-gray-900 text-right">${nextDate}</span></div>
                 <div class="grid grid-cols-2 px-4 py-3"><span class="text-sm text-[#676d7a]">Funding Account</span><span class="text-sm font-semibold text-gray-900 text-right">••••${last4}</span></div>
               </div>
@@ -3551,7 +3551,7 @@
                 <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
               </div>
               <div style="flex:1;min-width:0;">
-                <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">After 20 years, remaining balance is forgiven</p>
+                <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">After 30 years, remaining balance is forgiven</p>
                 <p style="font-size:14px;font-weight:400;color:#000;line-height:1.5;">On RAP, your balance can never increase. Estimated balance forgiven: <strong style="font-weight:700;">$${d.forgiven.toLocaleString()}</strong>.</p>
               </div>
             </div>
@@ -3611,7 +3611,7 @@
                 <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
                 <ul class="flex flex-col gap-3 text-sm text-gray-800">
                   <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>Your servicer will confirm your <strong style="white-space:nowrap">$${d.monthly}/month</strong> RAP enrollment within 5–7 business days</span></li>
-                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} payment</strong> starts your 20-year repayment clock. Payments are automatically drafted from your funding account.</span></li>
+                  <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} payment</strong> starts your 30-year repayment clock. Payments are automatically drafted from your funding account.</span></li>
                   <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 20 years, your remaining balance of <strong>$${d.forgiven.toLocaleString()}</strong> is forgiven — your balance can never grow while on RAP.</span></li>
                 </ul>
               </div>
