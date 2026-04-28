@@ -2468,10 +2468,6 @@
               <label class="ie-label">Home Address</label>
               <input class="ie-input" value="4812 Elm Ave, Denver CO 80203" />
             </div>
-            <div class="ie-field-wrap" style="grid-column:1/-1">
-              <label class="ie-label">Annual Income</label>
-              <input class="ie-input" value="$${d.agi.toLocaleString()}/yr" readonly style="background:#fafbfc;color:#676d7a" />
-            </div>
           </div>
           <div class="ie-sec-confirm">
             <button onclick="saveConfirmPersonalInfo()" class="bg-[#eff4ff] text-[#265ddc] text-sm font-medium rounded-full px-5 py-2 hover:bg-[#e0eaff] transition-colors">Confirm →</button>
@@ -2528,13 +2524,11 @@
       const badge = document.getElementById('save-info-status');
       if (!sec) return;
       sec.classList.remove('ie-active', 'ie-locked');
-      sec.classList.add('ie-confirmed');
+      sec.classList.add('ie-confirmed', 'ie-collapsed');
       if (badge) { badge.textContent = '✓ Confirmed'; badge.className = 'ie-status ie-s-confirmed'; }
       setTimeout(() => {
-        sec.classList.add('ie-collapsed');
-        // Scroll signature section into view
         document.getElementById('save-sig-input')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 300);
+      }, 150);
     };
 
     /* 8 ── Section D confirm: RAP consent text ──────────────────── */
