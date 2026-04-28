@@ -854,7 +854,7 @@
         </button>
 
         <!-- Payment result card -->
-        <div class="border border-[#e5edff] rounded-xl p-4 flex flex-col gap-4" style="background:rgba(239,244,255,0.16)">
+        <div class="rounded-xl p-4 flex flex-col gap-4" style="background:#eff4ff">
           <!-- Amount block (centered) -->
           <div class="flex flex-col gap-1 items-center text-center">
             <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your estimated monthly payment</p>
@@ -865,11 +865,11 @@
 
         <!-- Summary row -->
         <div class="grid grid-cols-2 gap-2">
-          <div class="bg-white border border-border-subtle rounded-xl px-3 py-2.5">
+          <div class="bg-[#fafbfc] rounded-xl px-3 py-2.5">
             <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Based on income</p>
             <p class="text-sm font-bold text-gray-900">$${agi.toLocaleString()}/yr</p>
           </div>
-          <div class="bg-white border border-border-subtle rounded-xl px-3 py-2.5">
+          <div class="bg-[#fafbfc] rounded-xl px-3 py-2.5">
             <p class="text-[10px] text-neutral-disabled uppercase tracking-wide mb-0.5">Family size</p>
             <p class="text-sm font-bold text-gray-900">${familySize} ${familySize === 1 ? 'person' : 'people'}</p>
           </div>
