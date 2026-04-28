@@ -32,12 +32,17 @@
 
     /* Screen dissolve animation */
     @keyframes screen-in {
-      0%   { opacity: 0; transform: translateY(16px); }
-      100% { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
     @keyframes app-enter {
-      0%   { opacity: 0; }
-      100% { opacity: 1; }
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    /* Content dissolve — for dynamically populated screen bodies */
+    @keyframes content-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     /* Screens */
@@ -799,6 +804,13 @@
       el.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }, i * step));
   }
+  /* Subtle dissolve for dynamically injected content */
+  function fadeIn(el) {
+    if (!el) return;
+    el.style.animation = 'none';
+    el.offsetHeight; // force reflow
+    el.style.animation = 'content-in 0.32s ease both';
+  }
 
   /* ─────────────────────────────────────────────
      Screen navigation
@@ -962,6 +974,7 @@
         </div>
 
       </div>`;
+    fadeIn(document.getElementById('mob-step-body'));
   }
 
   /* ─────────────────────────────────────────────
@@ -998,6 +1011,7 @@
   ───────────────────────────────────────────── */
   function mobOpenIncome() {
     document.getElementById('mob-income-body').innerHTML = buildMobIncomeForm();
+    fadeIn(document.getElementById('mob-income-body'));
     document.getElementById('mob-income').classList.add('active');
     // Reset Cait chat state for fresh open
     caitChatOpen = false;
@@ -1470,6 +1484,7 @@
       </div>
 
     </div>`;
+    fadeIn(document.getElementById('mob-income-body'));
   }
 
   function mobComfortGetGridParent() {
@@ -1508,6 +1523,7 @@
     if (btn) { btn.disabled = true; btn.textContent = 'Opening form…'; btn.style.opacity = '0.7'; }
     setTimeout(() => {
       document.getElementById('mob-ie-body').innerHTML = buildMobIEForm();
+      fadeIn(document.getElementById('mob-ie-body'));
       document.getElementById('mob-auth-block').classList.add('hidden');
       document.getElementById('mob-consent-chk').checked = false;
       document.getElementById('mob-enroll-btn').disabled = true;
@@ -1589,12 +1605,6 @@
         <button onclick="document.getElementById('mob-enroll-1040-prompt')?.classList.add('hidden')" class="text-xs text-[#9ca3af] text-center hover:text-[#265ddc] transition-colors">I'll skip this for now →</button>
       </div>`}
 
-      <!-- Amber note -->
-      <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 flex items-start gap-2">
-        <svg class="shrink-0 mt-0.5 text-amber-500" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-        <p class="text-xs text-gray-800 leading-relaxed"><strong>Note:</strong> If a payment is missed, your 9-payment clock may reset. Set up auto-pay once confirmed.</p>
-      </div>
-
       <!-- Consent checkbox -->
       <label class="flex items-start gap-2.5 cursor-pointer select-none">
         <input type="checkbox" id="mob-consent-enroll" onchange="mobToggleEnrollBtn()" class="mt-0.5 w-4 h-4 accent-[#265ddc] cursor-pointer shrink-0">
@@ -1606,7 +1616,7 @@
         class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold transition-all" style="opacity:0.4;cursor:not-allowed">
         Enroll &amp; Set Up Auto-Pay →
       </button>`;
-
+    fadeIn(document.getElementById('mob-enroll-body'));
     document.getElementById('mob-enroll').classList.add('active');
   }
 
@@ -1653,6 +1663,7 @@
     mobCloseIncome();
     setTimeout(() => {
       document.getElementById('mob-ie-body').innerHTML = buildMobIEForm();
+      fadeIn(document.getElementById('mob-ie-body'));
       document.getElementById('mob-ie').classList.add('active');
       mobIEActivate('mob-ie-sec-a');
       if (payment) document.getElementById('mob-enroll-btn').dataset.payment = payment;
@@ -1884,6 +1895,7 @@
             </button>
           </div>
         </div>`;
+      fadeIn(body);
 
     // ── Step 2: Confirm Schedule ──
     } else if (autopayStep === 2) {
@@ -1943,6 +1955,7 @@
             </button>
           </div>
         </div>`;
+      fadeIn(body);
 
     // ── Step 3: Success ──
     } else if (autopayStep === 3) {
@@ -1981,6 +1994,7 @@
           </div>
           <p class="text-xs text-[#9ca3af]">Questions? help@getcandidly.com · (866) 719-3437</p>
         </div>`;
+      fadeIn(body);
     }
   }
 
@@ -2301,6 +2315,7 @@
             </div>
           </div>
         </div>`;
+      fadeIn(document.getElementById('mob-step-body'));
     };
 
     /* 4 ── Chips ─────────────────────────────────────────────────── */
@@ -2404,6 +2419,7 @@
         </button>
 
       </div>`;
+      fadeIn(document.getElementById('mob-income-body'));
     };
 
     /* 7 ── Enroll screen: full RAP confirmation ─────────────────── */
@@ -2512,7 +2528,7 @@
         </button>
 
       `;
-
+      fadeIn(document.getElementById('mob-enroll-body'));
       document.getElementById('mob-enroll').classList.add('active');
     };
 
@@ -2631,6 +2647,7 @@
               </button>
             </div>
           </div>`;
+        fadeIn(body);
 
       // ── Step 2: Confirm RAP Schedule ──
       } else if (autopayStep === 2) {
@@ -2685,6 +2702,7 @@
               </button>
             </div>
           </div>`;
+        fadeIn(body);
 
       // ── Step 3: RAP Success ──
       } else if (autopayStep === 3) {
@@ -2724,6 +2742,7 @@
             </div>
             <p class="text-xs text-[#9ca3af]">Questions? help@getcandidly.com · (866) 719-3437</p>
           </div>`;
+        fadeIn(body);
       }
     };
 

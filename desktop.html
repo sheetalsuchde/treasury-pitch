@@ -957,10 +957,6 @@
             <button onclick="skipEnroll1040()" class="text-xs text-neutral-disabled text-center hover:text-brand-primary transition-colors">I'll skip this for now →</button>
           </div>`}
 
-          <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 flex items-start gap-2">
-            <svg class="shrink-0 mt-0.5 text-amber-500" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-            <p class="text-xs text-gray-800 leading-relaxed"><strong>Note:</strong> If a payment is missed, your 9-payment clock may reset. Set up auto-pay once confirmed.</p>
-          </div>
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
             <input type="checkbox" id="form-consent" onchange="toggleFormEnroll(${amount})" class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
             <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${amount}.</span>
@@ -1717,10 +1713,6 @@
 
         <!-- Authorization + Confirm & Enroll (revealed after Section D) -->
         <div id="ie-auth-block" style="display:none;" class="flex flex-col gap-3 border-t border-[#e2e4eb] pt-4 mt-1">
-          <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 flex items-start gap-2">
-            <svg class="shrink-0 mt-0.5 text-amber-500" width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-            <p class="text-xs text-gray-800 leading-relaxed"><strong>Note:</strong> If a payment is missed, your 9-payment clock may reset. Set up auto-pay once confirmed.</p>
-          </div>
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
             <input type="checkbox" id="ie-consent-chk" onchange="toggleIEEnroll()" class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
             <span id="ie-consent-text" class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf.</span>
