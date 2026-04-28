@@ -2384,26 +2384,11 @@
           </div>
         </div>
 
-        <!-- Comfort question -->
-        <div class="flex flex-col gap-3">
-          <p class="text-sm font-semibold text-gray-900">Are you comfortable with <strong>$${monthly}/month</strong> for RAP?</p>
-          <div class="grid grid-cols-2 gap-2">
-            <button id="mob-yes-btn" onclick="mobYesManage(${monthly})"
-              class="rounded-xl border-2 border-[#265ddc] px-3 py-3 text-sm font-semibold text-[#265ddc] hover:bg-[#eff4ff] transition-colors text-left leading-snug flex flex-col gap-2">
-              <div class="w-8 h-8 bg-[#eff4ff] rounded-lg flex items-center justify-center shrink-0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-              </div>
-              Yes, let's enroll
-            </button>
-            <button id="mob-no-btn" onclick="mobTooHigh(${Math.max(5, Math.round(discretionary * 0.03 / 12))})"
-              class="rounded-xl border-2 border-[#e2e4eb] px-3 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left leading-snug flex flex-col gap-2">
-              <div class="w-8 h-8 bg-[#f5f6f8] rounded-lg flex items-center justify-center shrink-0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#676d7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </div>
-              This is too high
-            </button>
-          </div>
-        </div>
+        <!-- Enroll CTA -->
+        <button onclick="mobYesManage(${monthly})"
+          class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold hover:bg-[#1e4fc2] transition-colors">
+          Enroll in RAP →
+        </button>
 
       </div>`;
     };
