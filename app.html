@@ -2160,6 +2160,233 @@
     </div>`;
   }
 
+  // ════════════════════════════════════════════════════════════════
+  //  SAVE FLOW  — overlays rehab infrastructure when ?flow=save
+  // ════════════════════════════════════════════════════════════════
+  ;(function() {
+    if (new URLSearchParams(location.search).get('flow') !== 'save') return;
+
+    /* 1 ── Home screen personalisation ──────────────────────────── */
+    function saveInitHome() {
+      // Alert banner → amber SAVE alert
+      const alertEl = document.querySelector('#mob-home .hi.mx-4');
+      if (alertEl) {
+        alertEl.className = 'hi mx-4 mt-4 bg-[#fffbeb] border border-[#fcd34d] rounded-xl p-3 flex flex-col gap-2 shrink-0';
+        alertEl.innerHTML = `
+          <div class="flex items-start gap-2">
+            <svg class="shrink-0 mt-0.5 text-amber-500" width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            <p class="text-[13px] text-gray-900 leading-snug"><span class="font-bold">Action required:</span> Your SAVE Plan is ending. Switch to RAP to keep your monthly payments affordable and protect your balance.</p>
+          </div>
+          <button onclick="mobShowChat('Switch me to RAP')" class="w-full border border-amber-600 text-amber-800 bg-transparent rounded-full py-1.5 text-[13px] font-semibold text-center transition-colors active:bg-amber-50">
+            See my options →
+          </button>`;
+      }
+      // Greeting
+      const greet = document.querySelector('#mob-home p.hi');
+      if (greet) greet.textContent = 'Hi, Marcus!';
+      // Chips
+      const chipsRow = document.querySelector('#mob-home .hc.chips-row');
+      if (chipsRow) {
+        chipsRow.innerHTML = `
+          <button onclick="mobShowChat('Switch me to RAP')" class="shrink-0 bg-transparent border border-amber-300 rounded-full px-4 py-2 text-[13px] font-semibold text-amber-800 whitespace-nowrap flex items-center gap-1.5 hover:bg-[#fffbeb] transition-colors">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-amber-500"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            Switch me to RAP
+          </button>
+          <button onclick="mobShowChat('What is RAP?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">What is RAP?</button>
+          <button onclick="mobShowChat('What happens if I do nothing?')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">What if I do nothing?</button>`;
+      }
+      // Input bar placeholder + click
+      const inp = document.querySelector('#mob-home input[type=text]');
+      if (inp) inp.placeholder = 'Ask Cait about RAP…';
+      const ib = document.querySelector('#mob-home .mob-input-bar');
+      if (ib) { ib.onclick = () => mobShowChat('Switch me to RAP'); ib.style.cursor = 'pointer'; }
+    }
+
+    /* 2 ── Chat: SAVE Cait response ─────────────────────────────── */
+    window.mobShowChat = function(label) {
+      const chatEl = document.getElementById('mob-chat');
+      const homeEl = document.getElementById('mob-home');
+      homeEl.classList.add('fading');
+      chatEl.classList.add('active');
+      if (!chatEl.dataset.animated) {
+        chatEl.dataset.animated = '1';
+        const typing    = document.getElementById('mob-typing');
+        const staticMsg = document.getElementById('mob-static-msg');
+        const streamEl  = document.getElementById('mob-stream-text');
+        const flowCard  = document.getElementById('mob-flow-card');
+        const bubble    = document.getElementById('mob-user-bubble');
+        const bubbleTxt = document.getElementById('mob-user-bubble-text');
+        bubbleTxt.textContent = label || 'Switch me to RAP';
+        bubble.classList.remove('hidden');
+        setTimeout(() => typing.classList.remove('hidden'), 400);
+        setTimeout(() => {
+          typing.classList.add('hidden');
+          staticMsg.classList.remove('hidden');
+          const msg = "Hi Marcus — your SAVE Plan is being discontinued due to federal court rulings. The good news: the new <strong>Repayment Assistance Plan (RAP)</strong> is available now, and it may lower your monthly payment even further. I can help you switch today.";
+          mobStreamText(streamEl, msg, 55, () => {
+            mobBuildStepBody();
+            flowCard.classList.remove('hidden');
+            flowCard.classList.add('card-revealed');
+            const ctaBtn = document.getElementById('mob-btn-next');
+            if (ctaBtn) ctaBtn.innerHTML = 'Switch to RAP →';
+            const alertBox = flowCard.querySelector('.bg-red-50');
+            if (alertBox) {
+              alertBox.className = 'bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-gray-800 leading-relaxed';
+              alertBox.innerHTML = "<span class='font-bold'>What happens if you don't act:</span> If you miss the enrollment deadline, you'll be automatically placed on the <span class='font-semibold'>Standard Repayment Plan</span>, which could significantly increase your monthly payments.";
+            }
+            mobUpdateChips('save_resolution');
+            setTimeout(() => {
+              const btn = document.getElementById('mob-btn-next');
+              if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 500);
+          });
+        }, 1800);
+      }
+    };
+
+    /* 3 ── Balance card + How RAP Works ─────────────────────────── */
+    window.mobBuildStepBody = function() {
+      document.getElementById('mob-step-body').innerHTML = `
+        <div class="flex flex-col gap-3">
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-white rounded-xl p-3 border border-[#f0f2f5]">
+              <p class="text-[10px] text-[#676d7a] mb-1">Loan balance</p>
+              <p class="text-base font-bold text-gray-900">$52,400</p>
+            </div>
+            <div class="bg-white rounded-xl p-3 border border-[#f0f2f5]">
+              <p class="text-[10px] text-[#676d7a] mb-1">Current plan</p>
+              <p class="text-base font-bold text-amber-600">SAVE</p>
+            </div>
+            <div class="bg-white rounded-xl p-3 border border-[#f0f2f5]">
+              <p class="text-[10px] text-[#676d7a] mb-1">Status</p>
+              <p class="text-base font-bold text-amber-600">Paused</p>
+            </div>
+          </div>
+          <div class="bg-white border border-[#f0f2f5] rounded-xl p-3 flex flex-col gap-3">
+            <p class="text-sm font-bold text-gray-900">How the RAP Plan Works</p>
+            <div class="flex flex-col gap-2">
+              <div class="bg-[#fafbfc] rounded-xl p-3 flex items-start gap-3">
+                <div class="w-7 h-7 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-gray-900 leading-tight">Share your income & family size</p>
+                  <p class="text-xs text-gray-600 leading-snug mt-0.5">Cait calculates your affordable RAP payment based on what you earn and your family size.</p>
+                </div>
+              </div>
+              <div class="bg-[#fafbfc] rounded-xl p-3 flex items-start gap-3">
+                <div class="w-7 h-7 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-gray-900 leading-tight">Enroll before the deadline</p>
+                  <p class="text-xs text-gray-600 leading-snug mt-0.5">RAP is available now. Enroll to keep your payments low and avoid being auto-placed on Standard repayment.</p>
+                </div>
+              </div>
+              <div class="bg-[#fafbfc] rounded-xl p-3 flex items-start gap-3">
+                <div class="w-7 h-7 rounded-lg bg-[#ecfbf5] flex items-center justify-center shrink-0">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-gray-900 leading-tight">Balance protection on RAP</p>
+                  <p class="text-xs text-gray-600 leading-snug mt-0.5">On RAP, your balance can never increase as long as you make your required monthly payments.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    };
+
+    /* 4 ── Chips ─────────────────────────────────────────────────── */
+    MOB_CHIPS['save_resolution'] = [
+      { label: 'Is RAP better than SAVE?', fn: null },
+      { label: 'What if I miss the deadline?', fn: null },
+      { label: 'Switch to RAP →', fn: 'mobOpenIncome()' },
+    ];
+
+    /* 5 ── OMB form: SAVE persona + RAP label ───────────────────── */
+    const _origBuildMobIEForm = buildMobIEForm;
+    window.buildMobIEForm = function() {
+      return _origBuildMobIEForm()
+        .replace('Jennifer Bahl', 'Marcus Webb')
+        .replace('●●●-●●-4821', '●●●-●●-3307')
+        .replace('(512) 555-0194', '(720) 555-0138')
+        .replace('1284 Oak Street, Austin TX 78701', '4812 Elm Ave, Denver CO 80203')
+        .replace('TechCorp Inc.', 'Apex Digital Solutions')
+        .replace(/value="3200"/, 'value="3500"')
+        .replace('Loan rehabilitation payment', 'RAP monthly payment');
+    };
+
+    /* 6 ── Payment results: update RAP framing ──────────────────── */
+    const _origMobCalculatePayment = mobCalculatePayment;
+    window.mobCalculatePayment = function() {
+      _origMobCalculatePayment();
+      // Patch "× 9 consecutive months" label → RAP framing
+      const totalLine = document.querySelector('#mob-income-body .text-xs.font-medium.text-\\[\\#676d7a\\]');
+      if (totalLine && totalLine.textContent.includes('consecutive months')) {
+        totalLine.textContent = 'Income-driven · adjusts if your income changes';
+      }
+      // Patch "for 9 months" comfort question
+      const comfortQ = document.querySelector('#mob-income-body p.text-sm.font-semibold');
+      if (comfortQ && comfortQ.textContent.includes('9 months')) {
+        const m = comfortQ.textContent.match(/\$\d+/)?.[0] || '';
+        comfortQ.innerHTML = `Are you comfortable with <strong>${m}/month</strong> for your RAP payment?`;
+      }
+    };
+
+    /* 7 ── Enroll screen: RAP copy ──────────────────────────────── */
+    const _origMobOpenEnroll = mobOpenEnroll;
+    window.mobOpenEnroll = function(payment) {
+      _origMobOpenEnroll(payment);
+      setTimeout(() => {
+        const hdr = document.querySelector('#mob-enroll h1');
+        if (hdr) hdr.textContent = 'Confirm RAP enrollment';
+        const cta = document.getElementById('mob-enroll-cta');
+        if (cta) cta.innerHTML = 'Enroll in RAP →';
+        const consent = document.getElementById('mob-consent-enroll');
+        if (consent) {
+          const lbl = consent.closest('label');
+          if (lbl) {
+            const span = lbl.querySelector('span.text-xs');
+            if (span) span.textContent = `I authorize Candidly to submit my RAP enrollment application and income documentation to my loan servicer on my behalf.`;
+          }
+        }
+      }, 50);
+    };
+
+    /* 8 ── Section D confirm: RAP consent text ──────────────────── */
+    const _origMobConfirmPayment = mobConfirmPayment;
+    window.mobConfirmPayment = function() {
+      _origMobConfirmPayment();
+      const ct = document.getElementById('mob-consent-text');
+      if (ct) ct.textContent = `I authorize Candidly to submit my RAP enrollment application and income documentation to my loan servicer on my behalf.`;
+    };
+
+    /* 9 ── You're all set: RAP copy ─────────────────────────────── */
+    const _origMobRenderAutopayStep = mobRenderAutopayStep;
+    window.mobRenderAutopayStep = function() {
+      _origMobRenderAutopayStep();
+      if (autopayStep === 3) {
+        setTimeout(() => {
+          const sub = document.querySelector('#mob-autopay-body .text-sm.text-\\[\\#676d7a\\]');
+          if (sub) sub.innerHTML = `Your RAP enrollment and auto-pay have been confirmed. Your <strong class="text-gray-900">$${autopayPayment}/month</strong> RAP payments start on your next transfer date.`;
+          const steps = document.querySelectorAll('#mob-autopay-body .text-sm.text-gray-800.leading-snug');
+          if (steps[0]) steps[0].innerHTML = 'Your loan servicer will confirm your RAP enrollment within <strong>5–7 business days</strong>';
+          if (steps[1]) steps[1].innerHTML = `Your first <strong>$${autopayPayment} payment</strong> begins your RAP repayment. Payments are automatically drafted from your funding account.`;
+          const greenStep = document.querySelector('#mob-autopay-body [style*="#027a42"]');
+          if (greenStep) greenStep.textContent = 'Balance protected — on RAP, your balance can never increase as long as you make your required monthly payments.';
+        }, 100);
+      }
+    };
+
+    // Run on load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', saveInitHome);
+    } else {
+      saveInitHome();
+    }
+  })();
+
   // ?sheet shortcut — opens income form directly (for previewing)
   if (location.search.includes('sheet')) {
     setTimeout(() => {
