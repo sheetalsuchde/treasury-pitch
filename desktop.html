@@ -2728,11 +2728,10 @@
       // ── Alert banner → red delinquency alert ──
       const banner = document.getElementById('alert-banner');
       if (banner) {
-        banner.className = banner.className.replace('bg-[#fffbeb]', 'bg-[#fef2f2]').replace('border-[#fcd34d]', 'border-[#fca5a5]');
-        banner.style.background = '#fef2f2';
-        banner.style.borderColor = '#fca5a5';
+        banner.style.background = '#fffbeb';
+        banner.style.borderColor = '#fcd34d';
         banner.innerHTML = `
-          <svg class="shrink-0 text-red-500 mt-0.5" width="24" height="24" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+          <svg class="shrink-0 text-amber-500 mt-0.5" width="24" height="24" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
           <div class="flex-1 min-w-0">
             <p class="text-base font-bold text-gray-900 leading-5">Action required: Your loans are delinquent</p>
             <p class="text-base text-gray-900 leading-relaxed mt-0.5">You're 90+ days behind on payments and approaching default. Enrolling in RAP now can lower your monthly payment and stop collection activity.</p>
@@ -2754,8 +2753,8 @@
       const chipsArea = document.querySelector('#screen-home .flex.flex-wrap.items-center');
       if (chipsArea) {
         chipsArea.innerHTML = `
-          <button onclick="showChatScreen()" class="bg-transparent border border-red-300 rounded-full px-4 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 transition-colors flex items-center gap-1.5">
-            <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-red-500"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+          <button onclick="showChatScreen()" class="bg-transparent border border-amber-300 rounded-full px-4 py-2 text-sm font-semibold text-amber-800 hover:bg-[#FFF8EB] transition-colors flex items-center gap-1.5">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 text-amber-500"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
             Help me avoid default
           </button>
           <button onclick="showChatScreen()" class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">What is RAP?</button>
@@ -2837,16 +2836,16 @@
             </div>
             <div class="bg-surface-base rounded-xl p-4">
               <p class="text-xs text-neutral-disabled mb-1">Current plan</p>
-              <p class="text-xl font-bold text-gray-900">Standard</p>
+              <p class="text-xl font-bold text-gray-900">Std.</p>
             </div>
-            <div class="bg-[#fef2f2] border border-[#fca5a5] rounded-xl p-4">
-              <p class="text-xs text-red-700 mb-1">Status</p>
-              <p class="text-xl font-bold text-red-700">Delinquent</p>
+            <div class="bg-[#fff8eb] border border-[#fed684] rounded-xl p-4">
+              <p class="text-xs text-amber-700 mb-1">Status</p>
+              <p class="text-xl font-bold text-amber-700">Delinquent</p>
             </div>
           </div>
 
           <!-- Delinquency risk alert -->
-          <div id="ds-alert" class="ds-sec bg-[#fef2f2] border border-[#fca5a5] rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
+          <div id="ds-alert" class="ds-sec bg-[#fff8eb] border border-[#fed684] rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
             <span class="font-bold">Risk of default:</span> Your loans are 90+ days past due. Without action, your loans will enter default — triggering <span class="font-semibold">wage garnishment</span>, tax refund seizure, and lasting credit damage. RAP can resolve your delinquency with a payment as low as $66/month.
           </div>
 
