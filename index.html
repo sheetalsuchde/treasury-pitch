@@ -145,40 +145,59 @@
       flex: 1;
     }
 
-    /* ── Launch buttons ── */
+    /* ── Launch buttons — icon only ── */
     .card-actions {
       display: flex;
       gap: 8px;
+      margin-top: auto;
     }
 
-    .btn {
-      flex: 1;
+    .btn-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 12.5px;
-      font-weight: 600;
       text-decoration: none;
-      transition: background 0.15s, transform 0.12s;
+      transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
       cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
     }
-    .btn:active { transform: scale(0.97); }
+    .btn-icon:active { transform: scale(0.93); }
 
-    .btn-primary {
+    /* Tooltip */
+    .btn-icon::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 7px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #181d29;
+      color: white;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .btn-icon:hover::after { opacity: 1; }
+
+    .btn-icon-primary {
       background: #265ddc;
       color: white;
     }
-    .btn-primary:hover { background: #1e4fc2; }
+    .btn-icon-primary:hover { background: #1e4fc2; box-shadow: 0 4px 12px rgba(38,93,220,0.35); }
 
-    .btn-secondary {
+    .btn-icon-secondary {
       background: #f0f2f7;
       color: #374151;
       border: 1px solid #e2e4eb;
     }
-    .btn-secondary:hover { background: #e5e8f0; }
+    .btn-icon-secondary:hover { background: #e5e8f0; }
 
     .btn-disabled {
       background: #f5f6f8;
@@ -274,13 +293,11 @@
       <div class="card-title">Rehabilitation</div>
       <p class="card-desc">Borrower in default on federal loans. Cait guides them through income verification, payment calculation, and enrollment into a 9-month rehab plan.</p>
       <div class="card-actions">
-        <a href="/mobile?flow=rehab" class="btn btn-primary">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
-          Mobile
+        <a href="/mobile?flow=rehab" class="btn-icon btn-icon-primary" data-tip="Mobile">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
         </a>
-        <a href="/desktop?flow=rehab" class="btn btn-secondary">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          Desktop
+        <a href="/desktop?flow=rehab" class="btn-icon btn-icon-secondary" data-tip="Desktop">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </a>
       </div>
     </div>
@@ -296,13 +313,11 @@
       <div class="card-title">SAVE Plan</div>
       <p class="card-desc">Borrower enrolled in SAVE — now in forbearance due to court injunction. Cait explains the situation and helps them evaluate switching to IBR or another IDR plan.</p>
       <div class="card-actions">
-        <a href="/mobile?flow=save" class="btn btn-primary">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
-          Mobile
+        <a href="/mobile?flow=save" class="btn-icon btn-icon-primary" data-tip="Mobile">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
         </a>
-        <a href="/desktop?flow=save" class="btn btn-secondary">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          Desktop
+        <a href="/desktop?flow=save" class="btn-icon btn-icon-secondary" data-tip="Desktop">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </a>
       </div>
     </div>
@@ -318,13 +333,11 @@
       <div class="card-title">Delinquency</div>
       <p class="card-desc">Borrower is behind on payments and approaching default. Cait surfaces urgency, calculates an affordable IDR payment, and helps them enroll before the 270-day threshold.</p>
       <div class="card-actions">
-        <a href="/mobile?flow=delinquency" class="btn btn-primary">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
-          Mobile
+        <a href="/mobile?flow=delinquency" class="btn-icon btn-icon-primary" data-tip="Mobile">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
         </a>
-        <a href="/desktop?flow=delinquency" class="btn btn-secondary">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          Desktop
+        <a href="/desktop?flow=delinquency" class="btn-icon btn-icon-secondary" data-tip="Desktop">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </a>
       </div>
     </div>
