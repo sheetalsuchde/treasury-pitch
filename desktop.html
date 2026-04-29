@@ -1570,7 +1570,7 @@
 
   function demoFillSig() {
     const el = document.getElementById('d-save-sig-input');
-    if (!el) return;
+    if (!el || el.value.trim()) return;
     el.value = 'Marcus Webb';
     el.dispatchEvent(new Event('input', { bubbles: true }));
     el.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1584,7 +1584,7 @@
       const a = document.getElementById(p + 'account');
       const c = document.getElementById(p + 'account-confirm');
       [[r, '021000021'], [a, '123456785678'], [c, '123456785678']].forEach(([el, val]) => {
-        if (!el) return;
+        if (!el || el.value.trim()) return;
         el.value = val;
         el.dispatchEvent(new Event('input', { bubbles: true }));
         el.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1592,6 +1592,17 @@
       return;
     }
   }
+
+  // Focus auto-fill (demo): touching any of these fields populates demo values
+  document.addEventListener('focusin', function(e) {
+    const id = e.target && e.target.id;
+    if (!id) return;
+    if (/^(d-rehab|d-ap)-(routing|account|account-confirm)$/.test(id)) {
+      demoFillBank();
+    } else if (id === 'd-save-sig-input') {
+      demoFillSig();
+    }
+  });
 
   function dRehabCheckNext() {
     const routing = document.getElementById('d-rehab-routing')?.value.trim();

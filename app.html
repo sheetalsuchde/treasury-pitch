@@ -2161,7 +2161,7 @@
 
   function demoFillSig() {
     const el = document.getElementById('save-sig-input');
-    if (!el) return;
+    if (!el || el.value.trim()) return;
     el.value = 'Marcus Webb';
     el.dispatchEvent(new Event('input', { bubbles: true }));
     el.dispatchEvent(new Event('change', { bubbles: true }));
@@ -2172,12 +2172,23 @@
     const a = document.getElementById('ap-account');
     const c = document.getElementById('ap-account-confirm');
     [[r, '021000021'], [a, '123456785678'], [c, '123456785678']].forEach(([el, val]) => {
-      if (!el) return;
+      if (!el || el.value.trim()) return;
       el.value = val;
       el.dispatchEvent(new Event('input', { bubbles: true }));
       el.dispatchEvent(new Event('change', { bubbles: true }));
     });
   }
+
+  // Focus auto-fill (demo): touching any of these fields populates demo values
+  document.addEventListener('focusin', function(e) {
+    const id = e.target && e.target.id;
+    if (!id) return;
+    if (id === 'ap-routing' || id === 'ap-account' || id === 'ap-account-confirm') {
+      demoFillBank();
+    } else if (id === 'save-sig-input') {
+      demoFillSig();
+    }
+  });
 
   function mobToggleAutopayNext() {
     const chk = document.getElementById('ap-auth-chk');
