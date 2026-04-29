@@ -783,8 +783,8 @@
             <p class="${labelCls}">State</p>
             <div class="relative">
               <select id="form-state" class="${selectCls}">
-                <option value="" disabled selected>Select</option>
-                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+                <option value="" disabled>Select</option>
+                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option selected>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
               </select>
               <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
@@ -800,7 +800,7 @@
               <button type="button" id="form-marital-btn"
                 class="${inputCls} flex items-center justify-between cursor-pointer"
                 onclick="dskToggleDD('form-marital-list',event)">
-                <span id="form-marital-lbl" class="text-[#9ca3af]">Select</span>
+                <span id="form-marital-lbl" class="text-gray-900">Single</span>
                 <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div id="form-marital-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -813,7 +813,7 @@
                 </div>
               </div>
             </div>
-            <input type="hidden" id="form-marital" value="" />
+            <input type="hidden" id="form-marital" value="Single" />
             <p class="${helperCls}">Improves repayment accuracy</p>
           </div>
           <div class="flex flex-col gap-1">
@@ -822,7 +822,7 @@
               <button type="button" id="form-filing-btn"
                 class="${inputCls} flex items-center justify-between cursor-pointer"
                 onclick="dskToggleDD('form-filing-list',event)">
-                <span id="form-filing-lbl" class="text-[#9ca3af]">Select</span>
+                <span id="form-filing-lbl" class="text-gray-900">Single</span>
                 <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div id="form-filing-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -834,7 +834,7 @@
                 </div>
               </div>
             </div>
-            <input type="hidden" id="form-filing" value="" />
+            <input type="hidden" id="form-filing" value="Single" />
             <p class="${helperCls}">Most recent tax return status</p>
           </div>
         </div>
@@ -1540,8 +1540,8 @@
       setTimeout(() => {
         document.getElementById('step-body').innerHTML = `
           <div class="flex flex-col items-center gap-5 py-6 text-center">
-            <div class="w-16 h-16 rounded-full bg-[#ecfbf5] flex items-center justify-center">
-              <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="w-10 h-10 rounded-full bg-[#ecfbf5] flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div>
               <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
@@ -1880,9 +1880,10 @@
       { label: 'How quickly will collections stop?', fn: null },
     ],
     enrolled: [
-      { label: 'When will default be removed from my credit?', fn: null },
-      { label: 'Set up auto-pay reminders',                    fn: null },
-      { label: 'What happens after 9 payments?',               fn: null },
+      { label: 'What happens next?',            fn: null },
+      { label: 'How will this help my credit?', fn: null },
+      { label: 'Can I make extra payments?',    fn: null },
+      { label: 'Celebrate this win 🎉',         fn: null },
     ],
   };
 
@@ -2166,9 +2167,10 @@
       { label: 'Is this legally binding?',          fn: null },
     ];
     CHAT_CHIPS['save_enrolled'] = [
-      { label: 'When does forgiveness happen?',  fn: null },
-      { label: 'Set up auto-pay reminders',      fn: null },
-      { label: 'What if my income changes?',     fn: null },
+      { label: 'What happens next?',            fn: null },
+      { label: 'How will this help my credit?', fn: null },
+      { label: 'Can I make extra payments?',    fn: null },
+      { label: 'Celebrate this win 🎉',         fn: null },
     ];
 
     // ── Skeleton shimmer HTML for form panel ──
@@ -2297,7 +2299,7 @@
                 <button type="button" id="form-marital-btn"
                   class="${inputCls} flex items-center justify-between cursor-pointer"
                   onclick="dskToggleDD('form-marital-list',event)">
-                  <span id="form-marital-lbl" class="text-[#9ca3af]">Select</span>
+                  <span id="form-marital-lbl" class="text-gray-900">Single</span>
                   <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div id="form-marital-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -2310,7 +2312,7 @@
                   </div>
                 </div>
               </div>
-              <input type="hidden" id="form-marital" value="" />
+              <input type="hidden" id="form-marital" value="Single" />
               <p class="${helperCls}">Improves repayment accuracy</p>
             </div>
             <div class="flex flex-col gap-1">
@@ -2319,7 +2321,7 @@
                 <button type="button" id="form-filing-btn"
                   class="${inputCls} flex items-center justify-between cursor-pointer"
                   onclick="dskToggleDD('form-filing-list',event)">
-                  <span id="form-filing-lbl" class="text-[#9ca3af]">Select</span>
+                  <span id="form-filing-lbl" class="text-gray-900">Single</span>
                   <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div id="form-filing-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -2331,7 +2333,7 @@
                   </div>
                 </div>
               </div>
-              <input type="hidden" id="form-filing" value="" />
+              <input type="hidden" id="form-filing" value="Single" />
               <p class="${helperCls}">Most recent tax return status</p>
             </div>
           </div>
@@ -2761,8 +2763,8 @@
         setTimeout(() => {
           document.getElementById('step-body').innerHTML = `
             <div class="flex flex-col items-center gap-5 py-6 text-center">
-              <div class="w-16 h-16 rounded-full bg-[#ecfbf5] flex items-center justify-center">
-                <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="w-10 h-10 rounded-full bg-[#ecfbf5] flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
               <div>
                 <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
@@ -3005,9 +3007,10 @@
       { label: 'Is this legally binding?',          fn: null },
     ];
     CHAT_CHIPS['delinq_enrolled'] = [
-      { label: 'When does forgiveness happen?',  fn: null },
-      { label: 'Set up auto-pay reminders',      fn: null },
-      { label: 'What if my income changes?',     fn: null },
+      { label: 'What happens next?',            fn: null },
+      { label: 'How will this help my credit?', fn: null },
+      { label: 'Can I make extra payments?',    fn: null },
+      { label: 'Celebrate this win 🎉',         fn: null },
     ];
 
     // ── Skeleton shimmer HTML for form panel ──
@@ -3136,7 +3139,7 @@
                 <button type="button" id="form-marital-btn"
                   class="${inputCls} flex items-center justify-between cursor-pointer"
                   onclick="dskToggleDD('form-marital-list',event)">
-                  <span id="form-marital-lbl" class="text-[#9ca3af]">Select</span>
+                  <span id="form-marital-lbl" class="text-gray-900">Single</span>
                   <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div id="form-marital-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -3149,7 +3152,7 @@
                   </div>
                 </div>
               </div>
-              <input type="hidden" id="form-marital" value="" />
+              <input type="hidden" id="form-marital" value="Single" />
               <p class="${helperCls}">Improves repayment accuracy</p>
             </div>
             <div class="flex flex-col gap-1">
@@ -3158,7 +3161,7 @@
                 <button type="button" id="form-filing-btn"
                   class="${inputCls} flex items-center justify-between cursor-pointer"
                   onclick="dskToggleDD('form-filing-list',event)">
-                  <span id="form-filing-lbl" class="text-[#9ca3af]">Select</span>
+                  <span id="form-filing-lbl" class="text-gray-900">Single</span>
                   <svg class="shrink-0 text-[#676d7a]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div id="form-filing-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -3170,7 +3173,7 @@
                   </div>
                 </div>
               </div>
-              <input type="hidden" id="form-filing" value="" />
+              <input type="hidden" id="form-filing" value="Single" />
               <p class="${helperCls}">Most recent tax return status</p>
             </div>
           </div>
@@ -3600,8 +3603,8 @@
         setTimeout(() => {
           document.getElementById('step-body').innerHTML = `
             <div class="flex flex-col items-center gap-5 py-6 text-center">
-              <div class="w-16 h-16 rounded-full bg-[#ecfbf5] flex items-center justify-center">
-                <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="w-10 h-10 rounded-full bg-[#ecfbf5] flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
               <div>
                 <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
