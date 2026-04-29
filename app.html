@@ -2010,7 +2010,7 @@
 
 
           <div class="ap-field">
-            <label>Routing Number</label>
+            <label style="display:flex;align-items:center;justify-content:space-between;gap:8px">Routing Number <button type="button" onclick="demoFillBank()" style="font-size:10px;font-weight:600;color:#265ddc;background:#eff4ff;border:1px solid #c5d8ff;border-radius:999px;padding:2px 8px;cursor:pointer">🪄 Demo fill</button></label>
             <input id="ap-routing" class="ap-input" type="tel" maxlength="9" placeholder="9-digit routing number"
               oninput="this.classList.toggle('filled',this.value.length>0)" />
           </div>
@@ -2157,6 +2157,26 @@
         </div>`;
       fadeIn(body);
     }
+  }
+
+  function demoFillSig() {
+    const el = document.getElementById('save-sig-input');
+    if (!el) return;
+    el.value = 'Marcus Webb';
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  function demoFillBank() {
+    const r = document.getElementById('ap-routing');
+    const a = document.getElementById('ap-account');
+    const c = document.getElementById('ap-account-confirm');
+    [[r, '021000021'], [a, '123456785678'], [c, '123456785678']].forEach(([el, val]) => {
+      if (!el) return;
+      el.value = val;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    });
   }
 
   function mobToggleAutopayNext() {
@@ -2672,7 +2692,7 @@
 
         <!-- Signature -->
         <div class="rounded-xl border border-[#f0f2f5] bg-white p-4 flex flex-col gap-3">
-          <p class="text-xs font-bold text-gray-900">Signature</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><p class="text-xs font-bold text-gray-900">Signature</p><button type="button" onclick="demoFillSig()" style="font-size:10px;font-weight:600;color:#265ddc;background:#eff4ff;border:1px solid #c5d8ff;border-radius:999px;padding:2px 8px;cursor:pointer">🪄 Demo fill</button></div>
           <div>
             <label class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium mb-1 block">Full name</label>
             <input id="save-sig-input" type="text" placeholder="Type your full name to sign"
@@ -2764,13 +2784,21 @@
       // RAP step-specific chips (positive + contextual on success)
       const chipsRow = caitBar?.querySelector('.chips-row');
       if (chipsRow) {
-        const chipDefs = autopayStep === 3 ? [
+        const _flow = new URLSearchParams(location.search).get('flow');
+        const successChips = _flow === 'delinquency' ? [
+          ['When will my account be current?',     'When will my account be current?'],
+          ['How does this protect my credit?',     'How does this protect my credit?'],
+          ['Will my balance grow?',                'Will my balance grow?'],
+          ['Can I pay extra to catch up faster?',  'Can I pay extra to catch up faster?'],
+          ['Celebrate this win 🎉',                'Celebrate this win'],
+        ] : [
           ['How does forgiveness work?',          'How does forgiveness work?'],
           ['Will my balance grow?',               'Will my balance grow?'],
           ['Can I pay extra to finish sooner?',   'Can I pay extra to finish sooner?'],
           ['What if my income changes?',          'What if my income changes?'],
           ['Celebrate this win 🎉',               'Celebrate this win'],
-        ] : [
+        ];
+        const chipDefs = autopayStep === 3 ? successChips : [
           ['What is a routing number?',           'What is a routing number?'],
           ['Where is my account number?',         'Where do I find my account number?'],
           ['Is this secure?',                     'Is this secure?'],
@@ -2802,7 +2830,7 @@
             <h2 class="text-xl font-bold text-gray-900 leading-snug mb-1">Enter Funding Account</h2>
             <p class="text-sm text-[#676d7a] leading-relaxed mb-4">Link your bank account to automate your monthly RAP payment.</p>
             <div class="ap-field">
-              <label>Routing Number</label>
+              <label style="display:flex;align-items:center;justify-content:space-between;gap:8px">Routing Number <button type="button" onclick="demoFillBank()" style="font-size:10px;font-weight:600;color:#265ddc;background:#eff4ff;border:1px solid #c5d8ff;border-radius:999px;padding:2px 8px;cursor:pointer">🪄 Demo fill</button></label>
               <input id="ap-routing" class="ap-input" type="tel" maxlength="9" placeholder="9-digit routing number"
                 oninput="this.classList.toggle('filled',this.value.length>0)" />
             </div>
@@ -3276,7 +3304,7 @@
 
         <!-- Signature -->
         <div class="rounded-xl border border-[#f0f2f5] bg-white p-4 flex flex-col gap-3">
-          <p class="text-xs font-bold text-gray-900">Signature</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><p class="text-xs font-bold text-gray-900">Signature</p><button type="button" onclick="demoFillSig()" style="font-size:10px;font-weight:600;color:#265ddc;background:#eff4ff;border:1px solid #c5d8ff;border-radius:999px;padding:2px 8px;cursor:pointer">🪄 Demo fill</button></div>
           <div>
             <label class="text-[10px] text-[#9ca3af] uppercase tracking-wide font-medium mb-1 block">Full name</label>
             <input id="save-sig-input" type="text" placeholder="Type your full name to sign"
@@ -3367,13 +3395,21 @@
       // RAP step-specific chips (positive + contextual on success)
       const chipsRow = caitBar?.querySelector('.chips-row');
       if (chipsRow) {
-        const chipDefs = autopayStep === 3 ? [
+        const _flow = new URLSearchParams(location.search).get('flow');
+        const successChips = _flow === 'delinquency' ? [
+          ['When will my account be current?',     'When will my account be current?'],
+          ['How does this protect my credit?',     'How does this protect my credit?'],
+          ['Will my balance grow?',                'Will my balance grow?'],
+          ['Can I pay extra to catch up faster?',  'Can I pay extra to catch up faster?'],
+          ['Celebrate this win 🎉',                'Celebrate this win'],
+        ] : [
           ['How does forgiveness work?',          'How does forgiveness work?'],
           ['Will my balance grow?',               'Will my balance grow?'],
           ['Can I pay extra to finish sooner?',   'Can I pay extra to finish sooner?'],
           ['What if my income changes?',          'What if my income changes?'],
           ['Celebrate this win 🎉',               'Celebrate this win'],
-        ] : [
+        ];
+        const chipDefs = autopayStep === 3 ? successChips : [
           ['What is a routing number?',           'What is a routing number?'],
           ['Where is my account number?',         'Where do I find my account number?'],
           ['Is this secure?',                     'Is this secure?'],
@@ -3405,7 +3441,7 @@
             <h2 class="text-xl font-bold text-gray-900 leading-snug mb-1">Enter Funding Account</h2>
             <p class="text-sm text-[#676d7a] leading-relaxed mb-4">Link your bank account to automate your monthly RAP payment.</p>
             <div class="ap-field">
-              <label>Routing Number</label>
+              <label style="display:flex;align-items:center;justify-content:space-between;gap:8px">Routing Number <button type="button" onclick="demoFillBank()" style="font-size:10px;font-weight:600;color:#265ddc;background:#eff4ff;border:1px solid #c5d8ff;border-radius:999px;padding:2px 8px;cursor:pointer">🪄 Demo fill</button></label>
               <input id="ap-routing" class="ap-input" type="tel" maxlength="9" placeholder="9-digit routing number"
                 oninput="this.classList.toggle('filled',this.value.length>0)" />
             </div>
