@@ -2442,10 +2442,7 @@
             const ctaBtn = document.getElementById('mob-btn-next');
             if (ctaBtn) ctaBtn.innerHTML = 'Switch to RAP →';
             const alertBox = flowCard.querySelector('.bg-red-50');
-            if (alertBox) {
-              alertBox.className = 'bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-gray-800 leading-relaxed';
-              alertBox.innerHTML = "<span class='font-bold'>What happens if you don't act:</span> If you miss the enrollment deadline, you'll be automatically placed on the <span class='font-semibold'>Standard Repayment Plan</span>, which could significantly increase your monthly payments.";
-            }
+            if (alertBox) alertBox.parentElement.style.display = 'none';
             mobUpdateChips('save_resolution');
             setTimeout(() => {
               const btn = document.getElementById('mob-btn-next');
@@ -3055,10 +3052,7 @@
             const ctaBtn = document.getElementById('mob-btn-next');
             if (ctaBtn) ctaBtn.innerHTML = 'Prevent Default →';
             const alertBox = flowCard.querySelector('.bg-red-50');
-            if (alertBox) {
-              alertBox.className = 'bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-gray-800 leading-relaxed';
-              alertBox.innerHTML = "<span class='font-bold'>Risk of default:</span> Without action, your loans will enter <span class='font-semibold'>default</span> — triggering wage garnishment, tax refund seizure, and damage to your credit.";
-            }
+            if (alertBox) alertBox.parentElement.style.display = 'none';
             mobUpdateChips('delinq_resolution');
             setTimeout(() => {
               const btn = document.getElementById('mob-btn-next');

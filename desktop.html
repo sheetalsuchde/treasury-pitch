@@ -2161,11 +2161,6 @@
             </div>
           </div>
 
-          <!-- Why paused alert -->
-          <div id="ds-alert" class="ds-sec bg-[#fff8eb] border border-[#fed684] rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
-            <span class="font-bold">Why your plan is paused:</span> A federal court blocked the SAVE plan in 2024. Your payments are in forbearance — but <span class="font-semibold">interest may resume</span>. Switching to <span class="font-semibold">RAP</span> locks in income-driven payments and keeps you on track for forgiveness.
-          </div>
-
           <!-- How RAP Works wrapper -->
           <div id="ds-howrap" class="ds-sec bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4">
             <p class="text-base font-bold text-gray-900 leading-6">How RAP Works</p>
@@ -2214,8 +2209,7 @@
       // ── Staggered reveal: tiles → alert → howrap → step1 → step2 → step3 ──
       const show = (id, ms) => setTimeout(() => document.getElementById(id)?.classList.add('ds-in'), ms);
       show('ds-tiles',  60);
-      show('ds-alert',  280);
-      show('ds-howrap', 500);
+      show('ds-howrap', 280);
       show('ds-step1',  660);
       show('ds-step2',  820);
       show('ds-step3',  980);
@@ -3011,11 +3005,6 @@
             </div>
           </div>
 
-          <!-- Delinquency risk alert -->
-          <div id="ds-alert" class="ds-sec bg-[#fff8eb] border border-[#fed684] rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
-            <span class="font-bold">Risk of default:</span> Your loans are 90+ days past due. Without action, your loans will enter default — triggering <span class="font-semibold">wage garnishment</span>, tax refund seizure, and lasting credit damage. RAP can resolve your delinquency with a payment as low as $66/month.
-          </div>
-
           <!-- How RAP Works wrapper -->
           <div id="ds-howrap" class="ds-sec bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4">
             <p class="text-base font-bold text-gray-900 leading-6">How RAP Works</p>
@@ -3064,8 +3053,7 @@
       // ── Staggered reveal: tiles → alert → howrap → step1 → step2 → step3 ──
       const show = (id, ms) => setTimeout(() => document.getElementById(id)?.classList.add('ds-in'), ms);
       show('ds-tiles',  60);
-      show('ds-alert',  280);
-      show('ds-howrap', 500);
+      show('ds-howrap', 280);
       show('ds-step1',  660);
       show('ds-step2',  820);
       show('ds-step3',  980);
