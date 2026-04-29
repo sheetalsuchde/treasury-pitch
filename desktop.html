@@ -1465,7 +1465,7 @@
               <input type="checkbox" id="d-rehab-auth-chk" onchange="dRehabCheckNext()"
                 class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0" style="margin-top:3px" />
               <span class="text-sm text-gray-800 leading-relaxed">
-                I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
+                I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
               </span>
             </label>
           </div>
@@ -1523,7 +1523,7 @@
             </div>
           </div>
 
-          <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you agree to this repayment schedule and the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>.</p>
+          <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you agree to this repayment schedule and the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>.</p>
 
           <div class="flex gap-3">
             <button onclick="dRehabAutopayStep--; dRenderRehabAutopayStep()"
@@ -2455,7 +2455,7 @@
             <div class="flex flex-col gap-1 items-center text-center">
               <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your RAP monthly payment</p>
               <p class="font-bold text-gray-900 leading-8" style="font-size:26px;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
-              <p class="text-xs font-medium text-[#676d7a]">5% of discretionary income · AGI $${agi.toLocaleString()}</p>
+              <p class="text-xs font-medium text-[#676d7a]">IDR payments are recalculated annually according to income and family size.</p>
             </div>
 
             <!-- Stats row -->
@@ -2482,7 +2482,7 @@
           </button>
 
           <!-- Disclaimer -->
-          <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
+          <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your estimated payment is based on the income you provided. Your payment is recalculated each year at recertification. Changes to your income or family size will impact your monthly payment.</p>
 
         </div>`;
       const _fpb = document.getElementById('fp-body');
@@ -2598,7 +2598,7 @@
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
             <input type="checkbox" id="d-save-consent-chk" onchange="dSaveCheckEnrollReady()"
               class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
-            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="underline text-brand-primary">Terms of Service</a>.</span>
+            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="underline text-brand-primary">Terms of Service</a> and <a href="#" class="underline text-brand-primary">Privacy Statement</a>.</span>
           </label>
 
           <!-- Enroll CTA -->
@@ -2729,7 +2729,7 @@
                 <input type="checkbox" id="d-ap-auth-chk" onchange="dRapCheckNext()"
                   class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0" style="margin-top:3px" />
                 <span class="text-sm text-gray-800 leading-relaxed">
-                  I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
+                  I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
                 </span>
               </label>
             </div>
@@ -2789,7 +2789,7 @@
               </div>
             </div>
 
-            <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you agree to this repayment schedule and the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>.</p>
+            <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you agree to this repayment schedule and the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>.</p>
 
             <div class="flex gap-3">
               <button onclick="dRapAutopayStep--; dRenderRapAutopayStep()"
@@ -2814,15 +2814,14 @@
               <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div>
-              <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
-              <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your RAP enrollment and auto-pay have been confirmed. Your <strong class="text-gray-900">$${d.monthly}/month</strong> payments start on your next transfer date.</p>
+              <p class="text-lg font-bold text-gray-900 mb-1">Your application is complete</p>
+              <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your RAP application and auto-pay enrollment are complete.</p>
             </div>
             <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-5 w-full text-left">
               <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
               <ul class="flex flex-col gap-3 text-sm text-gray-800">
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>Your servicer will confirm your <strong style="white-space:nowrap">$${d.monthly}/month</strong> RAP enrollment within 5–7 business days</span></li>
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} payment</strong> starts your repayment clock. Payments are automatically drafted from your funding account.</span></li>
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 30 years, your remaining balance of <strong>$${d.forgiven.toLocaleString()}</strong> is forgiven — your balance can never grow while on RAP.</span></li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>We will contact you to confirm your application is processed and your RAP enrollment is complete.</span></li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} monthly payment</strong> will draft approximately 30 days after your enrollment is confirmed.</span></li>
               </ul>
             </div>
             <p class="text-xs text-neutral-disabled">Questions? help@getcandidly.com · (866) 719-3437</p>
@@ -2891,8 +2890,8 @@
         banner.innerHTML = `
           <svg class="shrink-0 text-amber-500 mt-0.5" width="24" height="24" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
           <div class="flex-1 min-w-0">
-            <p class="text-base font-bold text-gray-900 leading-5">Action required: Your loans are delinquent</p>
-            <p class="text-base text-gray-900 leading-relaxed mt-0.5">You're 90+ days behind on payments and approaching default. Enrolling in RAP now can lower your monthly payment and stop collection activity.</p>
+            <p class="text-base font-bold text-gray-900 leading-5">Action required:</p>
+            <p class="text-base text-gray-900 leading-relaxed mt-0.5">You are behind on monthly payments and approaching default. Enroll in the new RAP plan now to get back on track!</p>
           </div>
           <button onclick="showChatScreen()"
             class="shrink-0 border border-gray-900 text-gray-900 bg-transparent hover:bg-black hover:text-white rounded-full px-4 py-1 text-sm font-medium transition-colors whitespace-nowrap self-center" style="min-height:32px;min-width:96px;">
@@ -3306,7 +3305,7 @@
             <div class="flex flex-col gap-1 items-center text-center">
               <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your RAP monthly payment</p>
               <p class="font-bold text-gray-900 leading-8" style="font-size:26px;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
-              <p class="text-xs font-medium text-[#676d7a]">5% of discretionary income · AGI $${agi.toLocaleString()}</p>
+              <p class="text-xs font-medium text-[#676d7a]">IDR payments are recalculated annually according to income and family size.</p>
             </div>
 
             <!-- Stats row -->
@@ -3333,7 +3332,7 @@
           </button>
 
           <!-- Disclaimer -->
-          <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
+          <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your estimated payment is based on the income you provided. Your payment is recalculated each year at recertification. Changes to your income or family size will impact your monthly payment.</p>
 
         </div>`;
       const _fpb = document.getElementById('fp-body');
@@ -3449,7 +3448,7 @@
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
             <input type="checkbox" id="d-save-consent-chk" onchange="dSaveCheckEnrollReady()"
               class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
-            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="underline text-brand-primary">Terms of Service</a>.</span>
+            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="underline text-brand-primary">Terms of Service</a> and <a href="#" class="underline text-brand-primary">Privacy Statement</a>.</span>
           </label>
 
           <!-- Enroll CTA -->
@@ -3580,7 +3579,7 @@
                 <input type="checkbox" id="d-ap-auth-chk" onchange="dRapCheckNext()"
                   class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0" style="margin-top:3px" />
                 <span class="text-sm text-gray-800 leading-relaxed">
-                  I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
+                  I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
                 </span>
               </label>
             </div>
@@ -3640,7 +3639,7 @@
               </div>
             </div>
 
-            <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you agree to this repayment schedule and the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a>.</p>
+            <p class="text-sm text-[#676d7a] leading-relaxed text-center">By clicking <strong class="text-gray-900">Confirm</strong>, you agree to this repayment schedule and the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>.</p>
 
             <div class="flex gap-3">
               <button onclick="dRapAutopayStep--; dRenderRapAutopayStep()"
@@ -3665,15 +3664,14 @@
               <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div>
-              <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
-              <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your RAP enrollment and auto-pay have been confirmed. Your <strong class="text-gray-900">$${d.monthly}/month</strong> payments start on your next transfer date.</p>
+              <p class="text-lg font-bold text-gray-900 mb-1">Your application is complete</p>
+              <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your RAP application and auto-pay enrollment are complete.</p>
             </div>
             <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-5 w-full text-left">
               <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
               <ul class="flex flex-col gap-3 text-sm text-gray-800">
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>Your servicer will confirm your <strong style="white-space:nowrap">$${d.monthly}/month</strong> RAP enrollment within 5–7 business days</span></li>
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} payment</strong> starts your repayment clock. Payments are automatically drafted from your funding account.</span></li>
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 30 years, your remaining balance of <strong>$${d.forgiven.toLocaleString()}</strong> is forgiven — your balance can never grow while on RAP.</span></li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>We will contact you to confirm your application is processed and your RAP enrollment is complete.</span></li>
+                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${d.monthly} monthly payment</strong> will draft approximately 30 days after your enrollment is confirmed.</span></li>
               </ul>
             </div>
             <p class="text-xs text-neutral-disabled">Questions? help@getcandidly.com · (866) 719-3437</p>
