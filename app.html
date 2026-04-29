@@ -1840,6 +1840,51 @@
     document.getElementById(id)?.classList.toggle('ie-collapsed');
   }
 
+  /* Simulate attaching a utility receipt + auto-update the amount */
+  function mobIESimulateReceipt() {
+    const prompt = document.getElementById('mob-ie-receipt-prompt');
+    if (!prompt || prompt.dataset.attaching === '1' || prompt.dataset.done === '1') return;
+    prompt.dataset.attaching = '1';
+    prompt.style.cursor = 'default';
+    prompt.onclick = null;
+    prompt.innerHTML = `
+      <div class="w-7 h-7 rounded-lg bg-[#265ddc] flex items-center justify-center shrink-0 animate-pulse">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-[12px] font-semibold text-gray-900 leading-tight">utility_bill_jul.pdf</p>
+        <p class="text-[10px] text-[#265ddc] mt-0.5">Reading amount from receipt…</p>
+      </div>
+      <div class="typing-dots shrink-0"><span></span><span></span><span></span></div>`;
+
+    setTimeout(() => {
+      const util = document.getElementById('mob-ie-util');
+      if (util) {
+        util.value = 185;
+        util.style.transition = 'background-color 0.6s ease, border-color 0.6s ease';
+        util.style.background = '#f0fbf7';
+        util.style.borderColor = '#0d9e6e';
+        setTimeout(() => {
+          util.style.background = '';
+          util.style.borderColor = '';
+        }, 1600);
+        if (typeof mobUpdateTotals === 'function') mobUpdateTotals();
+      }
+      prompt.classList.remove('border-dashed', 'border-[#b3c6f7]', 'bg-[#f0f4ff]');
+      prompt.classList.add('border-[#b6eeda]');
+      prompt.style.background = '#f0fbf7';
+      prompt.dataset.done = '1';
+      prompt.innerHTML = `
+        <div class="w-7 h-7 rounded-lg bg-[#ecfbf5] border border-[#b6eeda] flex items-center justify-center shrink-0">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0d9e6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-[12px] font-semibold text-gray-900 leading-tight">utility_bill_jul.pdf</p>
+          <p class="text-[10px] text-[#0d9e6e] mt-0.5">Receipt verified — Utilities updated to $185</p>
+        </div>`;
+    }, 1600);
+  }
+
   /* Recalculate income/expense totals */
   function mobUpdateTotals() {
     const inc = ['mob-ie-income','mob-ie-ss','mob-ie-other-inc']
@@ -2249,6 +2294,15 @@
           </div>
         </div>
         <div class="ie-sec-body">
+          <!-- Receipt prompt -->
+          <div id="mob-ie-receipt-prompt" class="mb-3 rounded-xl border border-dashed border-[#b3c6f7] bg-[#f0f4ff] px-3 py-2.5 flex items-center gap-2.5 cursor-pointer hover:bg-[#e5edff] transition-colors" onclick="mobIESimulateReceipt()">
+            <svg class="shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            <div class="flex-1 min-w-0">
+              <p class="text-[12px] font-semibold text-[#265ddc] leading-tight">Have a utility receipt?</p>
+              <p class="text-[10px] text-[#676d7a] mt-0.5">Tap to attach — we'll update the amount automatically</p>
+            </div>
+            <svg class="shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
           <div class="ie-field-wrap"><label class="ie-label">Rent / Mortgage</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-rent" class="ie-input ie-money" value="1200" type="number" oninput="mobUpdateTotals()" /></div></div>
           <div class="ie-field-wrap"><label class="ie-label">Utilities</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-util" class="ie-input ie-money" value="150" type="number" oninput="mobUpdateTotals()" /></div></div>
           <div class="ie-field-wrap"><label class="ie-label">Food &amp; Groceries</label><div class="relative"><span class="ie-prefix">$</span><input id="mob-ie-food" class="ie-input ie-money" value="400" type="number" oninput="mobUpdateTotals()" /></div></div>
