@@ -100,6 +100,14 @@
     @keyframes card-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .card-revealed { animation: card-in 0.4s ease forwards; }
 
+    /* "Too high" screen — progressive section reveal */
+    #mob-toohigh .th-step { opacity: 0; transform: translateY(8px); }
+    #mob-toohigh.th-play .th-step {
+      animation: th-step-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: calc(var(--i, 0) * 110ms + 80ms);
+    }
+    @keyframes th-step-in { to { opacity: 1; transform: none; } }
+
     /* Input bar — Figma Chat Input Field */
     @keyframes cait-glow {
       0%, 100% { box-shadow: 0 0 0 3px rgba(174,225,255,0.35), 0 0 18px rgba(174,225,255,0.2); }
@@ -435,7 +443,7 @@
 
   <!-- Back link -->
   <div class="shrink-0 px-6 pt-3 pb-1">
-    <button onclick="document.getElementById('mob-toohigh').classList.remove('active')" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc]">
+    <button onclick="(function(){var s=document.getElementById('mob-toohigh');s.classList.remove('active');s.classList.remove('th-play');})()" class="flex items-center gap-1.5 text-sm font-medium text-[#265ddc]">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Back
     </button>
@@ -444,16 +452,16 @@
   <div class="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4 pb-8">
 
     <!-- No problem card -->
-    <div class="bg-blue-50 border border-[#aee1ff] rounded-xl p-4 flex flex-col gap-2">
+    <div class="th-step bg-blue-50 border border-[#aee1ff] rounded-xl p-4 flex flex-col gap-2" style="--i:0">
       <p class="text-sm font-semibold text-gray-900">No problem - let's work to lower your payment.</p>
       <p class="text-sm text-gray-900 leading-relaxed">You'll need to provide written evidence of both your income and your expenses via Form OMB No. 1845-0120. Cait will guide you through every field. Your payment could be as low as <strong>$5/mo</strong>.</p>
     </div>
 
     <!-- What to expect -->
     <div class="flex flex-col gap-2">
-      <p class="text-xs font-bold text-[#2a2f3d] uppercase tracking-wide">What to expect</p>
+      <p class="th-step text-xs font-bold text-[#2a2f3d] uppercase tracking-wide" style="--i:1">What to expect</p>
       <div class="flex flex-col gap-2">
-        <div class="flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3">
+        <div class="th-step flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3" style="--i:2">
           <div class="w-10 h-10 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4274eb" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
           </div>
@@ -462,7 +470,7 @@
             <p class="text-[13px] text-[#676d7a] mt-0.5 leading-snug">Cait pre-fills what she knows and guides you through every field.</p>
           </div>
         </div>
-        <div class="flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3">
+        <div class="th-step flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3" style="--i:3">
           <div class="w-10 h-10 rounded-lg bg-[#eff4ff] flex items-center justify-center shrink-0">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M9 21h6M12 3a6 6 0 0 1 6 6c0 2.2-1.2 4.1-3 5.2V17a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2.8C7.2 13.1 6 11.2 6 9a6 6 0 0 1 6-6z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
           </div>
@@ -471,7 +479,7 @@
             <p class="text-[13px] text-[#676d7a] mt-0.5 leading-snug">Based on your adjusted gross income and monthly expenses. Your payment could be as low as <strong class="text-gray-800">$5/mo</strong>.</p>
           </div>
         </div>
-        <div class="flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3">
+        <div class="th-step flex items-start gap-3 bg-white border border-[#f0f2f5] rounded-xl p-3" style="--i:4">
           <div class="w-10 h-10 rounded-lg bg-[#e6faee] flex items-center justify-center shrink-0">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#039852" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M7.5 12l3 3 6-6"/></svg>
           </div>
@@ -484,7 +492,7 @@
     </div>
 
     <!-- CTA -->
-    <button id="mob-toohigh-start-btn" onclick="mobStartTooHighIE()" class="w-full bg-[#265ddc] hover:bg-[#1e4fc2] text-white rounded-full py-3.5 text-sm font-semibold transition-colors mt-2">
+    <button id="mob-toohigh-start-btn" onclick="mobStartTooHighIE()" class="th-step w-full bg-[#265ddc] hover:bg-[#1e4fc2] text-white rounded-full py-3.5 text-sm font-semibold transition-colors mt-2" style="--i:5">
       Start Income &amp; Expense Form →
     </button>
 
@@ -1563,7 +1571,14 @@
     if (yesBtn) { yesBtn.style.opacity = '0.4'; yesBtn.style.borderColor = '#e2e4eb'; yesBtn.style.borderWidth = ''; }
     // Store payment for the IE form
     document.getElementById('mob-toohigh-start-btn').dataset.payment = estPayment;
-    setTimeout(() => document.getElementById('mob-toohigh').classList.add('active'), 120);
+    setTimeout(() => {
+      const scr = document.getElementById('mob-toohigh');
+      scr.classList.add('active');
+      // Restart progressive reveal
+      scr.classList.remove('th-play');
+      void scr.offsetWidth;
+      scr.classList.add('th-play');
+    }, 120);
   }
 
   function mobStartTooHighIE() {
