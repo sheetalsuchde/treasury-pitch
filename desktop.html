@@ -1537,6 +1537,34 @@
           </div>
         </div>`;
       staggerIn(body);
+
+    } else if (dRehabAutopayStep === 3) {
+      document.getElementById('fp-title').textContent    = "You're Enrolled";
+      document.getElementById('fp-subtitle').textContent = '';
+      body.innerHTML = `
+        <div class="flex flex-col items-center gap-5 py-6 text-center pb-6">
+          <div class="w-10 h-10 rounded-full bg-[#ecfbf5] flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
+            <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your rehabilitation agreement and auto-pay have been confirmed. Your <strong class="text-gray-900">$${dRehabAutopayPayment}/month</strong> payments start on your next transfer date.</p>
+          </div>
+          <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-5 w-full text-left">
+            <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
+            <ul class="flex flex-col gap-3 text-sm text-gray-800">
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>The Default Resolution Group will confirm your <strong>$${dRehabAutopayPayment}/month</strong> payment within 5–7 business days</li>
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>Your first <strong>$${dRehabAutopayPayment} payment</strong> begins the loan rehabilitation process. Your payment will automatically be drafted from your funding account.</li>
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 9 on-time monthly payments — default resolved, loans returned to good standing, and default removed from your credit report.</span></li>
+            </ul>
+          </div>
+          <p class="text-xs text-neutral-disabled">Questions? help@getcandidly.com · (866) 719-3437</p>
+          <button onclick="dRehabAutopayNext()"
+            class="w-full bg-[#265ddc] hover:bg-[#1e4fc2] text-white rounded-full py-2.5 text-sm font-semibold transition-colors mt-2">
+            Done
+          </button>
+        </div>`;
+      staggerIn(body);
     }
   }
 
@@ -1560,30 +1588,12 @@
       dRehabAutopayStep = 2;
       dRenderRehabAutopayStep();
     } else if (dRehabAutopayStep === 2) {
-      closeFormPanel();
+      dRehabAutopayStep = 3;
+      dRenderRehabAutopayStep();
       updateChatChips('enrolled');
-      setTimeout(() => {
-        document.getElementById('step-body').innerHTML = `
-          <div class="flex flex-col items-center gap-5 py-6 text-center">
-            <div class="w-10 h-10 rounded-full bg-[#ecfbf5] flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 30 30" fill="none"><path d="M7 15l5.5 5.5L23 9" stroke="#027a42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div>
-              <p class="text-lg font-bold text-gray-900 mb-1">You're all set!</p>
-              <p class="text-sm text-neutral-disabled leading-relaxed max-w-sm mx-auto">Your rehabilitation agreement and auto-pay have been confirmed. Your <strong class="text-gray-900">$${dRehabAutopayPayment}/month</strong> payments start on your next transfer date.</p>
-            </div>
-            <div class="bg-surface-base rounded-2xl p-5 w-full text-left">
-              <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
-              <ul class="flex flex-col gap-3 text-sm text-gray-800">
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>The Default Resolution Group will confirm your <strong>$${dRehabAutopayPayment}/month</strong> payment within 5–7 business days</li>
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>Your first <strong>$${dRehabAutopayPayment} payment</strong> begins the loan rehabilitation process. Your payment will automatically be drafted from your funding account.</li>
-                <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 9 on-time monthly payments — default resolved, loans returned to good standing, and default removed from your credit report.</span></li>
-              </ul>
-            </div>
-            <p class="text-xs text-neutral-disabled">Questions? help@getcandidly.com · (866) 719-3437</p>
-          </div>`;
-        document.getElementById('btn-next').classList.add('hidden');
-      }, 300);
+    } else if (dRehabAutopayStep === 3) {
+      closeFormPanel();
+      dRehabAutopayStep = 1;
     }
   }
 
@@ -3033,10 +3043,11 @@
       { label: 'Is this legally binding?',          fn: null },
     ];
     CHAT_CHIPS['delinq_enrolled'] = [
-      { label: 'What happens next?',            fn: null },
-      { label: 'How will this help my credit?', fn: null },
-      { label: 'Can I make extra payments?',    fn: null },
-      { label: 'Celebrate this win 🎉',         fn: null },
+      { label: 'When will my account be current?',    fn: null },
+      { label: 'How does this protect my credit?',    fn: null },
+      { label: 'Will my balance grow?',               fn: null },
+      { label: 'Can I pay extra to catch up faster?', fn: null },
+      { label: 'Celebrate this win 🎉',               fn: null },
     ];
 
     // ── Skeleton shimmer HTML for form panel ──
