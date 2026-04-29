@@ -1437,6 +1437,8 @@
       document.getElementById('mob-upload-processing').classList.add('hidden');
       document.getElementById('mob-upload-success').classList.remove('hidden');
       document.getElementById('mob-upload-success-name').textContent = name;
+      window.mob1040Uploaded = true;
+      window.mob1040FileName = name;
       // Confirm AGI field as verified
       const agiInput = document.getElementById('mob-agi');
       if (agiInput) {
@@ -1450,6 +1452,8 @@
   function mobResetUpload() {
     document.getElementById('mob-upload-success').classList.add('hidden');
     document.getElementById('mob-upload-zone').classList.remove('hidden');
+    window.mob1040Uploaded = false;
+    window.mob1040FileName = '';
     const agiInput = document.getElementById('mob-agi');
     if (agiInput) {
       agiInput.style.borderColor = '';
@@ -1609,8 +1613,8 @@
   }
 
   function mobOpenEnroll(payment) {
-    const alreadyUploaded = !!document.getElementById('mob-upload-success') &&
-      !document.getElementById('mob-upload-success').classList.contains('hidden');
+    const alreadyUploaded = !!window.mob1040Uploaded;
+    const uploadedName = window.mob1040FileName || 'Form_1040.pdf';
 
     document.getElementById('mob-enroll-body').innerHTML = `
 
@@ -1635,12 +1639,28 @@
       </div>
 
       ${alreadyUploaded ? `
-      <!-- Already verified -->
-      <div class="bg-[#ecfbf5] border border-[#b6eeda] rounded-xl px-3 py-2.5 flex items-center gap-2.5">
-        <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#0d9e6e"/><path d="M5 8l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div>
-          <p class="text-xs font-semibold text-emerald-800">Income verified from Form 1040</p>
-          <p class="text-xs text-emerald-700">Line 11: $38,400</p>
+      <!-- Already uploaded -->
+      <div class="border border-[#e2e4eb] rounded-xl overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-2.5 border-b border-[#f0f2f5]">
+          <p class="text-[11px] font-semibold text-gray-900 leading-tight">Tax return already on file</p>
+          <span class="shrink-0 ml-3 text-[10px] font-semibold text-[#0d9e6e] bg-[#ecfbf5] px-2 py-0.5 rounded-full">Verified</span>
+        </div>
+        <div class="px-4 py-3">
+          <div class="w-full rounded-xl border border-[#b6eeda] bg-[#f0fbf7] px-4 py-3">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-[#ecfbf5] border border-[#b6eeda] flex items-center justify-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0d9e6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-semibold text-gray-900 truncate">${uploadedName}</p>
+                <p class="text-[10px] text-[#0d9e6e] mt-0.5">No need to upload again</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg border border-[#d4f5e8] px-3 py-2 flex items-center justify-between">
+              <span class="text-[11px] text-[#676d7a]">AGI confirmed from Line 11</span>
+              <span class="text-[11px] font-bold text-gray-900">$38,400</span>
+            </div>
+          </div>
         </div>
       </div>` : `
       <!-- Verify with 1040 — same component used in income form -->
