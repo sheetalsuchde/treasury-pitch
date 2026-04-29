@@ -1889,6 +1889,24 @@
     const caitBar = document.getElementById('mob-autopay-cait-bar');
     if (caitBar) caitBar.style.display = '';
 
+    // Step-specific chips (positive + contextual on success step)
+    const chipsRow = caitBar?.querySelector('.chips-row');
+    if (chipsRow) {
+      const chipDefs = autopayStep === 3 ? [
+        ['What happens next?', 'What happens next?'],
+        ['How will this help my credit?', 'How will this help my credit?'],
+        ['Can I make extra payments?', 'Can I make extra payments?'],
+        ['Celebrate this win 🎉', 'Celebrate this win'],
+      ] : [
+        ['What is a routing number?', 'What is a routing number?'],
+        ['Where is my account number?', 'Where do I find my account number?'],
+        ['Is this secure?', 'Is this secure?'],
+      ];
+      chipsRow.innerHTML = chipDefs.map(([label, q]) =>
+        `<button onclick="mobIncomeChipAsk('${q.replace(/'/g, "\\'")}')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">${label}</button>`
+      ).join('');
+    }
+
     // ── Step 1: Bank details + Authorization (fused) ──
     if (autopayStep === 1) {
       subtitle.textContent = 'Set Up Auto-Pay';
