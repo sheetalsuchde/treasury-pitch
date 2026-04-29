@@ -1306,7 +1306,7 @@
               <button type="button" id="mob-state-btn"
                 class="ie-input w-full text-left flex items-center justify-between bg-white"
                 onclick="mobToggleState(event)">
-                <span id="mob-state-lbl" class="text-[#9ca3af]">Select</span>
+                <span id="mob-state-lbl" class="text-gray-900">TX</span>
                 <svg class="shrink-0 text-[#676d7a]" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div id="mob-state-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -1315,7 +1315,7 @@
                 </div>
               </div>
             </div>
-            <input type="hidden" id="mob-state" value="" />
+            <input type="hidden" id="mob-state" value="TX" />
             <p class="text-[10px] text-[#676d7a]">State of residence</p>
           </div>
         </div>
@@ -1328,7 +1328,7 @@
               <button type="button" id="mob-marital-btn"
                 class="ie-input w-full text-left flex items-center justify-between bg-white"
                 onclick="mobToggleDD('mob-marital-list',event)">
-                <span id="mob-marital-lbl" class="text-[#9ca3af]">Select</span>
+                <span id="mob-marital-lbl" class="text-gray-900">Single</span>
                 <svg class="shrink-0 text-[#676d7a]" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div id="mob-marital-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -1341,7 +1341,7 @@
                 </div>
               </div>
             </div>
-            <input type="hidden" id="mob-marital" value="" />
+            <input type="hidden" id="mob-marital" value="Single" />
           </div>
           <div class="flex flex-col gap-1.5">
             <label class="text-xs font-semibold text-[#2a2f3d]">Tax filing status</label>
@@ -1349,7 +1349,7 @@
               <button type="button" id="mob-filing-btn"
                 class="ie-input w-full text-left flex items-center justify-between bg-white"
                 onclick="mobToggleDD('mob-filing-list',event)">
-                <span id="mob-filing-lbl" class="text-[#9ca3af]">Select</span>
+                <span id="mob-filing-lbl" class="text-gray-900">Single</span>
                 <svg class="shrink-0 text-[#676d7a]" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
               <div id="mob-filing-list" class="hidden absolute left-0 right-0 bg-white border border-[#e2e4eb] rounded-xl shadow-md overflow-y-auto" style="top:calc(100% + 4px);max-height:168px;z-index:50;">
@@ -1361,7 +1361,7 @@
                 </div>
               </div>
             </div>
-            <input type="hidden" id="mob-filing" value="" />
+            <input type="hidden" id="mob-filing" value="Single" />
           </div>
         </div>
       </div>
@@ -1887,7 +1887,7 @@
 
     // Show Cait bar on steps 1 & 2, hide on success
     const caitBar = document.getElementById('mob-autopay-cait-bar');
-    if (caitBar) caitBar.style.display = autopayStep < 3 ? '' : 'none';
+    if (caitBar) caitBar.style.display = '';
 
     // ── Step 1: Bank details + Authorization (fused) ──
     if (autopayStep === 1) {
@@ -2666,7 +2666,7 @@
       }
 
       const caitBar = document.getElementById('mob-autopay-cait-bar');
-      if (caitBar) caitBar.style.display = autopayStep < 3 ? '' : 'none';
+      if (caitBar) caitBar.style.display = '';
 
       // ── Step 1: Bank details + Authorization ──
       if (autopayStep === 1) {
@@ -3250,7 +3250,7 @@
       }
 
       const caitBar = document.getElementById('mob-autopay-cait-bar');
-      if (caitBar) caitBar.style.display = autopayStep < 3 ? '' : 'none';
+      if (caitBar) caitBar.style.display = '';
 
       // ── Step 1: Bank details + Authorization ──
       if (autopayStep === 1) {
