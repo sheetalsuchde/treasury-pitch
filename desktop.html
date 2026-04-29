@@ -2442,7 +2442,7 @@
       updateChatChips('save_confirm');
 
       document.getElementById('fp-body').innerHTML = `
-        <div class="flex flex-col gap-4 h-full justify-center">
+        <div class="flex flex-col gap-4">
 
           <!-- Back link -->
           <button onclick="dSaveResetPaymentCalc()" class="flex items-center gap-1.5 text-xs text-neutral-disabled hover:text-brand-primary transition-colors self-start -mb-1">
@@ -2481,13 +2481,8 @@
             Enroll in RAP →
           </button>
 
-          <!-- Income change prompt + disclaimer -->
-          <div class="flex flex-col items-center gap-2">
-            <button onclick="updateChatChips('save_payment')" class="border border-[#b3c6f7] rounded-full px-4 py-1.5 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">
-              What if my income changes?
-            </button>
-            <p class="text-[11px] text-[#9ca3af] text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
-          </div>
+          <!-- Disclaimer -->
+          <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
 
         </div>`;
       staggerIn(document.getElementById('fp-body'));
@@ -3283,7 +3278,7 @@
       updateChatChips('delinq_confirm');
 
       document.getElementById('fp-body').innerHTML = `
-        <div class="flex flex-col gap-4 h-full justify-center">
+        <div class="flex flex-col gap-4">
 
           <!-- Back link -->
           <button onclick="dSaveResetPaymentCalc()" class="flex items-center gap-1.5 text-xs text-neutral-disabled hover:text-brand-primary transition-colors self-start -mb-1">
@@ -3322,13 +3317,8 @@
             Enroll in RAP →
           </button>
 
-          <!-- Income change prompt + disclaimer -->
-          <div class="flex flex-col items-center gap-2">
-            <button onclick="updateChatChips('delinq_payment')" class="border border-[#b3c6f7] rounded-full px-4 py-1.5 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors">
-              What if my income changes?
-            </button>
-            <p class="text-[11px] text-[#9ca3af] text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
-          </div>
+          <!-- Disclaimer -->
+          <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
 
         </div>`;
       staggerIn(document.getElementById('fp-body'));
