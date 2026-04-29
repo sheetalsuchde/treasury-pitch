@@ -2720,7 +2720,7 @@
         <!-- Consent -->
         <label class="flex items-start gap-3 cursor-pointer px-1">
           <input id="save-consent-chk" type="checkbox" class="mt-0.5 w-4 h-4 accent-[#265ddc] shrink-0" onchange="saveCheckEnrollReady()" />
-          <span class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="text-[#265ddc] underline">Terms of Service</a>.</span>
+          <span class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" class="text-[#265ddc] underline">Privacy Statement</a>.</span>
         </label>
 
         <!-- CTA -->
@@ -2771,7 +2771,7 @@
     window.mobConfirmPayment = function() {
       _origMobConfirmPayment();
       const ct = document.getElementById('mob-consent-text');
-      if (ct) ct.textContent = `I authorize Candidly to submit my RAP enrollment application and income documentation to my loan servicer on my behalf.`;
+      if (ct) ct.innerHTML = `I authorize Candidly to submit my RAP enrollment application and income documentation to my loan servicer on my behalf, in accordance with the <a href="#" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" class="text-[#265ddc] underline">Privacy Statement</a>.`;
     };
 
     /* 9 ── Full RAP autopay flow — Rehab color parity ── */
@@ -3328,7 +3328,7 @@
         <!-- Consent -->
         <label class="flex items-start gap-3 cursor-pointer px-1">
           <input id="save-consent-chk" type="checkbox" class="mt-0.5 w-4 h-4 accent-[#265ddc] shrink-0" onchange="saveCheckEnrollReady()" />
-          <span class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="text-[#265ddc] underline">Terms of Service</a>.</span>
+          <span class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" class="text-[#265ddc] underline">Privacy Statement</a>.</span>
         </label>
 
         <!-- CTA -->
@@ -3378,7 +3378,7 @@
     window.mobConfirmPayment = function() {
       _origMobConfirmPayment();
       const ct = document.getElementById('mob-consent-text');
-      if (ct) ct.textContent = `I authorize Candidly to submit my RAP enrollment application and income documentation to my loan servicer on my behalf.`;
+      if (ct) ct.innerHTML = `I authorize Candidly to submit my RAP enrollment application and income documentation to my loan servicer on my behalf, in accordance with the <a href="#" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" class="text-[#265ddc] underline">Privacy Statement</a>.`;
     };
 
     /* 9 ── Full RAP autopay flow — Rehab color parity ── */
