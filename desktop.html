@@ -2485,7 +2485,10 @@
           <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
 
         </div>`;
-      staggerIn(document.getElementById('fp-body'));
+      const _fpb = document.getElementById('fp-body');
+      staggerIn(_fpb);
+      // Auto-scroll to the CTA at the bottom once the screen settles
+      setTimeout(() => { _fpb.scrollTo({ top: _fpb.scrollHeight, behavior: 'smooth' }); }, 250);
     };
 
     window.dSaveResetPaymentCalc = function() {
@@ -3321,7 +3324,10 @@
           <p class="text-[11px] text-gray-900 text-center leading-relaxed px-2">Your payment is based on the income you provide. If your income changes, it will be recalculated at your next annual recertification — or you can request an update at any time.</p>
 
         </div>`;
-      staggerIn(document.getElementById('fp-body'));
+      const _fpb = document.getElementById('fp-body');
+      staggerIn(_fpb);
+      // Auto-scroll to the CTA at the bottom once the screen settles
+      setTimeout(() => { _fpb.scrollTo({ top: _fpb.scrollHeight, behavior: 'smooth' }); }, 250);
     };
 
     window.dSaveResetPaymentCalc = function() {
