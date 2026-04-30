@@ -622,7 +622,7 @@
   <div id="mob-auth-block" class="hidden shrink-0 border-t border-[#e2e4eb] px-4 py-4 bg-white">
     <label class="flex items-start gap-2.5 cursor-pointer mb-3">
       <input type="checkbox" id="mob-consent-chk" onchange="mobToggleEnroll()" class="mt-0.5 w-4 h-4 accent-[#265ddc] cursor-pointer shrink-0">
-      <span id="mob-consent-text" class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf. View our <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>.</span>
+      <span id="mob-consent-text" class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation on my behalf. View our <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>.</span>
     </label>
     <button id="mob-enroll-btn" onclick="mobCompleteEnrollment()" disabled
       class="w-full bg-[#265ddc] text-white rounded-full py-3.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-all">
@@ -1068,7 +1068,7 @@
     'Can I include child support?': 'Yes — if you pay child support, list it under <strong>Other Expenses</strong> in Section C. If you <em>receive</em> child support, include it under <strong>Other Income</strong> in Section B. Both affect your disposable income calculation.',
     'What counts as income?': 'Include <strong>all regular income</strong>: wages, take-home pay, Social Security, disability payments, alimony received, rental income, and any other consistent sources. Use your <em>monthly</em> take-home amount, not your gross salary.',
     'Health insurance counts?': 'Absolutely. List your monthly health insurance premium under <strong>Health Insurance</strong> in Section C — it\'s already pre-filled at $120. If your actual premium is different, update it. Higher premiums = lower disposable income = lower payment.',
-    'What happens after I enroll?': 'The <strong>Default Resolution Group</strong> confirms your agreement within 5–7 business days. Your first payment starts the 9-month clock. After 9 on-time payments, your default is <strong>permanently removed</strong> from all 3 credit bureaus.',
+    'What happens after I enroll?': 'We\'ll be in touch within <strong>5–7 business days</strong> to confirm your agreement. Your first payment starts the 9-month clock. After 9 on-time payments, your default is <strong>permanently removed</strong> from all 3 credit bureaus.',
     'Can I change my payment later?': 'Your payment is set at enrollment based on your income. If your finances change significantly, contact your loan servicer — but changing the amount may require restarting the rehabilitation process, so auto-pay is strongly recommended.',
     'What if I miss a payment?': 'That\'s exactly why we set up auto-pay — it runs automatically each month so you stay on track and never lose progress toward clearing your default. If something does go wrong, contact your loan servicer right away to discuss next steps.',
     'Is this legally binding?': 'Yes — the rehabilitation agreement is a legal commitment to make 9 on-time monthly payments. In return, your default and all collection activity are <strong>permanently removed</strong> from your credit report after completion.',
@@ -1696,7 +1696,7 @@
       <!-- Consent checkbox -->
       <label class="flex items-start gap-2.5 cursor-pointer select-none">
         <input type="checkbox" id="mob-consent-enroll" onchange="mobToggleEnrollBtn()" class="mt-0.5 w-4 h-4 accent-[#265ddc] cursor-pointer shrink-0">
-        <span class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${payment}.</span>
+        <span class="text-xs text-[#676d7a] leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation on my behalf, committing to 9 monthly payments of $${payment}.</span>
       </label>
 
       <!-- CTA -->
@@ -1888,7 +1888,7 @@
     set('mob-ie-d-pay',    '$' + payment + '/mo');
     document.getElementById('mob-enroll-btn').dataset.payment = payment;
     const ct = document.getElementById('mob-consent-text');
-    if (ct) ct.textContent = `I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${payment}.`;
+    if (ct) ct.textContent = `I authorize Candidly to submit my rehabilitation agreement and income documentation on my behalf, committing to 9 monthly payments of $${payment}.`;
   }
 
   /* Confirm section D + show auth block */

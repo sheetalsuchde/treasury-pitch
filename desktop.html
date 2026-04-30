@@ -1061,7 +1061,7 @@
 
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
             <input type="checkbox" id="form-consent" onchange="toggleFormEnroll(${amount})" class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
-            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${amount}.</span>
+            <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation on my behalf, committing to 9 monthly payments of $${amount}.</span>
           </label>
           <button id="form-enroll-btn" onclick="enrollFromForm(${amount})" disabled
             class="w-full bg-brand-primary text-white rounded-full py-2.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-colors">
@@ -1135,7 +1135,7 @@
     ieActivateSection('ie-sec-a');
     updateChatChips([]); // clear chips while message loads
     setTimeout(() => ieAddMsg('cait',
-      `I've opened <strong>Form OMB No. 1845-0120</strong> — the Income &amp; Expense Statement used by the Default Resolution Group. I've pre-filled your personal information from your Candidly profile. Please review <strong>Section A</strong> and confirm.`,
+      `I've opened <strong>Form OMB No. 1845-0120</strong> — the Income &amp; Expense Statement used to calculate your affordable monthly payment. I've pre-filled your personal information from your Candidly profile. Please review <strong>Section A</strong> and confirm.`,
       [
         { label: 'Looks good', fn: `ieReply(1)` },
         { label: 'Update my address', fn: `ieEditField('ie-addr',1)` },
@@ -1151,7 +1151,7 @@
     if (step === 'faq-form') {
       ieAddMsg('user', 'What is this form?');
       setTimeout(() => ieAddMsg('cait',
-        `Form OMB No. 1845-0120 is the <strong>Income &amp; Expense Statement</strong> required by the U.S. Dept. of Education when a standard rehabilitation payment is unaffordable. It documents your monthly income and expenses so the Default Resolution Group can calculate a lower, truly affordable payment — as low as $5/month.`,
+        `Form OMB No. 1845-0120 is the <strong>Income &amp; Expense Statement</strong> required by the U.S. Dept. of Education when a standard rehabilitation payment is unaffordable. It documents your monthly income and expenses so we can calculate a lower, truly affordable payment — as low as $5/month.`,
         [
           { label: 'Got it — confirm my info', fn: `ieReply(1)` },
           { label: 'Update my address', fn: `ieEditField('ie-addr',1)` }
@@ -1353,7 +1353,7 @@
     // Update consent text with exact payment amount and reveal auth block
     const consentText = document.getElementById('ie-consent-text');
     if (consentText) {
-      consentText.textContent = `I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf, committing to 9 monthly payments of $${payment}.`;
+      consentText.textContent = `I authorize Candidly to submit my rehabilitation agreement and income documentation on my behalf, committing to 9 monthly payments of $${payment}.`;
     }
     const authBlock = document.getElementById('ie-auth-block');
     if (authBlock) {
@@ -1364,7 +1364,7 @@
     }
 
     setTimeout(() => ieAddMsg('cait',
-      `Your affordable monthly payment is confirmed at <strong>$${payment}/month</strong>. Please review the authorization in the form on the right — check the box and click <strong>Confirm &amp; Enroll</strong> to submit your agreement to the Default Resolution Group.`,
+      `Your affordable monthly payment is confirmed at <strong>$${payment}/month</strong>. Please review the authorization in the form on the right — check the box and click <strong>Confirm &amp; Enroll</strong> to submit your agreement.`,
       []
     ), 800);
   }
@@ -1871,7 +1871,7 @@
         <div id="ie-auth-block" style="display:none;" class="flex flex-col gap-3 border-t border-[#e2e4eb] pt-4 mt-1">
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
             <input type="checkbox" id="ie-consent-chk" onchange="toggleIEEnroll()" class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
-            <span id="ie-consent-text" class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation to the Default Resolution Group on my behalf.</span>
+            <span id="ie-consent-text" class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation on my behalf.</span>
           </label>
           <button id="ie-enroll-btn" onclick="completeIEEnrollment()" disabled
             class="w-full bg-brand-primary text-white rounded-full py-2.5 text-sm font-semibold opacity-40 cursor-not-allowed transition-colors">
