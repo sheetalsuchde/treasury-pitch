@@ -473,11 +473,6 @@
         <div class="bg-surface-base rounded-xl p-4"><p class="text-xs text-neutral-disabled mb-1">Total owed</p><p class="text-xl font-bold text-red-500">$5,284</p></div>
       </div>
 
-      <div id="dr-alert" class="ds-sec bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-gray-800 leading-relaxed">
-        <span class="font-bold">What happens if you don't act:</span> The government can garnish your <span class="font-semibold">income tax refund</span>, other federal payments, and your <span class="font-semibold">wages</span> to collect this debt.
- Treasury offset may begin in 44 days — act now.
-      </div>
-
       <!-- ── How Loan Rehabilitation Works ── -->
       <div id="dr-howrehab" class="ds-sec bg-white border border-[#f0f2f5] rounded-2xl p-4 flex flex-col gap-4">
 
@@ -1422,7 +1417,7 @@
             </div>
             <div style="flex:1;min-width:0;">
               <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">You're enrolled! 🎉</p>
-              <p style="font-size:14px;font-weight:400;color:#000;line-height:1.5;">Now protect your progress — set up auto-pay so you never miss a payment. A single missed payment can reset your 9-month clock.</p>
+              <p style="font-size:14px;font-weight:400;color:#000;line-height:1.5;">Now protect your progress — set up auto-pay so you never miss a payment.</p>
             </div>
           </div>
 
@@ -1559,7 +1554,7 @@
           <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-5 w-full text-left">
             <p class="text-sm font-bold text-gray-900 mb-3">What happens next</p>
             <ul class="flex flex-col gap-3 text-sm text-gray-800">
-              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>The Default Resolution Group will confirm your <strong style="white-space:nowrap">$${dRehabAutopayPayment}/month</strong> payment within 5–7 business days</span></li>
+              <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span><span>We'll be in touch within <strong>5–7 business days</strong> to confirm your <strong style="white-space:nowrap">$${dRehabAutopayPayment}/month</strong> payment.</span></li>
               <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#e5edff] text-[#265ddc] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span><span>Your first <strong style="white-space:nowrap">$${dRehabAutopayPayment} payment</strong> begins the loan rehabilitation process. Your payment will automatically be drafted from your funding account.</span></li>
               <li class="flex items-start gap-2.5"><span class="w-5 h-5 rounded-full bg-[#ecfbf5] flex items-center justify-center shrink-0 mt-0.5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color:#027a42;font-weight:500;">After 9 on-time monthly payments — default resolved, loans returned to good standing, and default removed from your credit report.</span></li>
             </ul>
@@ -1927,8 +1922,7 @@
     // Progressive reveal: tiles → alert → how-works → step1 → step2 → step3
     const show = (id, ms) => setTimeout(() => document.getElementById(id)?.classList.add('ds-in'), ms);
     show('dr-tiles',    60);
-    show('dr-alert',    280);
-    show('dr-howrehab', 500);
+    show('dr-howrehab', 280);
     show('dr-step1',    660);
     show('dr-step2',    820);
     show('dr-step3',    980);
