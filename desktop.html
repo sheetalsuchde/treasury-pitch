@@ -1069,14 +1069,16 @@
           </button>
         </div>`);
     } else {
-      section.insertAdjacentHTML('beforeend', `
+      // Defer the "No" branch insertion so it lands in the same paint as the
+      // choice-grid hide — avoids the brief two-step layout shift users were seeing.
+      setTimeout(() => section.insertAdjacentHTML('beforeend', `
         <div id="ie-block" class="bg-blue-50 border border-[#aee1ff] rounded-xl p-4 flex flex-col gap-2">
           <p class="text-sm font-semibold text-gray-900">No problem — let's find a lower payment</p>
           <p class="text-sm text-neutral-disabled leading-relaxed">You'll need to provide written evidence of your income and expenses via <strong class="text-gray-800">Form OMB No. 1845-0120</strong>. Cait will guide you through every field — your payment could be as low as <strong class="text-gray-800">$5/month</strong>.</p>
           <button onclick="startIEForm()" class="mt-1 w-full bg-brand-primary hover:bg-brand-secondary text-white rounded-full py-2.5 text-sm font-semibold transition-colors">
             Start Income &amp; Expense Form →
           </button>
-        </div>`);
+        </div>`), 220);
     }
   }
 
