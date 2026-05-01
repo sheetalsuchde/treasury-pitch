@@ -1502,11 +1502,10 @@
           <!-- Option 1: Yes -->
           <button id="mob-yes-btn" onclick="mobYesManage(${monthly})"
             class="w-full rounded-xl border-2 border-[#e2e4eb] px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left flex items-center gap-3">
-            <div class="bg-[#f0f2f7] rounded-[6px] relative flex items-center justify-center shrink-0 overflow-hidden" style="width:32px;height:32px;padding:6.4px">
-              <div class="relative shrink-0" style="width:19.2px;height:19.2px">
-                <img alt="" class="absolute block inset-0 max-w-none w-full h-full" src="https://www.figma.com/api/mcp/asset/ebc3c8df-7ae0-49ab-be48-fba9614be917" />
-              </div>
-            </div>
+            <svg class="shrink-0" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M0 6.4C0 2.86538 2.86538 0 6.4 0H25.6C29.1346 0 32 2.86538 32 6.4V25.6C32 29.1346 29.1346 32 25.6 32H6.4C2.86538 32 0 29.1346 0 25.6V6.4Z" fill="#EFF4FF"/>
+              <path d="M23.2004 13.12C23.5604 13.12 23.8904 13.2666 24.1904 13.56C24.4904 13.8533 24.6404 14.1866 24.6404 14.56V15.7C24.6404 15.8066 24.6304 15.9033 24.6104 15.99C24.5904 16.0766 24.5604 16.1666 24.5204 16.26L22.1404 21.84C22.0337 22.1066 21.8604 22.32 21.6204 22.48C21.3804 22.64 21.107 22.72 20.8004 22.72H13.1204C12.7204 22.72 12.3804 22.5833 12.1004 22.31C11.8204 22.0366 11.6804 21.6933 11.6804 21.28V13.72C11.6804 13.52 11.7204 13.33 11.8004 13.15C11.8804 12.97 11.987 12.8133 12.1204 12.68L16.1404 8.65995C16.3804 8.41995 16.6737 8.26662 17.0204 8.19995C17.367 8.13328 17.6604 8.17328 17.9004 8.31995C18.207 8.49328 18.4037 8.74662 18.4904 9.07995C18.577 9.41328 18.587 9.73995 18.5204 10.06L17.9204 13.12H23.2004ZM8.80035 22.72C8.41368 22.72 8.07702 22.5766 7.79035 22.29C7.50368 22.0033 7.36035 21.6666 7.36035 21.28V14.56C7.36035 14.1733 7.50368 13.8366 7.79035 13.55C8.07702 13.2633 8.41368 13.12 8.80035 13.12C9.18702 13.12 9.52369 13.2633 9.81035 13.55C10.097 13.8366 10.2404 14.1733 10.2404 14.56V21.28C10.2404 21.6666 10.097 22.0033 9.81035 22.29C9.52369 22.5766 9.18702 22.72 8.80035 22.72Z" fill="#265DDC"/>
+            </svg>
             Yes, this works for me
           </button>
 
@@ -1514,16 +1513,17 @@
           <button id="mob-no-btn" onclick="mobTooHigh(${estMonthly})"
             class="w-full rounded-xl border-2 border-[#e2e4eb] px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-[#fafbfc] transition-colors text-left flex flex-col gap-3">
             <div class="flex items-center gap-3">
-              <div class="bg-[#f0f2f7] rounded-[6px] flex items-center justify-center shrink-0" style="width:32px;height:32px;padding:6.4px">
-                <img alt="" class="block w-full h-full max-w-none" src="https://www.figma.com/api/mcp/asset/7c806ca6-79db-4c3f-ad45-7381a8fe5bb3" />
-              </div>
+              <svg class="shrink-0" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M0 6.4C0 2.86538 2.86538 0 6.4 0H25.6C29.1346 0 32 2.86538 32 6.4V25.6C32 29.1346 29.1346 32 25.6 32H6.4C2.86538 32 0 29.1346 0 25.6V6.4Z" fill="#EFF4FF"/>
+                <path d="M8.80035 18.8797C8.44035 18.8797 8.11035 18.733 7.81035 18.4397C7.51035 18.1463 7.36035 17.813 7.36035 17.4397V16.2997C7.36035 16.193 7.37035 16.0963 7.39035 16.0097C7.41035 15.923 7.44035 15.833 7.48035 15.7397L9.86035 10.1597C9.96702 9.893 10.1404 9.67966 10.3804 9.51966C10.6204 9.35966 10.8937 9.27966 11.2004 9.27966H18.8804C19.2804 9.27966 19.6204 9.41633 19.9004 9.68966C20.1804 9.963 20.3204 10.3063 20.3204 10.7197V18.2797C20.3204 18.4797 20.2804 18.6697 20.2004 18.8497C20.1204 19.0297 20.0137 19.1863 19.8804 19.3197L15.8604 23.3397C15.6204 23.5797 15.327 23.733 14.9804 23.7997C14.6337 23.8663 14.3404 23.8263 14.1004 23.6797C13.7937 23.5063 13.597 23.253 13.5104 22.9197C13.4237 22.5863 13.4137 22.2597 13.4804 21.9397L14.0804 18.8797H8.80035ZM23.2004 9.27966C23.587 9.27966 23.9237 9.423 24.2104 9.70966C24.497 9.99633 24.6404 10.333 24.6404 10.7197V17.4397C24.6404 17.8263 24.497 18.163 24.2104 18.4497C23.9237 18.7363 23.587 18.8797 23.2004 18.8797C22.8137 18.8797 22.477 18.7363 22.1904 18.4497C21.9037 18.163 21.7604 17.8263 21.7604 17.4397V10.7197C21.7604 10.333 21.9037 9.99633 22.1904 9.70966C22.477 9.423 22.8137 9.27966 23.2004 9.27966Z" fill="#265DDC"/>
+              </svg>
               No, this is too high for me
             </div>
             <!-- Figma Results Trigger component (node 139:1302) -->
             <div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#ebf8ff 0%,#fdf0ff 100%);border:1px solid #d6effe;border-radius:8px;padding:12px;display:flex;gap:8px;align-items:flex-start;width:100%;">
               <!-- Icon -->
               <div style="background:rgba(255,255,255,0.7);border-radius:4px;padding:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
-                <img alt="" style="width:20px;height:20px;display:block;" src="https://www.figma.com/api/mcp/asset/c4e9e884-5eac-47ab-a886-47388b7a14ce" />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9L12 3z"/></svg>
               </div>
               <!-- Text -->
               <p style="font-size:13px;font-weight:500;color:#2a2f3d;line-height:19px;">Cait can review your income &amp; expenses to find a lower payment — potentially as low as <strong>$5/mo</strong></p>
@@ -1992,7 +1992,7 @@
           <!-- Enrollment success banner -->
           <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;margin-bottom:20px;">
             <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
-              <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
+              <svg style="position:absolute;inset:0;width:100%;height:100%;padding:2px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <div style="flex:1;min-width:0;">
               <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">You're enrolled! 🎉</p>
@@ -2024,12 +2024,12 @@
           <div style="background:#fafbfc;border:1px solid #f0f2f5;border-radius:12px;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 8px;margin-bottom:20px;">
             <div style="background:#e6faee;border-radius:8px;padding:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
               <div style="position:relative;width:20px;height:20px;overflow:hidden;flex-shrink:0;">
-                <div style="position:absolute;top:12.89%;right:22.08%;bottom:12.73%;left:22.08%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/a45dc6b7-14f0-4c16-bfea-6245df62837f" /></div>
+                <svg style="position:absolute;inset:0;width:100%;height:100%;padding:3px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
               </div>
             </div>
             <p style="flex:1;font-size:13px;font-weight:400;color:#027a42;line-height:1.5;">Your data is protected by Candidly's <strong style="font-weight:700;">security policy</strong></p>
             <div style="position:relative;width:20px;height:20px;overflow:hidden;flex-shrink:0;">
-              <div style="position:absolute;inset:16.67%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/8af3ace5-08d1-4683-b453-a5282a363c2f" /></div>
+              <svg style="position:absolute;inset:0;width:100%;height:100%;padding:3px;" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
           </div>
 
@@ -2093,7 +2093,7 @@
           <!-- Outcome callout -->
           <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;">
             <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
-              <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
+              <svg style="position:absolute;inset:0;width:100%;height:100%;padding:2px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <div style="flex:1;min-width:0;">
               <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">Default is resolved after 9 on time payments in 10 months</p>
@@ -2823,7 +2823,7 @@
             </button>
             <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;margin-bottom:20px;">
               <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
-                <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
+                <svg style="position:absolute;inset:0;width:100%;height:100%;padding:2px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div style="flex:1;min-width:0;">
                 <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">You're enrolled in RAP! 🎉</p>
@@ -2850,12 +2850,12 @@
             <div style="background:#fafbfc;border:1px solid #f0f2f5;border-radius:12px;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 8px;margin-bottom:20px;">
               <div style="background:#e6faee;border-radius:8px;padding:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
                 <div style="position:relative;width:20px;height:20px;overflow:hidden;flex-shrink:0;">
-                  <div style="position:absolute;top:12.89%;right:22.08%;bottom:12.73%;left:22.08%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/a45dc6b7-14f0-4c16-bfea-6245df62837f" /></div>
+                  <svg style="position:absolute;inset:0;width:100%;height:100%;padding:3px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                 </div>
               </div>
               <p style="flex:1;font-size:13px;font-weight:400;color:#027a42;line-height:1.5;">Your data is protected by Candidly's <strong style="font-weight:700;">security policy</strong></p>
               <div style="position:relative;width:20px;height:20px;overflow:hidden;flex-shrink:0;">
-                <div style="position:absolute;inset:16.67%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/8af3ace5-08d1-4683-b453-a5282a363c2f" /></div>
+                <svg style="position:absolute;inset:0;width:100%;height:100%;padding:3px;" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
               </div>
             </div>
             <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4 mt-4 mb-5">
@@ -2914,7 +2914,7 @@
             </div>
             <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;">
               <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
-                <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
+                <svg style="position:absolute;inset:0;width:100%;height:100%;padding:2px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div style="flex:1;min-width:0;">
                 <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">After 30 years, remaining balance is forgiven</p>
@@ -3427,7 +3427,7 @@
             </button>
             <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;margin-bottom:20px;">
               <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
-                <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
+                <svg style="position:absolute;inset:0;width:100%;height:100%;padding:2px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div style="flex:1;min-width:0;">
                 <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">You're enrolled in RAP! 🎉</p>
@@ -3454,12 +3454,12 @@
             <div style="background:#fafbfc;border:1px solid #f0f2f5;border-radius:12px;display:flex;align-items:center;gap:8px;padding:8px 12px 8px 8px;margin-bottom:20px;">
               <div style="background:#e6faee;border-radius:8px;padding:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
                 <div style="position:relative;width:20px;height:20px;overflow:hidden;flex-shrink:0;">
-                  <div style="position:absolute;top:12.89%;right:22.08%;bottom:12.73%;left:22.08%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/a45dc6b7-14f0-4c16-bfea-6245df62837f" /></div>
+                  <svg style="position:absolute;inset:0;width:100%;height:100%;padding:3px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                 </div>
               </div>
               <p style="flex:1;font-size:13px;font-weight:400;color:#027a42;line-height:1.5;">Your data is protected by Candidly's <strong style="font-weight:700;">security policy</strong></p>
               <div style="position:relative;width:20px;height:20px;overflow:hidden;flex-shrink:0;">
-                <div style="position:absolute;inset:16.67%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/8af3ace5-08d1-4683-b453-a5282a363c2f" /></div>
+                <svg style="position:absolute;inset:0;width:100%;height:100%;padding:3px;" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
               </div>
             </div>
             <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4 mt-4 mb-5">
@@ -3518,7 +3518,7 @@
             </div>
             <div style="background:#e6faee;border:1px solid #a6f4c5;border-radius:8px;display:flex;gap:8px;align-items:flex-start;padding:12px;">
               <div style="position:relative;width:24px;height:24px;flex-shrink:0;overflow:hidden;">
-                <div style="position:absolute;inset:10.42%;"><img alt="" style="position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;" src="https://www.figma.com/api/mcp/asset/aba095cc-9e32-40bc-a70c-421bc1642140" /></div>
+                <svg style="position:absolute;inset:0;width:100%;height:100%;padding:2px;" viewBox="0 0 24 24" fill="none" stroke="#027a42" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div style="flex:1;min-width:0;">
                 <p style="font-size:14px;font-weight:700;color:#000;line-height:1.5;">After 30 years, remaining balance is forgiven</p>
