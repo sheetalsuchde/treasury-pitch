@@ -3613,6 +3613,280 @@
       mobOpenIncome();
     }, 300);
   }
+
+  // ════════════════════════════════════════════════════════════════
+  //  FEDNOW FLOW (experimental) — rehab + instant first payment
+  //  Inherits the full rehab path; only swaps the auto-pay step
+  //  to a Federal Reserve / FedNow-branded "pay now + enroll" UI.
+  // ════════════════════════════════════════════════════════════════
+  ;(function() {
+    if (new URLSearchParams(location.search).get('flow') !== 'fednow') return;
+
+    // FedNow brand palette
+    const FN_NAVY  = '#0a2c5e';   // Federal Reserve deep navy
+    const FN_TEAL  = '#00a99d';   // FedNow accent teal
+    const FN_TEAL_DARK = '#008a80';
+    const FN_TEAL_TINT = '#e6f7f5';
+    const FN_NAVY_TINT = '#eef2fb';
+
+    // Inject FedNow style overrides (scoped to autopay sheet only)
+    const fnStyle = document.createElement('style');
+    fnStyle.textContent = `
+      #mob-autopay.fn-active .ap-input { border-color:#cfd6e4; }
+      #mob-autopay.fn-active .ap-input:focus { border-color:${FN_TEAL}; box-shadow:0 0 0 3px rgba(0,169,157,0.18); }
+      #mob-autopay.fn-active .ap-input.filled { border-color:${FN_TEAL}; }
+      #mob-autopay.fn-active input[type=checkbox] { accent-color:${FN_TEAL} !important; }
+      .fn-hero { background:linear-gradient(135deg, ${FN_NAVY} 0%, #143a78 100%); color:#fff; border-radius:16px; padding:18px 16px; margin-bottom:18px; position:relative; overflow:hidden; }
+      .fn-hero::after { content:""; position:absolute; right:-30px; top:-30px; width:140px; height:140px; border-radius:50%; background:radial-gradient(circle, rgba(0,169,157,0.35) 0%, rgba(0,169,157,0) 70%); }
+      .fn-hero-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; position:relative; z-index:1; }
+      .fn-mark { display:inline-flex; align-items:center; gap:6px; background:#fff; color:${FN_NAVY}; font-weight:700; font-size:11px; letter-spacing:0.8px; padding:4px 9px; border-radius:999px; text-transform:uppercase; }
+      .fn-mark-bolt { width:10px; height:10px; }
+      .fn-hero-title { font-size:18px; font-weight:700; line-height:1.25; position:relative; z-index:1; }
+      .fn-hero-sub { font-size:13px; opacity:0.85; line-height:1.5; margin-top:6px; position:relative; z-index:1; }
+      .fn-pill-stat { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:11px; font-weight:500; padding:3px 9px; border-radius:999px; margin-top:10px; position:relative; z-index:1; }
+      .fn-cta { background:${FN_TEAL} !important; color:#fff !important; }
+      .fn-cta:not(:disabled):hover { background:${FN_TEAL_DARK} !important; }
+      .fn-cta:disabled { background:#9bd6d0 !important; }
+      .fn-link { color:${FN_TEAL_DARK} !important; }
+      .fn-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid #f0f2f5; }
+      .fn-row:last-child { border-bottom:0; }
+      .fn-row-label { font-size:13px; color:#676d7a; }
+      .fn-row-val { font-size:13px; font-weight:600; color:#0a2c5e; }
+      .fn-badge-instant { display:inline-flex; align-items:center; gap:5px; background:${FN_TEAL_TINT}; color:${FN_TEAL_DARK}; font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; letter-spacing:0.3px; text-transform:uppercase; }
+      .fn-success-ring { width:96px; height:96px; border-radius:50%; background:radial-gradient(circle, ${FN_TEAL_TINT} 0%, #fff 70%); display:flex; align-items:center; justify-content:center; position:relative; }
+      .fn-success-ring::before { content:""; position:absolute; inset:8px; border-radius:50%; border:2px solid ${FN_TEAL}; opacity:0.3; }
+      .fn-success-ring::after { content:""; position:absolute; inset:0; border-radius:50%; border:2px solid ${FN_TEAL}; animation:fn-pulse 1.6s ease-out infinite; }
+      @keyframes fn-pulse { 0%{transform:scale(0.85);opacity:0.7;} 100%{transform:scale(1.25);opacity:0;} }
+      .fn-receipt { width:100%; border:1px solid #e2e6ee; border-radius:14px; padding:14px 16px; background:#fbfcfe; }
+      .fn-receipt-hdr { display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; border-bottom:1px solid #e8edf5; margin-bottom:8px; }
+      .fn-receipt-amt { font-size:24px; font-weight:700; color:${FN_NAVY}; letter-spacing:-0.5px; }
+      .fn-footer-mark { display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; color:#7a8294; margin-top:14px; letter-spacing:0.2px; }
+      .fn-bolt-svg { display:inline-block; vertical-align:middle; }
+    `;
+    document.head.appendChild(fnStyle);
+
+    const fnBoltWhite = `<svg class="fn-mark-bolt" viewBox="0 0 16 16" fill="none"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="${FN_TEAL}"/></svg>`;
+    const fnBoltTeal  = `<svg class="fn-bolt-svg" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="${FN_TEAL}"/></svg>`;
+    const fnBoltLg    = `<svg width="44" height="44" viewBox="0 0 16 16" fill="none"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="${FN_TEAL}"/></svg>`;
+
+    function fnReceiptId() {
+      const t = Date.now().toString(36).toUpperCase();
+      return 'FN-' + t.slice(-8);
+    }
+
+    /* Override the auto-pay renderer for FedNow flow */
+    window.mobRenderAutopayStep = function() {
+      const body     = document.getElementById('mob-autopay-body');
+      const subtitle = document.getElementById('mob-autopay-subtitle');
+      const pill     = document.getElementById('mob-autopay-step-pill');
+      const backBtn  = document.getElementById('mob-autopay-back-btn');
+      const nextBtn  = document.getElementById('mob-autopay-next-btn');
+      const sheet    = document.getElementById('mob-autopay');
+
+      sheet.classList.add('fn-active');
+
+      if (autopayStep < 3) {
+        pill.classList.remove('hidden');
+        pill.querySelector('p').textContent = autopayStep + ' of 2';
+      } else {
+        pill.classList.add('hidden');
+      }
+
+      const caitBar = document.getElementById('mob-autopay-cait-bar');
+      if (caitBar) caitBar.style.display = '';
+      const chipsRow = caitBar?.querySelector('.chips-row');
+      if (chipsRow) {
+        const chipDefs = autopayStep === 3 ? [
+          ['What is FedNow?', 'What is FedNow?'],
+          ['When will my next payment draft?', 'When will my next payment draft?'],
+          ['Celebrate this win 🎉', 'Celebrate this win'],
+        ] : [
+          ['What is FedNow?', 'What is FedNow?'],
+          ['Is instant payment safe?', 'Is instant payment safe?'],
+          ['Where is my account number?', 'Where do I find my account number?'],
+        ];
+        chipsRow.innerHTML = chipDefs.map(([label, q]) =>
+          `<button onclick="mobIncomeChipAsk('${q.replace(/'/g, "\\'")}')" class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] whitespace-nowrap hover:bg-[#eff4ff] transition-colors">${label}</button>`
+        ).join('');
+      }
+
+      // ── Step 1: FedNow bank details + instant payment auth ──
+      if (autopayStep === 1) {
+        subtitle.textContent = 'Pay with FedNow';
+        document.getElementById('mob-autopay-footer').style.display = 'none';
+        body.innerHTML = `
+          <div class="flex flex-col pb-4">
+            <button onclick="mobAutopayBack()" class="flex items-center gap-1.5 text-sm font-medium fn-link self-start mb-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+              Back
+            </button>
+
+            <div class="fn-hero">
+              <div class="fn-hero-row">
+                <span class="fn-mark">${fnBoltWhite} FedNow<sup style="font-size:8px;opacity:0.7">®</sup> Service</span>
+              </div>
+              <div class="fn-hero-title">Send your first payment instantly</div>
+              <div class="fn-hero-sub">Clear your default in seconds, not days. Your $${autopayPayment} payment settles 24/7/365 through the Federal Reserve.</div>
+              <span class="fn-pill-stat">⚡ Settles in ~4 seconds</span>
+            </div>
+
+            <h3 style="font-size:13px;font-weight:700;color:#0a2c5e;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">Funding account</h3>
+
+            <div class="ap-field">
+              <label>Routing Number</label>
+              <input id="ap-routing" class="ap-input" type="tel" maxlength="9" placeholder="9-digit routing number"
+                oninput="this.classList.toggle('filled',this.value.length>0)" />
+            </div>
+            <div class="ap-field">
+              <label>Account Number</label>
+              <input id="ap-account" class="ap-input" type="tel" placeholder="Account number"
+                oninput="this.classList.toggle('filled',this.value.length>0)" />
+            </div>
+            <div class="ap-field">
+              <label>Confirm Account Number</label>
+              <input id="ap-account-confirm" class="ap-input" type="tel" placeholder="Re-enter account number"
+                oninput="this.classList.toggle('filled',this.value.length>0)" />
+            </div>
+
+            <!-- FedNow eligibility badge -->
+            <div style="background:${FN_TEAL_TINT};border:1px solid #b3e6e0;border-radius:10px;display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:16px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${fnBoltTeal}</div>
+              <p style="flex:1;font-size:12.5px;color:${FN_TEAL_DARK};line-height:1.5;"><strong style="color:${FN_NAVY}">FedNow-enabled bank detected.</strong> Your payment will clear instantly through the Federal Reserve.</p>
+            </div>
+
+            <!-- Auth: instant pay + autopay enroll -->
+            <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4 mb-5">
+              <label class="flex items-start gap-3 cursor-pointer mb-3">
+                <input type="checkbox" id="ap-auth-chk" onchange="mobToggleAutopayNext()"
+                  class="mt-0.5 w-5 h-5 rounded cursor-pointer shrink-0" style="flex-shrink:0;margin-top:2px" />
+                <span class="text-sm text-gray-800 leading-relaxed">
+                  I authorize Candidly to send <strong>$${autopayPayment} instantly via FedNow</strong> from my designated bank account, and to draft the remaining 8 monthly rehabilitation payments per the <a href="#" onclick="return false" class="fn-link underline">Terms of Service</a>.
+                </span>
+              </label>
+            </div>
+
+            <div class="flex gap-3">
+              <button id="ap-inline-next" onclick="mobAutopayNext()" disabled
+                class="fn-cta w-full rounded-full py-3.5 text-sm font-semibold transition-colors flex items-center justify-center gap-2">
+                ${fnBoltTeal.replace('fill="'+FN_TEAL+'"','fill="#fff"')} Send $${autopayPayment} instantly
+              </button>
+            </div>
+            <div class="fn-footer-mark">Powered by the FedNow<sup style="font-size:7px">®</sup> Service · Federal Reserve</div>
+          </div>`;
+        fadeIn(body);
+
+      // ── Step 2: Confirm instant payment + schedule ──
+      } else if (autopayStep === 2) {
+        subtitle.textContent = 'Confirm Payment';
+        document.getElementById('mob-autopay-footer').style.display = 'none';
+        const d = new Date(); d.setMonth(d.getMonth() + 1);
+        const nextDate = (d.getMonth()+1).toString().padStart(2,'0') + '-' + d.getDate().toString().padStart(2,'0') + '-' + d.getFullYear();
+        const last4 = autopayAccount.length >= 4 ? autopayAccount.slice(-4) : '5678';
+        const remaining = (autopayPayment * 8).toFixed(2);
+        body.innerHTML = `
+          <div class="flex flex-col gap-5">
+            <button onclick="mobAutopayBack()" class="flex items-center gap-1.5 text-sm font-medium fn-link self-start">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+              Back
+            </button>
+
+            <div class="fn-receipt">
+              <div class="fn-receipt-hdr">
+                <span class="fn-badge-instant">${fnBoltTeal} Instant · Now</span>
+                <span style="font-size:11px;color:#7a8294;">Payment 1 of 9</span>
+              </div>
+              <div style="text-align:center;padding:8px 0 4px;">
+                <p style="font-size:11px;color:#7a8294;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;">Sending instantly</p>
+                <p class="fn-receipt-amt">$${autopayPayment}.00</p>
+                <p style="font-size:12px;color:#676d7a;margin-top:2px;">via FedNow<sup style="font-size:7px">®</sup> Service</p>
+              </div>
+            </div>
+
+            <div class="w-full border border-[#e2e6ee] rounded-2xl px-4 py-2 bg-white">
+              <div class="fn-row"><span class="fn-row-label">From</span><span class="fn-row-val">Account ••${last4}</span></div>
+              <div class="fn-row"><span class="fn-row-label">To</span><span class="fn-row-val">U.S. Dept. of Education</span></div>
+              <div class="fn-row"><span class="fn-row-label">Memo</span><span class="fn-row-val">Rehab payment 1/9</span></div>
+              <div class="fn-row"><span class="fn-row-label">Settlement</span><span class="fn-row-val" style="color:${FN_TEAL_DARK}">~4 seconds</span></div>
+            </div>
+
+            <div class="w-full border border-[#e2e6ee] rounded-2xl px-4 py-2 bg-white">
+              <div style="padding:10px 0 6px;border-bottom:1px solid #f0f2f5;">
+                <p style="font-size:11px;font-weight:700;color:${FN_NAVY};letter-spacing:0.5px;text-transform:uppercase;">Then auto-pay schedule</p>
+              </div>
+              <div class="fn-row"><span class="fn-row-label">Payments 2–9</span><span class="fn-row-val">$${autopayPayment}.00 / month</span></div>
+              <div class="fn-row"><span class="fn-row-label">Next draft</span><span class="fn-row-val">${nextDate}</span></div>
+              <div class="fn-row"><span class="fn-row-label">Total remaining</span><span class="fn-row-val">$${remaining}</span></div>
+            </div>
+
+            <div style="background:${FN_TEAL_TINT};border:1px solid #b3e6e0;border-radius:10px;padding:11px 12px;display:flex;gap:8px;align-items:flex-start;">
+              <div style="flex-shrink:0;margin-top:1px;">${fnBoltTeal}</div>
+              <p style="flex:1;font-size:12.5px;color:${FN_NAVY};line-height:1.5;">Once sent via FedNow, instant payments are <strong>final and irrevocable</strong>. Your default clears the moment funds settle.</p>
+            </div>
+
+            <div class="flex gap-3 w-full pb-2">
+              <button onclick="mobAutopayNext()"
+                class="fn-cta w-full rounded-full py-3.5 text-sm font-semibold transition-colors">
+                Confirm & send now →
+              </button>
+            </div>
+            <div class="fn-footer-mark">Powered by the FedNow<sup style="font-size:7px">®</sup> Service · Federal Reserve</div>
+          </div>`;
+        fadeIn(body);
+
+      // ── Step 3: Settled ──
+      } else if (autopayStep === 3) {
+        subtitle.textContent = "Payment Settled";
+        backBtn.classList.add('hidden');
+        nextBtn.textContent = 'Done';
+        nextBtn.disabled = false;
+        nextBtn.style.background = FN_TEAL;
+        const last4 = autopayAccount.length >= 4 ? autopayAccount.slice(-4) : '5678';
+        const rcpt = fnReceiptId();
+        const now = new Date();
+        const ts = now.toLocaleTimeString([], { hour:'numeric', minute:'2-digit', second:'2-digit' });
+        body.innerHTML = `
+          <div class="flex flex-col items-center gap-5 py-4 text-center">
+            <div class="fn-success-ring">${fnBoltLg}</div>
+            <div>
+              <p class="text-2xl font-bold" style="color:${FN_NAVY}">Settled in 4.2 seconds</p>
+              <p class="text-sm text-[#676d7a] mt-1.5 leading-relaxed max-w-xs mx-auto">Your $${autopayPayment} payment cleared instantly through the Federal Reserve. Default resolution has begun.</p>
+            </div>
+
+            <div class="fn-receipt w-full text-left">
+              <div class="fn-receipt-hdr">
+                <span class="fn-badge-instant">${fnBoltTeal} Settled</span>
+                <span style="font-size:11px;color:#7a8294;font-family:monospace;">${rcpt}</span>
+              </div>
+              <div class="fn-row"><span class="fn-row-label">Amount</span><span class="fn-row-val">$${autopayPayment}.00</span></div>
+              <div class="fn-row"><span class="fn-row-label">From</span><span class="fn-row-val">Account ••${last4}</span></div>
+              <div class="fn-row"><span class="fn-row-label">Settled at</span><span class="fn-row-val">${ts}</span></div>
+              <div class="fn-row"><span class="fn-row-label">Rail</span><span class="fn-row-val" style="color:${FN_TEAL_DARK}">FedNow Service</span></div>
+            </div>
+
+            <div class="w-full bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4 text-left">
+              <p class="text-xs font-bold uppercase tracking-wide mb-3" style="color:${FN_NAVY}">What happens next</p>
+              <div class="flex flex-col gap-3">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:${FN_TEAL_TINT}">${fnBoltTeal}</div>
+                  <p class="text-sm text-gray-800 leading-snug">Your <strong>first $${autopayPayment} payment</strong> has cleared. Rehabilitation is officially in progress.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:${FN_NAVY_TINT}"><span class="text-[10px] font-bold" style="color:${FN_NAVY}">8</span></div>
+                  <p class="text-sm text-gray-800 leading-snug">The remaining <strong>8 monthly drafts of $${autopayPayment}</strong> will auto-pay from the same account.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:#ecfbf5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <p class="text-sm leading-snug" style="color:#027a42;font-weight:500">After 9 on-time payments, default is resolved and the record is removed from your credit report.</p>
+                </div>
+              </div>
+            </div>
+            <p class="text-xs text-[#9ca3af]">Questions? help@getcandidly.com · (866) 719-3437</p>
+            <div class="fn-footer-mark">Powered by the FedNow<sup style="font-size:7px">®</sup> Service · Federal Reserve</div>
+          </div>`;
+        fadeIn(body);
+      }
+    };
+  })();
 </script>
 
 </body>
