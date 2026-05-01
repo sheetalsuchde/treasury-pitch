@@ -234,12 +234,6 @@
     /* Delinquency — rose */
     .theme-delinq .card-bar { background: linear-gradient(90deg, #dc2626, #ef4444); }
 
-    /* FedNow (experimental) — Federal Reserve navy + FedNow teal */
-    .theme-fednow .card-bar { background: linear-gradient(90deg, #0a2c5e, #00a99d); }
-    .theme-fednow .card-status { background: #e6f7f5; color: #008a80; border-color: #b3e6e0; }
-    .theme-fednow .btn-icon-primary { background: #00a99d; }
-    .theme-fednow .btn-icon-primary:hover { background: #008a80; box-shadow: 0 4px 12px rgba(0,169,157,0.35); }
-
     /* ── Divider ── */
     .divider {
       width: 100%;
@@ -325,25 +319,6 @@
         <a href="/desktop?flow=save" class="btn-icon btn-icon-secondary" data-tip="Desktop">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </a>
-      </div>
-    </div>
-
-    <!-- 4. FedNow (experimental) — mobile only -->
-    <div class="card theme-fednow di-6">
-      <div class="card-bar"></div>
-      <div class="card-status">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="#00a99d"/></svg>
-        Experimental · FedNow
-      </div>
-      <div class="card-title">Rehab + Instant Pay</div>
-      <p class="card-desc">Same rehab flow, but the final step collects the first payment instantly via FedNow Service — settled in seconds through the Federal Reserve. The remaining 8 drafts are scheduled as monthly auto-pay.</p>
-      <div class="card-actions">
-        <a href="/mobile?flow=fednow" class="btn-icon btn-icon-primary" data-tip="Mobile">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
-        </a>
-        <span class="btn-icon btn-disabled" data-tip="Mobile only">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </span>
       </div>
     </div>
 
