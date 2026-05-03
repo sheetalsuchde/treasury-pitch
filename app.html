@@ -3878,10 +3878,10 @@
 
               <div class="fn-hero">
                 <div class="fn-hero-row">
-                  <span class="fn-mark">${fnBoltWhite} Federal Payments System</span>
+                  <span class="fn-mark">${fnBoltWhite} Pay.gov</span>
                 </div>
                 <div class="fn-hero-title">Pay instantly</div>
-                <div class="fn-hero-sub">Sign in to your bank securely — we'll route your $${autopayPayment} through the Federal Payments System and settle instantly.</div>
+                <div class="fn-hero-sub">Sign in to your bank securely — we'll route your $${autopayPayment} through Pay.gov and settle instantly.</div>
                 <span class="fn-pill-stat">⚡ Bank-grade encryption · ~4 sec settlement</span>
               </div>
 
@@ -3896,7 +3896,7 @@
                   <input type="checkbox" id="ap-auth-chk" onchange="mobToggleAutopayNext()"
                     class="mt-0.5 w-5 h-5 rounded cursor-pointer shrink-0" style="flex-shrink:0;margin-top:2px" />
                   <span class="text-sm text-gray-800 leading-relaxed">
-                    I authorize Candidly to debit $${autopayPayment} from my account via the Federal Payments System, and to draft the remaining 8 monthly rehabilitation payments per the <a href="#" onclick="return false" class="fn-link underline">Terms of Service</a>.
+                    I authorize Candidly to debit $${autopayPayment} from my account via Pay.gov, and to draft the remaining 8 monthly rehabilitation payments per the <a href="#" onclick="return false" class="fn-link underline">Terms of Service</a>.
                   </span>
                 </label>
               </div>
@@ -3926,7 +3926,7 @@
 
             <div class="fn-hero">
               <div class="fn-hero-row">
-                <span class="fn-mark">${fnBoltWhite} Federal Payments System</span>
+                <span class="fn-mark">${fnBoltWhite} Pay.gov</span>
               </div>
               <div class="fn-hero-title">Approve your first payment in your bank app</div>
               <div class="fn-hero-sub">We'll send a Request for Payment to your bank. Approve it in your banking app and your $${autopayPayment} clears in seconds.</div>
@@ -4086,7 +4086,7 @@
               <div class="flex flex-col gap-4 pb-4 items-center text-center" style="padding-top:30px;">
                 <div class="fn-spinner"></div>
                 <h2 style="font-size:17px;font-weight:700;color:${FN_NAVY};margin-top:14px;">Initiating instant payment…</h2>
-                <p style="font-size:13px;color:#676d7a;line-height:1.5;max-width:280px;">${bank.name} authorized · routing $${autopayPayment} through the Federal Payments System.</p>
+                <p style="font-size:13px;color:#676d7a;line-height:1.5;max-width:280px;">${bank.name} authorized · routing $${autopayPayment} through Pay.gov.</p>
               </div>`;
             setTimeout(() => { fnPbbSub = 1; mobAutopayNext(); }, 1600);
           }
