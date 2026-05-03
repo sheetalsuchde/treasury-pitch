@@ -175,7 +175,7 @@
     <div class="top-bar-links">
       <a href="/">← All scenarios</a>
       <span class="sep">·</span>
-      <a href="/desktop" target="_blank">Desktop view ↗</a>
+      <a id="desktop-link" href="/desktop" target="_blank">Desktop view ↗</a>
     </div>
   </div>
 
@@ -191,6 +191,9 @@
       <script>
         const qs = location.search;
         if (qs) document.getElementById('main-iframe').src = '/app.html' + qs;
+        // Carry the current flow/variant params over to the desktop crossover link
+        const dl = document.getElementById('desktop-link');
+        if (dl && qs) dl.href = '/desktop' + qs;
       </script>
       <div class="home-indicator"></div>
     </div>

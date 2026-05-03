@@ -3712,6 +3712,405 @@
       saveDesktopInitHome();
     }
   })();
+
+  /* ══════════════════════════════════════════════════════════════
+     FEDNOW PAY-BY-BANK DESKTOP OVERLAY  (?flow=fednow&variant=paybybank)
+     Mirrors the mobile FedNow Pay-by-bank flow (app.html) but
+     re-laid-out for the wider desktop form panel.
+     ══════════════════════════════════════════════════════════════ */
+  ;(function() {
+    const _p = new URLSearchParams(location.search);
+    if (_p.get('flow') !== 'fednow' || _p.get('variant') !== 'paybybank') return;
+
+    const FN_NAVY      = '#0a2c5e';
+    const FN_TEAL      = '#00a99d';
+    const FN_TEAL_DARK = '#008a80';
+    const FN_TEAL_TINT = '#e6f7f5';
+    const FN_NAVY_TINT = '#eef2fb';
+
+    let fnSelectedBank = null;
+    let fnPbbSub       = 1; // 1=signin, 2=account, 3=authorize, 4=processing
+
+    const FN_BANKS = [
+      { id:'chase',  name:'Chase',                         logo:'JPM', color:'#117ACA' },
+      { id:'wells',  name:'Wells Fargo',                   logo:'WF',  color:'#D71E28' },
+      { id:'bofa',   name:'Bank of America',               logo:'BA',  color:'#012169' },
+      { id:'usbank', name:'U.S. Bank',                     logo:'US',  color:'#0C2074' },
+      { id:'cap1',   name:'Capital One',                   logo:'C1',  color:'#D03027' },
+      { id:'other',  name:'Other instant-payment bank',    logo:'+',   color:'#7a8294' },
+    ];
+
+    /* Scoped FedNow styles — only kick in when fp-body has .fn-desktop */
+    const fnStyle = document.createElement('style');
+    fnStyle.textContent = `
+      .fn-desktop .fn-hero { background:linear-gradient(135deg, ${FN_NAVY} 0%, #143a78 100%); color:#fff; border-radius:16px; padding:22px 22px; position:relative; overflow:hidden; }
+      .fn-desktop .fn-hero::after { content:""; position:absolute; right:-30px; top:-30px; width:160px; height:160px; border-radius:50%; background:radial-gradient(circle, rgba(0,169,157,0.35) 0%, rgba(0,169,157,0) 70%); }
+      .fn-desktop .fn-mark { display:inline-flex; align-items:center; gap:6px; background:#fff; color:${FN_NAVY}; font-weight:700; font-size:11px; letter-spacing:0.8px; padding:4px 9px; border-radius:999px; text-transform:uppercase; }
+      .fn-desktop .fn-mark-bolt { width:10px; height:10px; }
+      .fn-desktop .fn-hero-title { font-size:22px; font-weight:700; line-height:1.25; position:relative; z-index:1; margin-top:10px; }
+      .fn-desktop .fn-hero-sub { font-size:14px; opacity:0.85; line-height:1.55; margin-top:8px; position:relative; z-index:1; max-width:560px; }
+      .fn-desktop .fn-pill-stat { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); color:#fff; font-size:11.5px; font-weight:500; padding:4px 10px; border-radius:999px; margin-top:14px; position:relative; z-index:1; }
+
+      /* Bank grid — 2 columns on desktop */
+      .fn-desktop .fn-bank-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+      .fn-desktop .fn-bank-row { display:flex; align-items:center; gap:12px; padding:12px 14px; border:1.5px solid #e2e6ee; border-radius:12px; cursor:pointer; transition:all 0.15s; background:#fff; }
+      .fn-desktop .fn-bank-row:hover { border-color:#265ddc; background:#eff4ff; }
+      .fn-desktop .fn-bank-row.selected { border-color:#265ddc; background:#eff4ff; box-shadow:0 0 0 3px rgba(38,93,220,0.15); }
+      .fn-desktop .fn-bank-logo { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:11px; letter-spacing:0.5px; flex-shrink:0; }
+      .fn-desktop .fn-bank-name { flex:1; font-size:14px; font-weight:600; color:${FN_NAVY}; }
+      .fn-desktop .fn-bank-tag { font-size:10px; font-weight:700; color:#265ddc; background:#eff4ff; padding:2px 6px; border-radius:4px; letter-spacing:0.3px; text-transform:uppercase; }
+      .fn-desktop .fn-bank-row.selected .fn-bank-tag { background:#fff; }
+
+      /* Plaid-style card */
+      .fn-desktop .fn-pbb-card { background:#fff; border:1px solid #e2e6ee; border-radius:16px; box-shadow:0 4px 24px rgba(10,44,94,0.08); padding:24px 24px; }
+      .fn-desktop .fn-pbb-hdr { display:flex; align-items:center; gap:12px; padding-bottom:16px; border-bottom:1px solid #f0f2f5; margin-bottom:18px; }
+      .fn-desktop .fn-pbb-bank-logo { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:12px; flex-shrink:0; }
+      .fn-desktop .fn-pbb-bank-name { font-size:16px; font-weight:700; color:${FN_NAVY}; }
+      .fn-desktop .fn-pbb-secure { display:flex; align-items:center; gap:6px; font-size:11px; color:#7a8294; margin-left:auto; }
+      .fn-desktop .fn-pbb-input { width:100%; padding:12px 14px; border:1.5px solid #d6dce6; border-radius:10px; font-size:14px; font-family:inherit; outline:none; transition:border-color 0.15s; background:#fff; margin-bottom:12px; }
+      .fn-desktop .fn-pbb-input:focus { border-color:#265ddc; box-shadow:0 0 0 3px rgba(38,93,220,0.18); }
+      .fn-desktop .fn-pbb-label { font-size:12px; font-weight:600; color:${FN_NAVY}; margin-bottom:6px; display:block; }
+      .fn-desktop .fn-pbb-acct { display:flex; align-items:center; gap:12px; padding:14px 16px; border:1.5px solid #e2e6ee; border-radius:12px; cursor:pointer; transition:all 0.15s; background:#fff; }
+      .fn-desktop .fn-pbb-acct:hover { border-color:#265ddc; background:#eff4ff; }
+      .fn-desktop .fn-pbb-acct.selected { border-color:#265ddc; background:#eff4ff; }
+      .fn-desktop .fn-pbb-progress { display:flex; align-items:center; gap:8px; margin-bottom:18px; }
+      .fn-desktop .fn-pbb-dot { width:9px; height:9px; border-radius:50%; background:#d6dce6; transition:all 0.2s; }
+      .fn-desktop .fn-pbb-dot.active { background:#265ddc; transform:scale(1.2); }
+      .fn-desktop .fn-pbb-dot.done   { background:#1e4fc2; }
+
+      /* Receipt */
+      .fn-desktop .fn-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f0f2f5; }
+      .fn-desktop .fn-row:last-child { border-bottom:0; }
+      .fn-desktop .fn-row-label { font-size:13.5px; color:#676d7a; }
+      .fn-desktop .fn-row-val   { font-size:13.5px; font-weight:600; color:${FN_NAVY}; }
+      .fn-desktop .fn-receipt   { width:100%; border:1px solid #e2e6ee; border-radius:14px; padding:16px 20px; background:#fbfcfe; }
+      .fn-desktop .fn-receipt-hdr { display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid #e8edf5; margin-bottom:8px; }
+      .fn-desktop .fn-receipt-amt { font-size:28px; font-weight:700; color:${FN_NAVY}; letter-spacing:-0.5px; }
+      .fn-desktop .fn-badge-instant { display:inline-flex; align-items:center; gap:5px; background:${FN_TEAL_TINT}; color:${FN_TEAL_DARK}; font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; letter-spacing:0.3px; text-transform:uppercase; }
+      .fn-desktop .fn-success-ring { width:104px; height:104px; border-radius:50%; background:radial-gradient(circle, ${FN_TEAL_TINT} 0%, #fff 70%); display:flex; align-items:center; justify-content:center; position:relative; }
+      .fn-desktop .fn-success-ring::before { content:""; position:absolute; inset:8px; border-radius:50%; border:2px solid ${FN_TEAL}; opacity:0.3; }
+      .fn-desktop .fn-success-ring::after  { content:""; position:absolute; inset:0; border-radius:50%; border:2px solid ${FN_TEAL}; animation:fn-pulse 1.6s ease-out infinite; }
+      @keyframes fn-pulse { 0%{transform:scale(0.85);opacity:0.7;} 100%{transform:scale(1.25);opacity:0;} }
+      .fn-desktop .fn-spinner { width:40px; height:40px; border:3px solid ${FN_TEAL_TINT}; border-top-color:${FN_TEAL}; border-radius:50%; animation:fn-spin 0.85s linear infinite; }
+      @keyframes fn-spin { to { transform:rotate(360deg); } }
+      .fn-desktop .fn-cta { background:#265ddc !important; color:#fff !important; border:none !important; }
+      .fn-desktop .fn-cta:not(:disabled):hover { background:#1e4fc2 !important; }
+      .fn-desktop .fn-cta:disabled { background:#9cb3f0 !important; opacity:1 !important; cursor:not-allowed !important; }
+      .fn-desktop .fn-link { color:#265ddc !important; }
+    `;
+    document.head.appendChild(fnStyle);
+
+    const fnBoltWhite = `<svg class="fn-mark-bolt" viewBox="0 0 16 16" fill="none"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="${FN_TEAL}"/></svg>`;
+    const fnBoltTealW = `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="#fff"/></svg>`;
+    const fnBoltTeal  = `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="${FN_TEAL}"/></svg>`;
+    const fnBoltLg    = `<svg width="48" height="48" viewBox="0 0 16 16" fill="none"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="${FN_TEAL}"/></svg>`;
+
+    function fnReceiptId() {
+      return 'FN-' + Date.now().toString(36).toUpperCase().slice(-8);
+    }
+
+    window.fnDeskSelectBank = function(id) {
+      fnSelectedBank = FN_BANKS.find(b => b.id === id) || null;
+      document.querySelectorAll('#fn-desk-bank-list .fn-bank-row').forEach(r => {
+        r.classList.toggle('selected', r.dataset.bank === id);
+      });
+      fnDeskCheckNext();
+    };
+
+    window.fnDeskCheckNext = function() {
+      const chk = document.getElementById('fn-desk-auth-chk');
+      const btn = document.getElementById('fn-desk-next-btn');
+      if (!btn) return;
+      const ready = !!fnSelectedBank && chk && chk.checked;
+      btn.disabled = !ready;
+    };
+
+    window.fnDeskPbbAdvance = function(target) {
+      fnPbbSub = target;
+      window.dRenderRehabAutopayStep();
+    };
+
+    window.fnDeskPbbAutofill = function() {
+      const u = document.getElementById('fn-desk-user');
+      const p = document.getElementById('fn-desk-pass');
+      if (u && !u.value) { u.value = 'jennifer.t'; }
+      if (p && !p.value) { p.value = '••••••••••••'; }
+    };
+
+    /* Override the desktop autopay renderer for the FedNow flow.
+       Reuses the rehab step machine (dRehabAutopayStep 1..3). */
+    window.dRenderRehabAutopayStep = function() {
+      const body     = document.getElementById('fp-body');
+      const fpTitle  = document.getElementById('fp-title');
+      const fpSub    = document.getElementById('fp-subtitle');
+      body.classList.add('fn-desktop');
+
+      const payment   = (typeof dRehabAutopayPayment === 'number' ? dRehabAutopayPayment : 74);
+      const remaining = (payment * 8).toFixed(2);
+
+      // ── Step 1: Pick your bank + auth ───────────────────────────
+      if (dRehabAutopayStep === 1) {
+        fpTitle.textContent = 'Pay Instantly';
+        fpSub.textContent   = 'Sign in to your bank · 1 of 2';
+        const banksHtml = FN_BANKS.map(b => `
+          <div class="fn-bank-row" data-bank="${b.id}" onclick="window.fnDeskSelectBank('${b.id}')">
+            <div class="fn-bank-logo" style="background:${b.color};">${b.logo}</div>
+            <span class="fn-bank-name">${b.name}</span>
+            ${b.id !== 'other' ? '<span class="fn-bank-tag">Instant</span>' : ''}
+          </div>`).join('');
+
+        body.innerHTML = `
+          <div class="flex flex-col gap-5 pb-6">
+            <div class="fn-hero">
+              <span class="fn-mark">${fnBoltWhite} Pay.gov</span>
+              <div class="fn-hero-title">Pay your first $${payment} instantly</div>
+              <div class="fn-hero-sub">Sign in to your bank securely — we'll route your $${payment} through Pay.gov and settle in seconds.</div>
+              <span class="fn-pill-stat">⚡ Bank-grade encryption · ~4 sec settlement</span>
+            </div>
+
+            <div>
+              <h3 style="font-size:13px;font-weight:700;color:${FN_NAVY};letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">Choose your bank</h3>
+              <div id="fn-desk-bank-list" class="fn-bank-grid">${banksHtml}</div>
+              <p style="font-size:12px;color:#7a8294;line-height:1.5;margin:10px 0 0;">Your credentials never touch Candidly. Bank sign-in is brokered by our payments partner using bank-grade encryption.</p>
+            </div>
+
+            <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="fn-desk-auth-chk" onchange="window.fnDeskCheckNext()"
+                  class="mt-0.5 w-5 h-5 rounded cursor-pointer shrink-0" style="margin-top:2px;accent-color:#265ddc" />
+                <span class="text-sm text-gray-800 leading-relaxed">
+                  I authorize Candidly to debit $${payment} from my account via Pay.gov, and to draft the remaining 8 monthly rehabilitation payments per the <a href="#" onclick="return false" class="fn-link underline">Terms of Service</a>.
+                </span>
+              </label>
+            </div>
+
+            <button id="fn-desk-next-btn" onclick="window.dRehabAutopayNext()" disabled
+              class="fn-cta w-full rounded-full py-3 text-sm font-semibold transition-colors flex items-center justify-center gap-2">
+              Continue securely →
+            </button>
+          </div>`;
+        staggerIn(body);
+        if (fnSelectedBank) {
+          const sel = body.querySelector(`[data-bank="${fnSelectedBank.id}"]`);
+          if (sel) sel.classList.add('selected');
+          window.fnDeskCheckNext();
+        }
+        return;
+      }
+
+      // ── Step 2: Plaid-style sign-in (4 substeps) ────────────────
+      if (dRehabAutopayStep === 2) {
+        const bank = fnSelectedBank || FN_BANKS[0];
+        fpTitle.textContent = 'Sign in to ' + bank.name;
+        fpSub.textContent   = 'Authorize · 2 of 2';
+
+        const dotCls = (n) => fnPbbSub > n ? 'done' : (fnPbbSub === n ? 'active' : '');
+        const progressBar = `
+          <div class="fn-pbb-progress">
+            <span class="fn-pbb-dot ${dotCls(1)}"></span>
+            <span class="fn-pbb-dot ${dotCls(2)}"></span>
+            <span class="fn-pbb-dot ${dotCls(3)}"></span>
+            <span style="margin-left:auto;font-size:11.5px;color:#7a8294;">Step ${Math.min(fnPbbSub,3)} of 3</span>
+          </div>`;
+        const cardHdr = `
+          <div class="fn-pbb-hdr">
+            <div class="fn-pbb-bank-logo" style="background:${bank.color};">${bank.logo}</div>
+            <div>
+              <div class="fn-pbb-bank-name">${bank.name}</div>
+              <div style="font-size:11.5px;color:#7a8294;">via Candidly Pay</div>
+            </div>
+            <div class="fn-pbb-secure">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Encrypted
+            </div>
+          </div>`;
+
+        // Substep 1: Sign in
+        if (fnPbbSub === 1) {
+          body.innerHTML = `
+            <div class="flex flex-col gap-4 pb-6">
+              <button onclick="dRehabAutopayStep=1; window.dRenderRehabAutopayStep()" class="flex items-center gap-1.5 text-sm font-medium fn-link self-start">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Back
+              </button>
+              <div class="fn-pbb-card">
+                ${cardHdr}
+                ${progressBar}
+                <h2 style="font-size:18px;font-weight:700;color:${FN_NAVY};margin-bottom:4px;">Sign in to ${bank.name}</h2>
+                <p style="font-size:13px;color:#676d7a;line-height:1.5;margin-bottom:16px;">Use the same credentials you use for ${bank.name} online banking.</p>
+                <label class="fn-pbb-label">Username</label>
+                <input id="fn-desk-user" class="fn-pbb-input" type="text" placeholder="Username" autocomplete="off" onfocus="window.fnDeskPbbAutofill()" />
+                <label class="fn-pbb-label">Password</label>
+                <input id="fn-desk-pass" class="fn-pbb-input" type="password" placeholder="Password" autocomplete="off" onfocus="window.fnDeskPbbAutofill()" />
+                <div style="background:#f4f6fb;border-radius:8px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start;margin:6px 0 16px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${FN_NAVY}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <p style="font-size:12px;color:${FN_NAVY};line-height:1.5;">Candidly never sees or stores your credentials. Sign-in is brokered by our payments partner over an encrypted channel directly to ${bank.name}.</p>
+                </div>
+                <button onclick="window.fnDeskPbbAdvance(2)" class="fn-cta w-full rounded-full py-3 text-sm font-semibold transition-colors">Sign in</button>
+              </div>
+            </div>`;
+
+        // Substep 2: Account select
+        } else if (fnPbbSub === 2) {
+          body.innerHTML = `
+            <div class="flex flex-col gap-4 pb-6">
+              <button onclick="window.fnDeskPbbAdvance(1)" class="flex items-center gap-1.5 text-sm font-medium fn-link self-start">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Back
+              </button>
+              <div class="fn-pbb-card">
+                ${cardHdr}
+                ${progressBar}
+                <h2 style="font-size:18px;font-weight:700;color:${FN_NAVY};margin-bottom:4px;">Select an account</h2>
+                <p style="font-size:13px;color:#676d7a;line-height:1.5;margin-bottom:16px;">Choose which account to use for your $${payment} payment.</p>
+                <div class="flex flex-col gap-2.5">
+                  <div class="fn-pbb-acct selected" onclick="this.parentNode.querySelectorAll('.fn-pbb-acct').forEach(e=>e.classList.remove('selected'));this.classList.add('selected');">
+                    <div style="flex:1;">
+                      <div style="font-size:14.5px;font-weight:600;color:${FN_NAVY};">Everyday Checking</div>
+                      <div style="font-size:12px;color:#7a8294;">••5678 · Available $2,431.18</div>
+                    </div>
+                  </div>
+                  <div class="fn-pbb-acct" onclick="this.parentNode.querySelectorAll('.fn-pbb-acct').forEach(e=>e.classList.remove('selected'));this.classList.add('selected');">
+                    <div style="flex:1;">
+                      <div style="font-size:14.5px;font-weight:600;color:${FN_NAVY};">Way2Save Savings</div>
+                      <div style="font-size:12px;color:#7a8294;">••2104 · Available $812.40</div>
+                    </div>
+                  </div>
+                </div>
+                <button onclick="window.fnDeskPbbAdvance(3)" class="fn-cta w-full rounded-full py-3 text-sm font-semibold transition-colors mt-4">Continue</button>
+              </div>
+            </div>`;
+
+        // Substep 3: Authorize
+        } else if (fnPbbSub === 3) {
+          body.innerHTML = `
+            <div class="flex flex-col gap-4 pb-6">
+              <button onclick="window.fnDeskPbbAdvance(2)" class="flex items-center gap-1.5 text-sm font-medium fn-link self-start">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Back
+              </button>
+              <div class="fn-pbb-card">
+                ${cardHdr}
+                ${progressBar}
+                <h2 style="font-size:18px;font-weight:700;color:${FN_NAVY};margin-bottom:4px;">Authorize payment</h2>
+                <p style="font-size:13px;color:#676d7a;line-height:1.5;margin-bottom:14px;">Review and authorize your instant payment to U.S. Department of Education.</p>
+                <div style="background:${FN_NAVY_TINT};border-radius:12px;padding:18px;margin-bottom:14px;text-align:center;">
+                  <p style="font-size:11px;color:${FN_NAVY};letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;">Pay now · Instant</p>
+                  <p class="fn-receipt-amt">$${payment}.00</p>
+                  <p style="font-size:12px;color:#676d7a;margin-top:4px;">Settles in ~4 seconds</p>
+                </div>
+                <div class="fn-row"><span class="fn-row-label">From</span><span class="fn-row-val">Everyday Checking ••5678</span></div>
+                <div class="fn-row"><span class="fn-row-label">To</span><span class="fn-row-val">U.S. Dept. of Education</span></div>
+                <div class="fn-row"><span class="fn-row-label">Memo</span><span class="fn-row-val">Rehab payment 1/9</span></div>
+                <div class="fn-row"><span class="fn-row-label">Then auto-pay</span><span class="fn-row-val">$${payment}/mo × 8 ($${remaining})</span></div>
+                <div style="background:#eff4ff;border:1px solid #c7d6f5;border-radius:10px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start;margin-top:14px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <p style="flex:1;font-size:12.5px;color:#181d29;line-height:1.5;">Once authorized, payment is <strong>final and irrevocable</strong>. Default clears the moment funds settle.</p>
+                </div>
+                <button onclick="window.fnDeskPbbAdvance(4)" class="fn-cta w-full rounded-full py-3 text-sm font-semibold transition-colors mt-4 flex items-center justify-center gap-2">${fnBoltTealW} Authorize $${payment} instantly</button>
+              </div>
+            </div>`;
+
+        // Substep 4: Processing → auto-advance
+        } else {
+          body.innerHTML = `
+            <div class="flex flex-col gap-4 pb-6 items-center text-center" style="padding-top:60px;">
+              <div class="fn-spinner"></div>
+              <h2 style="font-size:19px;font-weight:700;color:${FN_NAVY};margin-top:18px;">Initiating instant payment…</h2>
+              <p style="font-size:13.5px;color:#676d7a;line-height:1.55;max-width:340px;">${bank.name} authorized · routing $${payment} through Pay.gov.</p>
+            </div>`;
+          setTimeout(() => {
+            fnPbbSub = 1;
+            dRehabAutopayStep = 3;
+            window.dRenderRehabAutopayStep();
+            if (typeof updateChatChips === 'function') updateChatChips('enrolled');
+          }, 1600);
+        }
+        staggerIn(body);
+        return;
+      }
+
+      // ── Step 3: Settled / Receipt ───────────────────────────────
+      if (dRehabAutopayStep === 3) {
+        fpTitle.textContent = "Payment Settled";
+        fpSub.textContent   = '';
+        const bank = fnSelectedBank || { name:'your bank' };
+        const ts   = new Date().toLocaleTimeString([], { hour:'numeric', minute:'2-digit', second:'2-digit' });
+        const rcpt = fnReceiptId();
+        body.innerHTML = `
+          <div class="flex flex-col items-center gap-5 py-4 text-center pb-6">
+            <div class="fn-success-ring">${fnBoltLg}</div>
+            <div>
+              <p class="text-2xl font-bold" style="color:${FN_NAVY}">Authorized</p>
+              <p class="text-sm text-[#676d7a] mt-1.5 leading-relaxed max-w-md mx-auto">You authorized the payment via ${bank.name}. Your $${payment} payment cleared instantly.</p>
+            </div>
+
+            <div class="fn-receipt w-full text-left">
+              <div class="fn-receipt-hdr">
+                <span class="fn-badge-instant">${fnBoltTeal} Settled</span>
+                <span style="font-size:11px;color:#7a8294;font-family:monospace;">${rcpt}</span>
+              </div>
+              <div class="fn-row"><span class="fn-row-label">Amount</span><span class="fn-row-val">$${payment}.00</span></div>
+              <div class="fn-row"><span class="fn-row-label">Approved in</span><span class="fn-row-val">${bank.name}</span></div>
+              <div class="fn-row"><span class="fn-row-label">Settled at</span><span class="fn-row-val">${ts}</span></div>
+              <div class="fn-row"><span class="fn-row-label">Rail</span><span class="fn-row-val" style="color:${FN_TEAL_DARK}">Pay-by-bank · Instant</span></div>
+            </div>
+
+            <div class="w-full bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-5 text-left">
+              <p class="text-xs font-bold uppercase tracking-wide mb-3" style="color:${FN_NAVY}">What happens next</p>
+              <div class="flex flex-col gap-3">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:#eff4ff">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <p class="text-sm text-gray-800 leading-snug">Your <strong>first $${payment} payment</strong> has cleared. Rehabilitation is officially in progress.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:#eff4ff">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#265ddc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                  <p class="text-sm text-gray-800 leading-snug">The remaining <strong>8 monthly drafts of $${payment}</strong> will auto-pay from the same account.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:#ecfbf5"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="#027a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <p class="text-sm leading-snug" style="color:#027a42;font-weight:500">After 9 on-time payments, default is resolved and the record is removed from your credit report.</p>
+                </div>
+              </div>
+            </div>
+            <p class="text-xs text-[#9ca3af]">Questions? help@getcandidly.com · (866) 719-3437</p>
+            <button onclick="window.dRehabAutopayNext()"
+              class="fn-cta w-full rounded-full py-3 text-sm font-semibold transition-colors mt-2">
+              Done
+            </button>
+          </div>`;
+        staggerIn(body);
+      }
+    };
+
+    /* Override step transitions:
+       - Step 1 advances to Step 2 (substep 1) without reading routing/account.
+       - Step 2 finishing is handled inside the substep-4 setTimeout above.
+       - Step 3 closes the panel. */
+    window.dRehabAutopayNext = function() {
+      if (dRehabAutopayStep === 1) {
+        if (!fnSelectedBank) return;
+        dRehabAutopayStep = 2;
+        fnPbbSub = 1;
+        window.dRenderRehabAutopayStep();
+      } else if (dRehabAutopayStep === 2) {
+        // Substep 4 handles the transition; this fallback covers the case
+        // where something else calls dRehabAutopayNext() during step 2.
+        dRehabAutopayStep = 3;
+        window.dRenderRehabAutopayStep();
+        if (typeof updateChatChips === 'function') updateChatChips('enrolled');
+      } else if (dRehabAutopayStep === 3) {
+        if (typeof closeFormPanel === 'function') closeFormPanel();
+        dRehabAutopayStep = 1;
+        fnPbbSub = 1;
+        fnSelectedBank = null;
+      }
+    };
+  })();
 </script>
 </body>
 </html>
