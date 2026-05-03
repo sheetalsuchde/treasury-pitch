@@ -3822,6 +3822,14 @@
       .fn-confirm-check { width:26px; height:26px; border-radius:50%; background:#fff; border:1.5px solid #027a42; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
       .fn-confirm-primary { font-size:13px; font-weight:700; color:#027a42; line-height:1.4; }
       .fn-confirm-secondary { font-size:11.5px; color:#4a5d52; line-height:1.4; margin-top:2px; }
+      .fn-next-section { margin-top:18px; padding-top:18px; border-top:1px solid #f0f2f5; }
+      .fn-next-heading { font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:${FN_NAVY}; opacity:0.75; margin-bottom:14px; }
+      .fn-next-item { display:flex; align-items:flex-start; gap:12px; }
+      .fn-next-item + .fn-next-item { margin-top:12px; }
+      .fn-next-num { width:24px; height:24px; border-radius:50%; background:${FN_NAVY}; color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+      .fn-next-check { width:24px; height:24px; border-radius:50%; background:#027a42; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+      .fn-next-text { font-size:13.5px; line-height:1.5; color:#4a5161; }
+      .fn-next-item:last-child .fn-next-text { color:#027a42; font-weight:500; }
       /* Candidly-branded overrides for the pay-by-bank variant
          — selection + CTAs use Candidly blue, hero/banner stays FedNow navy/teal */
       #mob-autopay.fn-pbb-mode .fn-cta { background:#265ddc !important; }
@@ -4243,6 +4251,23 @@
                 <div>
                   <p class="fn-confirm-primary">$${autopayPayment}/mo · Auto-pay confirmed</p>
                   <p class="fn-confirm-secondary">First payment drafts ${fnDraftDate()} · 8 more to go</p>
+                </div>
+              </div>
+              <div class="fn-next-section">
+                <p class="fn-next-heading">What happens next</p>
+                <div class="fn-next-item">
+                  <div class="fn-next-num">1</div>
+                  <p class="fn-next-text">Candidly confirms your agreement within 5–7 business days.</p>
+                </div>
+                <div class="fn-next-item">
+                  <div class="fn-next-num">2</div>
+                  <p class="fn-next-text">Auto-pay handles each of your 9 monthly payments automatically — nothing to remember.</p>
+                </div>
+                <div class="fn-next-item">
+                  <div class="fn-next-check">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <p class="fn-next-text">Default permanently removed from all 3 credit bureaus. Your loan returns to good standing. You're free.</p>
                 </div>
               </div>
             </div>
