@@ -1193,12 +1193,13 @@
   }
 
   // Tap a bottom chip → open Cait and immediately ask the question
+  // Skip the "I can help you fill out this form…" intro so the chip
+  // answer streams as the first message in the panel.
   function mobIncomeChipAsk(question) {
     if (!caitChatOpen) {
+      caitChatReady = true;
       mobToggleCaitChat();
-      // Wait for panel + intro to finish then fire the question
-      const delay = caitChatReady ? 450 : (question.split(' ').length * 55 + 700);
-      setTimeout(() => mobCaitQuickAsk(null, question), delay);
+      setTimeout(() => mobCaitQuickAsk(null, question), 350);
     } else {
       mobCaitQuickAsk(null, question);
     }
