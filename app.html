@@ -1076,6 +1076,10 @@
     'What\'s on the OMB form?': 'The <strong>OMB No. 1845-0120</strong> form asks for your monthly income (wages, benefits, etc.) and expenses (rent, utilities, food, etc.). Cait pre-fills everything she knows from your profile — you just review and confirm.',
     'How long does this take?': 'Filling out the form takes about <strong>5–10 minutes</strong> with Cait\'s help. Once submitted, the DOE reviews it within a few business days and confirms your adjusted lower payment.',
     'What if I can\'t afford anything?': 'You may qualify for a <strong>$0/month</strong> payment if your disposable income is zero. You still complete all 9 payments — they just cost nothing. Candidly will document your situation accurately to get you there.',
+    'Is RAP better than SAVE?': 'For most borrowers in SAVE forbearance, <strong>yes</strong>. SAVE is ending — staying in it isn\'t an option. RAP uses 5% of your discretionary income (vs. SAVE\'s 5–10%), caps your payment, and includes an interest subsidy so your balance never grows. Forgiveness comes after <strong>30 years</strong>, with PSLF still available if you qualify.',
+    'What if I miss the deadline?': 'If you don\'t exit SAVE forbearance and pick a new plan by <strong>September 30, 2026</strong>, you\'ll be auto-placed into a default plan that may have a higher payment, and any unpaid interest could be capitalized. Acting before the deadline keeps you in control of your payment amount and avoids surprises on your servicer statement.',
+    'Will this hurt my credit?': 'Switching plans through Candidly does <strong>not</strong> hurt your credit — it\'s a routine repayment-plan change with your servicer. What <em>does</em> hurt your credit is missing payments or going into default. That\'s exactly what RAP enrollment helps you avoid.',
+    'What happens if I default?': 'If your loans default (typically after 270 days delinquent), the consequences are serious: your <strong>full balance becomes due immediately</strong>, your wages can be garnished, your tax refunds can be seized, and the default is reported to all 3 credit bureaus for up to 7 years. RAP enrollment now keeps you in good standing and avoids all of this.',
   };
 
   function mobToggleCaitChat() {
@@ -1104,7 +1108,7 @@
       setTimeout(() => {
         const chips = document.getElementById('cait-mini-chips');
         chips.innerHTML = Object.keys(CAIT_ANSWERS).map(q =>
-          `<button onclick="mobCaitQuickAsk(this, '${q}')"
+          `<button onclick="mobCaitQuickAsk(this, '${q.replace(/'/g, "\\'")}')"
             class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] bg-white hover:bg-[#eff4ff] transition-colors whitespace-nowrap">
             ${q}
           </button>`
@@ -1233,7 +1237,7 @@
         // Restore chips
         const chips = document.getElementById('cait-mini-chips');
         chips.innerHTML = Object.keys(CAIT_ANSWERS).map(q =>
-          `<button onclick="mobCaitQuickAsk(this, '${q}')"
+          `<button onclick="mobCaitQuickAsk(this, '${q.replace(/'/g, "\\'")}')"
             class="shrink-0 border border-[#b3c6f7] rounded-full px-4 py-2 text-[13px] font-medium text-[#3a57c8] bg-white hover:bg-[#eff4ff] transition-colors whitespace-nowrap">
             ${q}
           </button>`
@@ -2504,8 +2508,8 @@
 
     /* 4 ── Chips ─────────────────────────────────────────────────── */
     MOB_CHIPS['save_resolution'] = [
-      { label: 'Is RAP better than SAVE?', fn: null },
-      { label: 'What if I miss the deadline?', fn: null },
+      { label: 'Is RAP better than SAVE?', fn: "mobIncomeChipAsk('Is RAP better than SAVE?')" },
+      { label: 'What if I miss the deadline?', fn: "mobIncomeChipAsk('What if I miss the deadline?')" },
       { label: 'Switch to RAP →', fn: 'mobOpenIncome()' },
     ];
     MOB_CHIPS['rap_results'] = [
@@ -3114,8 +3118,8 @@
 
     /* 4 ── Chips ─────────────────────────────────────────────────── */
     MOB_CHIPS['delinq_resolution'] = [
-      { label: 'What happens if I default?', fn: null },
-      { label: 'Will this hurt my credit?',  fn: null },
+      { label: 'What happens if I default?', fn: "mobIncomeChipAsk('What happens if I default?')" },
+      { label: 'Will this hurt my credit?',  fn: "mobIncomeChipAsk('Will this hurt my credit?')" },
       { label: 'Switch to RAP →',            fn: 'mobOpenIncome()' },
     ];
 
