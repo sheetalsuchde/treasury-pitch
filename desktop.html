@@ -3801,9 +3801,8 @@
       .fn-desktop .fn-celebrate { position:relative; width:100%; border-radius:22px; padding:36px 28px 30px; color:#fff; text-align:center; overflow:hidden;
         background:radial-gradient(120% 120% at 50% 0%, #4d83ee 0%, #2f63d6 38%, #1e4ab6 72%, #143a78 100%); box-shadow:0 16px 36px rgba(20,58,120,0.28); }
       .fn-desktop .fn-celebrate-dot { position:absolute; border-radius:50%; opacity:0.6; }
-      .fn-desktop .fn-popper { display:inline-flex; line-height:0; position:relative; z-index:3;
+      .fn-desktop .fn-popper { font-size:76px; line-height:1; display:inline-block; position:relative; z-index:3; filter:drop-shadow(0 6px 14px rgba(0,0,0,0.18));
         animation:fn-pop 0.7s cubic-bezier(0.2,1.4,0.4,1) both; }
-      .fn-desktop .fn-popper svg { display:block; }
       @keyframes fn-pop { 0%{ transform:scale(0.4) rotate(-15deg); opacity:0; } 60%{ transform:scale(1.18) rotate(8deg); opacity:1; } 100%{ transform:scale(1) rotate(0); opacity:1; } }
       .fn-desktop .fn-celebrate-title { font-size:30px; font-weight:800; letter-spacing:-0.5px; margin-top:16px; position:relative; z-index:3;
         animation:fn-rise 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.18s both; }
@@ -3831,7 +3830,7 @@
     }
 
     function fnConfettiPieces(n) {
-      const colors = ['#ffd451','#ff8eb1','#5ee0d2','#ffffff','#ffb16e','#b6eeda','#9bd0ff','#3b7df5'];
+      const colors = ['#ffd451','#ff8eb1','#5ee0d2','#ffffff','#ffb16e','#b6eeda','#9bd0ff'];
       let html = '';
       for (let i = 0; i < n; i++) {
         const left   = Math.random() * 100;
@@ -3840,12 +3839,9 @@
         const dur    = (2.0 + Math.random() * 1.8).toFixed(2) + 's';
         const delay  = (Math.random() * 0.7).toFixed(2) + 's';
         const c      = colors[i % colors.length];
-        const isCircle = Math.random() < 0.4;
-        const size = 6 + Math.floor(Math.random() * 4);
-        const w = isCircle ? size : size;
-        const h = isCircle ? size : (11 + Math.floor(Math.random() * 7));
-        const radius = isCircle ? '50%' : '1px';
-        html += `<i style="left:${left.toFixed(1)}%;width:${w}px;height:${h}px;background:${c};border-radius:${radius};--fn-x:${xDrift};--fn-r:${rot};animation-duration:${dur};animation-delay:${delay};"></i>`;
+        const w      = 6 + Math.floor(Math.random() * 5);
+        const h      = 11 + Math.floor(Math.random() * 8);
+        html += `<i style="left:${left.toFixed(1)}%;width:${w}px;height:${h}px;background:${c};--fn-x:${xDrift};--fn-r:${rot};animation-duration:${dur};animation-delay:${delay};"></i>`;
       }
       return html;
     }
@@ -4086,22 +4082,7 @@
               <div class="fn-celebrate-dot" style="right:16%;top:18%;width:12px;height:12px;background:#ffd6a8;"></div>
               <div class="fn-celebrate-dot" style="left:20%;bottom:18%;width:7px;height:7px;background:#ffffff;"></div>
               <div class="fn-celebrate-dot" style="right:24%;bottom:24%;width:9px;height:9px;background:#b6eeda;"></div>
-              <span class="fn-popper" role="img" aria-label="celebration">
-                <svg width="84" height="84" viewBox="0 0 72 72" fill="none" aria-hidden="true">
-                  <path d="M14 58 L30 24 L48 42 Z" fill="#FFD451"/>
-                  <path d="M22 51 L34 32 L42 40 L29 56 Z" fill="#3B7DF5"/>
-                  <path d="M28 56 L37 41 L43 47 L34 60 Z" fill="#FF8EB1"/>
-                  <circle cx="40" cy="12" r="3" fill="#5EE0D2"/>
-                  <circle cx="56" cy="20" r="2.6" fill="#FFD451"/>
-                  <circle cx="62" cy="38" r="2.6" fill="#FF8EB1"/>
-                  <circle cx="26" cy="10" r="2.4" fill="#9BD0FF"/>
-                  <rect x="48" y="6" width="5" height="5" fill="#FFB16E" transform="rotate(20 50.5 8.5)"/>
-                  <rect x="32" y="14" width="4" height="4" fill="#FF8EB1" transform="rotate(-25 34 16)"/>
-                  <path d="M34 22 Q 42 12 52 12" stroke="#FF8EB1" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-                  <path d="M44 28 Q 56 26 64 22" stroke="#5EE0D2" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-                  <path d="M48 36 L 56 30" stroke="#FFD451" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-                </svg>
-              </span>
+              <span class="fn-popper" role="img" aria-label="celebration">🎉</span>
               <p class="fn-celebrate-title">You did it, Jennifer!</p>
               <p class="fn-celebrate-sub">This is the most important step you could have taken toward breaking the cycle of delinquency and getting back on your feet.</p>
             </div>
