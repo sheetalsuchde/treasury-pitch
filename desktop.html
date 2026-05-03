@@ -3797,6 +3797,26 @@
       .fn-desktop .fn-cta:not(:disabled):hover { background:#1e4fc2 !important; }
       .fn-desktop .fn-cta:disabled { background:#9cb3f0 !important; opacity:1 !important; cursor:not-allowed !important; }
       .fn-desktop .fn-link { color:#265ddc !important; }
+      /* Celebration hero (success screen) */
+      .fn-desktop .fn-celebrate { position:relative; width:100%; border-radius:22px; padding:36px 28px 30px; color:#fff; text-align:center; overflow:hidden;
+        background:radial-gradient(120% 120% at 50% 0%, #4d83ee 0%, #2f63d6 38%, #1e4ab6 72%, #143a78 100%); box-shadow:0 16px 36px rgba(20,58,120,0.28); }
+      .fn-desktop .fn-celebrate-dot { position:absolute; border-radius:50%; opacity:0.6; }
+      .fn-desktop .fn-popper { font-size:76px; line-height:1; display:inline-block; position:relative; z-index:3; filter:drop-shadow(0 6px 14px rgba(0,0,0,0.18));
+        animation:fn-pop 0.7s cubic-bezier(0.2,1.4,0.4,1) both; }
+      @keyframes fn-pop { 0%{ transform:scale(0.4) rotate(-15deg); opacity:0; } 60%{ transform:scale(1.18) rotate(8deg); opacity:1; } 100%{ transform:scale(1) rotate(0); opacity:1; } }
+      .fn-desktop .fn-celebrate-title { font-size:30px; font-weight:800; letter-spacing:-0.5px; margin-top:16px; position:relative; z-index:3;
+        animation:fn-rise 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.18s both; }
+      .fn-desktop .fn-celebrate-sub { font-size:15px; line-height:1.55; margin-top:12px; opacity:0.93; max-width:420px; margin-left:auto; margin-right:auto; position:relative; z-index:3;
+        animation:fn-rise 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.32s both; }
+      @keyframes fn-rise { from{ transform:translateY(10px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+      .fn-desktop .fn-confetti { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:2; }
+      .fn-desktop .fn-confetti i { position:absolute; top:-12%; width:8px; height:13px; opacity:0; border-radius:1px;
+        animation:fn-fall linear forwards; }
+      @keyframes fn-fall {
+        0%   { transform:translate3d(0,-20px,0) rotate(0); opacity:0; }
+        12%  { opacity:1; }
+        100% { transform:translate3d(var(--fn-x,0),620px,0) rotate(var(--fn-r,720deg)); opacity:0.9; }
+      }
     `;
     document.head.appendChild(fnStyle);
 
@@ -3807,6 +3827,23 @@
 
     function fnReceiptId() {
       return 'FN-' + Date.now().toString(36).toUpperCase().slice(-8);
+    }
+
+    function fnConfettiPieces(n) {
+      const colors = ['#ffd451','#ff8eb1','#5ee0d2','#ffffff','#ffb16e','#b6eeda','#9bd0ff'];
+      let html = '';
+      for (let i = 0; i < n; i++) {
+        const left   = Math.random() * 100;
+        const xDrift = (Math.random() * 100 - 50).toFixed(0) + 'px';
+        const rot    = (400 + Math.random() * 600).toFixed(0) + 'deg';
+        const dur    = (2.0 + Math.random() * 1.8).toFixed(2) + 's';
+        const delay  = (Math.random() * 0.7).toFixed(2) + 's';
+        const c      = colors[i % colors.length];
+        const w      = 6 + Math.floor(Math.random() * 5);
+        const h      = 11 + Math.floor(Math.random() * 8);
+        html += `<i style="left:${left.toFixed(1)}%;width:${w}px;height:${h}px;background:${c};--fn-x:${xDrift};--fn-r:${rot};animation-duration:${dur};animation-delay:${delay};"></i>`;
+      }
+      return html;
     }
 
     window.fnDeskSelectBank = function(id) {
@@ -4039,10 +4076,15 @@
         const rcpt = fnReceiptId();
         body.innerHTML = `
           <div class="flex flex-col items-center gap-5 py-4 text-center pb-6">
-            <div class="fn-success-ring">${fnBoltLg}</div>
-            <div>
-              <p class="text-2xl font-bold" style="color:${FN_NAVY}">Authorized</p>
-              <p class="text-sm text-[#676d7a] mt-1.5 leading-relaxed max-w-md mx-auto">You authorized the payment via ${bank.name}. Your $${payment} payment cleared instantly.</p>
+            <div class="fn-celebrate">
+              <div class="fn-confetti">${fnConfettiPieces(36)}</div>
+              <div class="fn-celebrate-dot" style="left:12%;top:22%;width:10px;height:10px;background:#9bd0ff;"></div>
+              <div class="fn-celebrate-dot" style="right:16%;top:18%;width:12px;height:12px;background:#ffd6a8;"></div>
+              <div class="fn-celebrate-dot" style="left:20%;bottom:18%;width:7px;height:7px;background:#ffffff;"></div>
+              <div class="fn-celebrate-dot" style="right:24%;bottom:24%;width:9px;height:9px;background:#b6eeda;"></div>
+              <span class="fn-popper" role="img" aria-label="celebration">🎉</span>
+              <p class="fn-celebrate-title">You did it, Jennifer!</p>
+              <p class="fn-celebrate-sub">This is the most important step you could have taken toward breaking the cycle of delinquency and getting back on your feet.</p>
             </div>
 
             <div class="fn-receipt w-full text-left">
