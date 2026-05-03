@@ -4230,17 +4230,6 @@
               <p class="fn-celebrate-sub">${FN_VARIANT === 'paybybank' ? 'This is the most important step you could have taken toward breaking the cycle of delinquency and getting back on your feet.' : 'You just made the most important step toward breaking the cycle of delinquency and getting back on your feet.'}</p>
             </div>
 
-            <div class="fn-receipt w-full text-left">
-              <div class="fn-receipt-hdr">
-                <span class="fn-badge-instant">${fnBoltTeal} Settled</span>
-                <span style="font-size:11px;color:#7a8294;font-family:monospace;">${rcpt}</span>
-              </div>
-              <div class="fn-row"><span class="fn-row-label">Amount</span><span class="fn-row-val">$${autopayPayment}.00</span></div>
-              <div class="fn-row"><span class="fn-row-label">Approved in</span><span class="fn-row-val">${(fnSelectedBank||{name:'Your bank'}).name}</span></div>
-              <div class="fn-row"><span class="fn-row-label">Settled at</span><span class="fn-row-val">${ts}</span></div>
-              <div class="fn-row"><span class="fn-row-label">Rail</span><span class="fn-row-val" style="color:${FN_TEAL_DARK}">${FN_VARIANT === 'paybybank' ? 'Pay-by-bank · Instant' : 'Request for Payment · FedNow RfP'}</span></div>
-            </div>
-
             <div class="fn-rehab-msg">
               <p class="fn-rehab-msg-headline">Your path to becoming debt-free starts today. <span aria-hidden="true">🌱</span></p>
               <p class="fn-rehab-msg-body">9 payments. 9 months. A default permanently erased from your credit report — and a future where your money works for you, not against you.</p>
