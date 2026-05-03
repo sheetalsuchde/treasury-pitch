@@ -3719,8 +3719,13 @@
      re-laid-out for the wider desktop form panel.
      ══════════════════════════════════════════════════════════════ */
   ;(function() {
-    const _p = new URLSearchParams(location.search);
-    if (_p.get('flow') !== 'fednow' || _p.get('variant') !== 'paybybank') return;
+    const _p     = new URLSearchParams(location.search);
+    const _fnFlow = _p.get('flow');
+    // Activate the Pay.gov / Pay-by-bank UI for the FedNow demo and for
+    // the SAVE and Delinquency flows (replaces their routing-number step).
+    const _fnEnable = (_fnFlow === 'fednow' && _p.get('variant') === 'paybybank') ||
+                      _fnFlow === 'save' || _fnFlow === 'delinquency';
+    if (!_fnEnable) return;
 
     const FN_NAVY      = '#0a2c5e';
     const FN_TEAL      = '#00a99d';
@@ -4107,36 +4112,36 @@
               <div class="fn-celebrate-dot" style="right:24%;bottom:24%;width:9px;height:9px;background:#b6eeda;"></div>
               <span class="fn-popper" role="img" aria-label="celebration">🎉</span>
               <p class="fn-celebrate-title">You did it, Jennifer!</p>
-              <p class="fn-celebrate-sub">This is the most important step you could have taken toward breaking the cycle of delinquency and getting back on your feet.</p>
+              <p class="fn-celebrate-sub">${_fnFlow === 'save' ? 'You just locked in a sustainable payment plan that adjusts with your income — protected from the SAVE plan ending and on track for forgiveness.' : 'This is the most important step you could have taken toward breaking the cycle of delinquency and getting back on your feet.'}</p>
             </div>
 
             <div class="fn-rehab-msg">
-              <p class="fn-rehab-msg-headline">Your path to becoming debt-free starts today. <span aria-hidden="true">🌱</span></p>
-              <p class="fn-rehab-msg-body">9 payments. 9 months. A default permanently erased from your credit report — and a future where your money works for you, not against you.</p>
+              <p class="fn-rehab-msg-headline">${_fnFlow === 'save' ? 'Your repayment plan is locked in. <span aria-hidden="true">🌱</span>' : 'Your path to becoming debt-free starts today. <span aria-hidden="true">🌱</span>'}</p>
+              <p class="fn-rehab-msg-body">${_fnFlow === 'save' ? 'Your monthly payment adjusts with your income, your balance is protected from runaway interest, and forgiveness arrives at the end of the term — no extra effort required.' : '9 payments. 9 months. A default permanently erased from your credit report — and a future where your money works for you, not against you.'}</p>
               <div class="fn-confirm-pill">
                 <div class="fn-confirm-check">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#027a42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
                 <div>
                   <p class="fn-confirm-primary">$${payment}/mo · Auto-pay confirmed</p>
-                  <p class="fn-confirm-secondary">First payment drafts ${fnDraftDate()} · 8 more to go</p>
+                  <p class="fn-confirm-secondary">${_fnFlow === 'save' ? `First payment drafts ${fnDraftDate()} · monthly thereafter` : `First payment drafts ${fnDraftDate()} · 8 more to go`}</p>
                 </div>
               </div>
               <div class="fn-next-section">
                 <p class="fn-next-heading">What happens next</p>
                 <div class="fn-next-item">
                   <div class="fn-next-num">1</div>
-                  <p class="fn-next-text">Candidly confirms your agreement within 5–7 business days.</p>
+                  <p class="fn-next-text">${_fnFlow === 'save' ? 'Candidly submits your RAP enrollment to your loan servicer within 5–7 business days.' : 'Candidly confirms your agreement within 5–7 business days.'}</p>
                 </div>
                 <div class="fn-next-item">
                   <div class="fn-next-num">2</div>
-                  <p class="fn-next-text">Auto-pay handles each of your 9 monthly payments automatically — nothing to remember.</p>
+                  <p class="fn-next-text">${_fnFlow === 'save' ? 'Auto-pay handles each monthly payment automatically — nothing to remember, no missed deadlines.' : 'Auto-pay handles each of your 9 monthly payments automatically — nothing to remember.'}</p>
                 </div>
                 <div class="fn-next-item">
                   <div class="fn-next-check">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </div>
-                  <p class="fn-next-text">Default permanently removed from all 3 credit bureaus. Your loan returns to good standing. You're free.</p>
+                  <p class="fn-next-text">${_fnFlow === 'save' ? 'Stay enrolled and your remaining balance is forgiven at the end of the term. You\'re free.' : 'Default permanently removed from all 3 credit bureaus. Your loan returns to good standing. You\'re free.'}</p>
                 </div>
               </div>
             </div>
