@@ -3903,7 +3903,6 @@
                   Continue securely →
                 </button>
               </div>
-              <div class="fn-footer-mark">Powered by the Federal Payments System · Instant settlement</div>
             </div>`;
           fadeIn(body);
           if (fnSelectedBank) {
@@ -3953,7 +3952,6 @@
                 ${fnBoltTeal.replace('fill="'+FN_TEAL+'"','fill="#fff"')} Send Request via FedNow
               </button>
             </div>
-            <div class="fn-footer-mark">Powered by the Federal Payments System · Instant settlement</div>
           </div>`;
         fadeIn(body);
 
@@ -4015,7 +4013,6 @@
                   </div>
                   <button onclick="window.fnPbbAdvance(2)" class="fn-cta w-full rounded-full py-3 text-sm font-semibold transition-colors">Sign in</button>
                 </div>
-                <div class="fn-footer-mark">Powered by the Federal Payments System · Instant settlement</div>
               </div>`;
 
           // Substep 2: Select account
@@ -4045,7 +4042,6 @@
                   </div>
                   <button onclick="window.fnPbbAdvance(3)" class="fn-cta w-full rounded-full py-3 text-sm font-semibold transition-colors mt-3">Continue</button>
                 </div>
-                <div class="fn-footer-mark">Powered by the Federal Payments System · Instant settlement</div>
               </div>`;
 
           // Substep 3: Authorize
@@ -4078,7 +4074,6 @@
                   </div>
                   <button onclick="window.fnPbbAdvance(4)" class="fn-cta w-full rounded-full py-3 text-sm font-semibold transition-colors mt-4 flex items-center justify-center gap-2">${fnBoltTeal.replace('fill="'+FN_TEAL+'"','fill="#fff"')} Authorize $${autopayPayment} instantly</button>
                 </div>
-                <div class="fn-footer-mark">Powered by the Federal Payments System · Instant settlement</div>
               </div>`;
 
           // Substep 4: Processing → auto-advance to step 3
@@ -4088,7 +4083,6 @@
                 <div class="fn-spinner"></div>
                 <h2 style="font-size:17px;font-weight:700;color:${FN_NAVY};margin-top:14px;">Initiating instant payment…</h2>
                 <p style="font-size:13px;color:#676d7a;line-height:1.5;max-width:280px;">${bank.name} authorized · routing $${autopayPayment} through the Federal Payments System.</p>
-                <div class="fn-footer-mark" style="margin-top:8px;">Powered by the Federal Payments System · Instant settlement</div>
               </div>`;
             setTimeout(() => { fnPbbSub = 1; mobAutopayNext(); }, 1600);
           }
@@ -4145,7 +4139,6 @@
               Demo: Simulate approval in ${bank.name} →
             </button>
 
-            <div class="fn-footer-mark">Powered by the Federal Payments System · Instant settlement</div>
           </div>`;
         fadeIn(body);
 
@@ -4201,7 +4194,6 @@
               </div>
             </div>
             <p class="text-xs text-[#9ca3af]">Questions? help@getcandidly.com · (866) 719-3437</p>
-            <div class="fn-footer-mark">Powered by the Federal Payments System · Instant settlement</div>
           </div>`;
         fadeIn(body);
       }
