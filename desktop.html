@@ -357,7 +357,7 @@
 
           <!-- Cait message (left) -->
           <div id="static-cait-msg" class="pr-12 flex flex-col gap-3">
-            <p class="cait-line text-base text-[#676d7a] leading-7">Hi Jennifer — your loan is currently in default. Here are the five ways to resolve a defaulted federal student loan: Administrative loan discharge, Request for review, Loan consolidation, Pay off the debt, and <strong class="font-bold text-gray-900">Loan Rehabilitation</strong>.</p>
+            <p class="cait-line text-base text-[#676d7a] leading-7">Hi Jennifer - I've reviewed your loan information and <strong class="font-bold text-gray-900">Loan Rehabilitation</strong> will help get you out of default with an affordable monthly payment. Your payment could be as low as <strong class="font-bold text-gray-900">$5</strong>!</p>
           </div>
 
           <!-- Flow card -->
@@ -2087,7 +2087,7 @@
     setTimeout(() => {
       staticMsg.innerHTML = `<p id="rehab-stream-el" class="text-base text-[#676d7a] leading-7"></p>`;
       const streamEl = document.getElementById('rehab-stream-el');
-      const msg = 'Hi Jennifer — your loan is currently in default. Here are the five ways to resolve a defaulted federal student loan: Administrative loan discharge, Request for review, Loan consolidation, Pay off the debt, and <strong>Loan Rehabilitation</strong>.';
+      const msg = 'Hi Jennifer - I\'ve reviewed your loan information and <strong>Loan Rehabilitation</strong> will help get you out of default with an affordable monthly payment. Your payment could be as low as <strong>$5</strong>!';
       dStreamText(streamEl, msg, 42, () => {
         // Stage 3: inject content first (sections start as opacity:0 via ds-sec),
         // then reveal the card — so the CTA footer never shows on an empty body
