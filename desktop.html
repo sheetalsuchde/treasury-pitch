@@ -927,9 +927,9 @@
         <div class="rounded-xl p-4 flex flex-col gap-4" style="background:#eff4ff">
           <!-- Amount block (centered) -->
           <div class="flex flex-col gap-1 items-center text-center">
-            <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your estimated monthly payment</p>
+            <p class="text-sm font-medium text-gray-900 leading-snug">Your estimated monthly payment</p>
             <p class="font-bold text-gray-900 leading-8" style="font-size:26px;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
-            <p class="text-xs font-medium text-[#676d7a]">× 9 consecutive months = $${total} total</p>
+            <p class="text-xs font-medium text-gray-900">× 9 consecutive months = $${total} total</p>
           </div>
         </div>
 
@@ -1060,7 +1060,7 @@
           </div>`}
 
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
-            <input type="checkbox" id="form-consent" onchange="toggleFormEnroll(${amount})" class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
+            <input type="checkbox" id="form-consent" onchange="toggleFormEnroll(${amount})" class="mt-0.5 w-4 h-4 rounded accent-[#3E4452] cursor-pointer shrink-0">
             <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation on my behalf, committing to 9 monthly payments of $${amount}.</span>
           </label>
           <button id="form-enroll-btn" onclick="enrollFromForm(${amount})" disabled
@@ -1466,7 +1466,7 @@
           <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4">
             <label class="flex items-start gap-3 cursor-pointer">
               <input type="checkbox" id="d-rehab-auth-chk" onchange="dRehabCheckNext()"
-                class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0" style="margin-top:3px" />
+                class="mt-0.5 w-4 h-4 rounded accent-[#3E4452] cursor-pointer shrink-0" style="margin-top:3px" />
               <span class="text-sm text-gray-800 leading-relaxed">
                 I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
               </span>
@@ -1872,7 +1872,7 @@
         <!-- Authorization + Confirm & Enroll (revealed after Section D) -->
         <div id="ie-auth-block" style="display:none;" class="flex flex-col gap-3 border-t border-[#e2e4eb] pt-4 mt-1">
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
-            <input type="checkbox" id="ie-consent-chk" onchange="toggleIEEnroll()" class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
+            <input type="checkbox" id="ie-consent-chk" onchange="toggleIEEnroll()" class="mt-0.5 w-4 h-4 rounded accent-[#3E4452] cursor-pointer shrink-0">
             <span id="ie-consent-text" class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to submit my rehabilitation agreement and income documentation on my behalf.</span>
           </label>
           <button id="ie-enroll-btn" onclick="completeIEEnrollment()" disabled
@@ -2449,9 +2449,9 @@
           <!-- Payment result card -->
           <div class="rounded-xl p-4 flex flex-col gap-4" style="background:#eff4ff">
             <div class="flex flex-col gap-1 items-center text-center">
-              <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your RAP monthly payment</p>
+              <p class="text-sm font-medium text-gray-900 leading-snug">Your RAP monthly payment</p>
               <p class="font-bold text-gray-900 leading-8" style="font-size:26px;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
-              <p class="text-xs font-medium text-[#676d7a]">IDR payments are recalculated annually according to income and family size.</p>
+              <p class="text-xs font-medium text-gray-900">IDR payments are recalculated annually according to income and family size.</p>
             </div>
 
             <!-- Stats row -->
@@ -2593,7 +2593,7 @@
           <!-- Consent -->
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
             <input type="checkbox" id="d-save-consent-chk" onchange="dSaveCheckEnrollReady()"
-              class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
+              class="mt-0.5 w-4 h-4 rounded accent-[#3E4452] cursor-pointer shrink-0">
             <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="underline text-brand-primary">Terms of Service</a> and <a href="#" class="underline text-brand-primary">Privacy Statement</a>.</span>
           </label>
 
@@ -2723,7 +2723,7 @@
             <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4">
               <label class="flex items-start gap-3 cursor-pointer">
                 <input type="checkbox" id="d-ap-auth-chk" onchange="dRapCheckNext()"
-                  class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0" style="margin-top:3px" />
+                  class="mt-0.5 w-4 h-4 rounded accent-[#3E4452] cursor-pointer shrink-0" style="margin-top:3px" />
                 <span class="text-sm text-gray-800 leading-relaxed">
                   I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
                 </span>
@@ -3293,9 +3293,9 @@
           <!-- Payment result card -->
           <div class="rounded-xl p-4 flex flex-col gap-4" style="background:#eff4ff">
             <div class="flex flex-col gap-1 items-center text-center">
-              <p class="text-sm font-medium text-[#2a2f3d] leading-snug">Your RAP monthly payment</p>
+              <p class="text-sm font-medium text-gray-900 leading-snug">Your RAP monthly payment</p>
               <p class="font-bold text-gray-900 leading-8" style="font-size:26px;">$${monthly}<span class="text-lg font-semibold">/mo</span></p>
-              <p class="text-xs font-medium text-[#676d7a]">IDR payments are recalculated annually according to income and family size.</p>
+              <p class="text-xs font-medium text-gray-900">IDR payments are recalculated annually according to income and family size.</p>
             </div>
 
             <!-- Stats row -->
@@ -3437,7 +3437,7 @@
           <!-- Consent -->
           <label class="flex items-start gap-2.5 cursor-pointer select-none">
             <input type="checkbox" id="d-save-consent-chk" onchange="dSaveCheckEnrollReady()"
-              class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0">
+              class="mt-0.5 w-4 h-4 rounded accent-[#3E4452] cursor-pointer shrink-0">
             <span class="text-xs text-neutral-disabled leading-relaxed">I authorize Candidly to change my plan in accordance with the terms and conditions of the <a href="#" class="underline text-brand-primary">Terms of Service</a> and <a href="#" class="underline text-brand-primary">Privacy Statement</a>.</span>
           </label>
 
@@ -3567,7 +3567,7 @@
             <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4">
               <label class="flex items-start gap-3 cursor-pointer">
                 <input type="checkbox" id="d-ap-auth-chk" onchange="dRapCheckNext()"
-                  class="mt-0.5 w-4 h-4 rounded accent-[#265ddc] cursor-pointer shrink-0" style="margin-top:3px" />
+                  class="mt-0.5 w-4 h-4 rounded accent-[#3E4452] cursor-pointer shrink-0" style="margin-top:3px" />
                 <span class="text-sm text-gray-800 leading-relaxed">
                   I authorize Candidly to make electronic withdrawals from my designated bank account in accordance with the <a href="#" onclick="return false" class="text-[#265ddc] underline">Terms of Service</a> and <a href="#" onclick="return false" class="text-[#265ddc] underline">Privacy Statement</a>. This authorization remains in effect until I notify Candidly's support team to revoke it.
                 </span>
@@ -3942,7 +3942,7 @@
             <div class="bg-[#fafbfc] border border-[#f0f2f5] rounded-2xl p-4">
               <label class="flex items-start gap-3 cursor-pointer">
                 <input type="checkbox" id="fn-desk-auth-chk" onchange="window.fnDeskCheckNext()"
-                  class="mt-0.5 w-5 h-5 rounded cursor-pointer shrink-0" style="margin-top:2px;accent-color:#265ddc" />
+                  class="mt-0.5 w-5 h-5 rounded cursor-pointer shrink-0" style="margin-top:2px;accent-color:#3E4452" />
                 <span class="text-sm text-gray-800 leading-relaxed">
                   I authorize Candidly to debit $${payment} from my account via Pay.gov, and to draft the remaining 8 monthly rehabilitation payments per the <a href="#" onclick="return false" class="fn-link underline">Terms of Service</a>.
                 </span>
