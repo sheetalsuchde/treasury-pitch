@@ -296,27 +296,7 @@
   <!-- 3 persona cards -->
   <div class="cards">
 
-    <!-- 1. Rehab -->
-    <div class="card theme-rehab di-4">
-      <div class="card-bar"></div>
-      <div class="card-status">
-        <!-- warning triangle — borrower in default -->
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M6.857 2.695 1.19 12a1.333 1.333 0 0 0 1.143 2h11.334a1.333 1.333 0 0 0 1.143-2L9.143 2.695a1.333 1.333 0 0 0-2.286 0Z" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 6v2.667M8 11.333h.007" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Borrower in default
-      </div>
-      <div class="card-title">Rehabilitation</div>
-      <p class="card-desc">Borrower in default on federal loans. Cait guides them through income verification, payment calculation, and enrollment into a 9-month rehab plan.</p>
-      <div class="card-actions">
-        <a href="/mobile?flow=rehab" class="btn-icon btn-icon-primary" data-tip="Mobile">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
-        </a>
-        <a href="/desktop?flow=rehab" class="btn-icon btn-icon-secondary" data-tip="Desktop">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- 2. SAVE -->
+    <!-- 1. SAVE -->
     <div class="card theme-save di-5">
       <div class="card-bar"></div>
       <div class="card-status">
@@ -356,15 +336,15 @@
       </div>
     </div>
 
-    <!-- 4. FedNow Pay-by-bank (Treasury / Pay.gov experiment) -->
+    <!-- 3. Loan Rehabilitation (Pay.gov pay-by-bank settlement) -->
     <div class="card theme-fednow di-6">
       <div class="card-bar"></div>
       <div class="card-status">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M9 1L2 9.5h5L7 15l7-8.5H9L9 1z" fill="#9ca3af"/></svg>
-        Treasury · Pay.gov
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M6.857 2.695 1.19 12a1.333 1.333 0 0 0 1.143 2h11.334a1.333 1.333 0 0 0 1.143-2L9.143 2.695a1.333 1.333 0 0 0-2.286 0Z" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 6v2.667M8 11.333h.007" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Borrower in default
       </div>
-      <div class="card-title">FedNow Pay-by-bank</div>
-      <p class="card-desc">Same rehab borrower — but the first $74 settles instantly via Pay.gov bank-aggregator sign-in instead of waiting for ACH. Default clears the moment funds settle.</p>
+      <div class="card-title">Loan Rehabilitation</div>
+      <p class="card-desc">Borrower in default on federal loans. Cait guides them through income verification and a 9-month rehab plan — the first $74 settles instantly via Pay.gov bank-aggregator sign-in, so default clears the moment funds settle.</p>
       <div class="card-actions">
         <a href="/mobile?flow=fednow&variant=paybybank" class="btn-icon btn-icon-primary" data-tip="Mobile">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="3"/></svg>
