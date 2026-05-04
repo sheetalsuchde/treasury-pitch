@@ -310,6 +310,32 @@
 
 
 <!-- ================================================================ -->
+<!-- ================================================================ -->
+<!-- SCREEN 1.5: CAIT REVIEWING LOADING — full-screen overlay         -->
+<!-- ================================================================ -->
+<div id="mob-loading-screen" class="mob-screen slide" style="z-index:15; background:white">
+  <div class="flex-1 flex flex-col items-center justify-center px-8 text-center">
+    <div class="cdy-loading">
+      <div class="cdy-loading-mark">
+        <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M30.0001 5.46019V5.55926C30.0001 7.46979 28.3865 9.01945 26.3971 9.01945H15.3891C13.3997 9.01945 11.7861 7.46979 11.7861 5.55926V5.46019C11.7861 3.54966 13.3997 2 15.3891 2H26.3971C28.3865 2 30.0001 3.54966 30.0001 5.46019Z" fill="#265DDC"/>
+          <path d="M15.3927 19.4707C17.4116 19.4707 19.0473 17.8999 19.0473 15.961C19.0473 14.0222 17.4116 12.4513 15.3927 12.4513H5.65458C3.63572 12.4548 2 14.0257 2 15.9646C2 16.0459 2.00368 16.1273 2.01105 16.2087V26.1788C2.00368 26.2567 2 26.3381 2 26.4194C2 26.5397 2.00737 26.6636 2.01842 26.7803C2.14736 28.5776 3.70571 29.9999 5.61037 29.9999H5.71352C5.96772 29.9999 15.3927 29.9256 15.3927 29.9256C17.4116 29.9256 19.0473 28.3547 19.0473 26.4159C19.0473 24.4771 17.4116 22.9062 15.3927 22.9062H8.53344V19.4672H15.3927V19.4707Z" fill="#265DDC"/>
+          <path d="M5.76047 9.01592C7.77273 9.01592 9.40399 7.44932 9.40399 5.51681C9.40399 3.5843 7.77273 2.0177 5.76047 2.0177C3.74821 2.0177 2.11694 3.5843 2.11694 5.51681C2.11694 7.44932 3.74821 9.01592 5.76047 9.01592Z" fill="url(#cdy-load-mob-g0)"/>
+          <path d="M26.3452 29.9894C28.3574 29.9894 29.9887 28.4228 29.9887 26.4903C29.9887 24.5578 28.3574 22.9912 26.3452 22.9912C24.3329 22.9912 22.7017 24.5578 22.7017 26.4903C22.7017 28.4228 24.3329 29.9894 26.3452 29.9894Z" fill="url(#cdy-load-mob-g1)"/>
+          <path d="M26.3452 19.4708C28.3574 19.4708 29.9887 17.9041 29.9887 15.9716C29.9887 14.0391 28.3574 12.4725 26.3452 12.4725C24.3329 12.4725 22.7017 14.0391 22.7017 15.9716C22.7017 17.9041 24.3329 19.4708 26.3452 19.4708Z" fill="url(#cdy-load-mob-g2)"/>
+          <defs>
+            <linearGradient id="cdy-load-mob-g0" x1="2.114" y1="5.515" x2="9.404" y2="5.515" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
+            <linearGradient id="cdy-load-mob-g1" x1="22.701" y1="26.491" x2="29.992" y2="26.491" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
+            <linearGradient id="cdy-load-mob-g2" x1="22.701" y1="15.971" x2="29.992" y2="15.971" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <p class="cdy-loading-text">I am reviewing your student loans — type of loan, balance, interest rates, and more — due to my connectivity to the Department of Education's loan system. Give me one sec and I'll come back to you with more information about the Loan Rehabilitation program with the lowest possible payment option for you.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
 <!-- SCREEN 2: CHAT                                                     -->
 <!-- ================================================================ -->
 <div id="mob-chat" class="mob-screen slide" style="z-index:20; background:white">
@@ -343,27 +369,6 @@
     <!-- Typing indicator -->
     <div id="mob-typing" class="hidden">
       <div class="typing-dots"><span></span><span></span><span></span></div>
-    </div>
-
-    <!-- Cait "reviewing" loading screen — Candidly mark + reviewing message -->
-    <div id="mob-cait-loading" class="hidden self-start" style="max-width:100%;width:100%">
-      <div class="cdy-loading">
-        <div class="cdy-loading-mark">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M30.0001 5.46019V5.55926C30.0001 7.46979 28.3865 9.01945 26.3971 9.01945H15.3891C13.3997 9.01945 11.7861 7.46979 11.7861 5.55926V5.46019C11.7861 3.54966 13.3997 2 15.3891 2H26.3971C28.3865 2 30.0001 3.54966 30.0001 5.46019Z" fill="#265DDC"/>
-            <path d="M15.3927 19.4707C17.4116 19.4707 19.0473 17.8999 19.0473 15.961C19.0473 14.0222 17.4116 12.4513 15.3927 12.4513H5.65458C3.63572 12.4548 2 14.0257 2 15.9646C2 16.0459 2.00368 16.1273 2.01105 16.2087V26.1788C2.00368 26.2567 2 26.3381 2 26.4194C2 26.5397 2.00737 26.6636 2.01842 26.7803C2.14736 28.5776 3.70571 29.9999 5.61037 29.9999H5.71352C5.96772 29.9999 15.3927 29.9256 15.3927 29.9256C17.4116 29.9256 19.0473 28.3547 19.0473 26.4159C19.0473 24.4771 17.4116 22.9062 15.3927 22.9062H8.53344V19.4672H15.3927V19.4707Z" fill="#265DDC"/>
-            <path d="M5.76047 9.01592C7.77273 9.01592 9.40399 7.44932 9.40399 5.51681C9.40399 3.5843 7.77273 2.0177 5.76047 2.0177C3.74821 2.0177 2.11694 3.5843 2.11694 5.51681C2.11694 7.44932 3.74821 9.01592 5.76047 9.01592Z" fill="url(#cdy-load-mob-g0)"/>
-            <path d="M26.3452 29.9894C28.3574 29.9894 29.9887 28.4228 29.9887 26.4903C29.9887 24.5578 28.3574 22.9912 26.3452 22.9912C24.3329 22.9912 22.7017 24.5578 22.7017 26.4903C22.7017 28.4228 24.3329 29.9894 26.3452 29.9894Z" fill="url(#cdy-load-mob-g1)"/>
-            <path d="M26.3452 19.4708C28.3574 19.4708 29.9887 17.9041 29.9887 15.9716C29.9887 14.0391 28.3574 12.4725 26.3452 12.4725C24.3329 12.4725 22.7017 14.0391 22.7017 15.9716C22.7017 17.9041 24.3329 19.4708 26.3452 19.4708Z" fill="url(#cdy-load-mob-g2)"/>
-            <defs>
-              <linearGradient id="cdy-load-mob-g0" x1="2.114" y1="5.515" x2="9.404" y2="5.515" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
-              <linearGradient id="cdy-load-mob-g1" x1="22.701" y1="26.491" x2="29.992" y2="26.491" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
-              <linearGradient id="cdy-load-mob-g2" x1="22.701" y1="15.971" x2="29.992" y2="15.971" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <p class="cdy-loading-text">I am reviewing your student loans — type of loan, balance, interest rates, and more — due to my connectivity to the Department of Education's loan system. Give me one sec and I'll come back to you with more information about the Loan Rehabilitation program with the lowest possible payment option for you.</p>
-      </div>
     </div>
 
     <!-- Cait message (streamed word by word) -->
@@ -937,62 +942,52 @@
   }
 
   function mobShowChat(label) {
-    const chatEl = document.getElementById('mob-chat');
-    const homeEl = document.getElementById('mob-home');
+    const chatEl    = document.getElementById('mob-chat');
+    const homeEl    = document.getElementById('mob-home');
+    const loadingEl = document.getElementById('mob-loading-screen');
 
-    // Fade home out, fade chat in
+    // Step 1: home fades out → full-screen Candidly loading takes over
     homeEl.classList.add('fading');
-    chatEl.classList.add('active');
+    if (loadingEl) loadingEl.classList.add('active');
 
-    if (!chatEl.dataset.animated) {
-      chatEl.dataset.animated = '1';
+    // Step 2: after ~3.5s, swap loading screen for chat (which already
+    // animates the user bubble → typing → response sequence)
+    setTimeout(() => {
+      if (loadingEl) loadingEl.classList.remove('active');
+      chatEl.classList.add('active');
 
-      const typing    = document.getElementById('mob-typing');
-      const staticMsg = document.getElementById('mob-static-msg');
-      const streamEl  = document.getElementById('mob-stream-text');
-      const flowCard  = document.getElementById('mob-flow-card');
-      const bubble    = document.getElementById('mob-user-bubble');
-      const bubbleTxt = document.getElementById('mob-user-bubble-text');
+      if (!chatEl.dataset.animated) {
+        chatEl.dataset.animated = '1';
 
-      // Step 1: show user bubble immediately
-      bubbleTxt.textContent = label || 'Help me get out of default';
-      bubble.classList.remove('hidden');
+        const typing    = document.getElementById('mob-typing');
+        const staticMsg = document.getElementById('mob-static-msg');
+        const streamEl  = document.getElementById('mob-stream-text');
+        const flowCard  = document.getElementById('mob-flow-card');
+        const bubble    = document.getElementById('mob-user-bubble');
+        const bubbleTxt = document.getElementById('mob-user-bubble-text');
 
-      const loading = document.getElementById('mob-cait-loading');
+        bubbleTxt.textContent = label || 'Help me get out of default';
+        bubble.classList.remove('hidden');
 
-      // Step 2: brief typing dots
-      setTimeout(() => {
-        typing.classList.remove('hidden');
-      }, 400);
+        setTimeout(() => typing.classList.remove('hidden'), 300);
 
-      // Step 3: swap dots → Candidly logo "reviewing" loading screen
-      setTimeout(() => {
-        typing.classList.add('hidden');
-        if (loading) {
-          loading.classList.remove('hidden');
-          loading.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
-      }, 1100);
-
-      // Step 4: hide loading, stream Cait response
-      setTimeout(() => {
-        if (loading) loading.classList.add('hidden');
-        staticMsg.classList.remove('hidden');
-        const msg = 'Hi Jennifer - I\'ve reviewed your loan information and <strong>Loan Rehabilitation</strong> will help get you out of default with an affordable monthly payment. Your payment could be as low as <strong>$5</strong>!';
-        mobStreamText(streamEl, msg, 55, () => {
-          // Step 5: card fades up
-          mobBuildStepBody();
-          flowCard.classList.remove('hidden');
-          flowCard.classList.add('card-revealed');
-          mobUpdateChips('resolution');
-          // Step 6: scroll to CTA
-          setTimeout(() => {
-            const btn = document.getElementById('mob-btn-next');
-            if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
-          }, 500);
-        });
-      }, 4600);
-    }
+        setTimeout(() => {
+          typing.classList.add('hidden');
+          staticMsg.classList.remove('hidden');
+          const msg = 'Hi Jennifer - I\'ve reviewed your loan information and <strong>Loan Rehabilitation</strong> will help get you out of default with an affordable monthly payment. Your payment could be as low as <strong>$5</strong>!';
+          mobStreamText(streamEl, msg, 55, () => {
+            mobBuildStepBody();
+            flowCard.classList.remove('hidden');
+            flowCard.classList.add('card-revealed');
+            mobUpdateChips('resolution');
+            setTimeout(() => {
+              const btn = document.getElementById('mob-btn-next');
+              if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 500);
+          });
+        }, 1300);
+      }
+    }, 3500);
   }
 
   function mobCloseIE() {
