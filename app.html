@@ -144,11 +144,11 @@
     .cdy-load-head { text-align:center; display:flex; flex-direction:column; gap:6px; }
     .cdy-load-title {
       font-size:20px; font-weight:700; color:#181d29; letter-spacing:-0.4px; line-height:1.25;
-      opacity:0; animation: cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.35s both;
+      opacity:0; animation: cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.4s both;
     }
     .cdy-load-intro {
       font-size:13px; color:#676d7a; line-height:1.55; max-width:300px; margin:0 auto;
-      opacity:0; animation: cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.6s both;
+      opacity:0; animation: cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.75s both;
     }
     @keyframes cdy-load-fadeup {
       from { opacity:0; transform:translateY(6px); }
@@ -165,10 +165,10 @@
       opacity:0; transform:translateX(-10px);
       animation: cdy-load-item-in 0.6s cubic-bezier(0.2,0.8,0.2,1) both;
     }
-    .cdy-load-item.ci-1 { animation-delay: 1.0s; }
-    .cdy-load-item.ci-2 { animation-delay: 1.9s; }
-    .cdy-load-item.ci-3 { animation-delay: 2.8s; }
-    .cdy-load-item.ci-4 { animation-delay: 3.7s; }
+    .cdy-load-item.ci-1 { animation-delay: 1.7s; }
+    .cdy-load-item.ci-2 { animation-delay: 2.5s; }
+    .cdy-load-item.ci-3 { animation-delay: 3.3s; }
+    .cdy-load-item.ci-4 { animation-delay: 4.1s; }
     @keyframes cdy-load-item-in {
       from { opacity:0; transform:translateX(-10px); }
       to   { opacity:1; transform:translateX(0); }
@@ -178,10 +178,10 @@
       display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
       transform:scale(0); animation: cdy-load-check-in 0.45s cubic-bezier(0.2,1.4,0.4,1) both;
     }
-    .cdy-load-item.ci-1 .cdy-load-check { animation-delay: 1.35s; }
-    .cdy-load-item.ci-2 .cdy-load-check { animation-delay: 2.25s; }
-    .cdy-load-item.ci-3 .cdy-load-check { animation-delay: 3.15s; }
-    .cdy-load-item.ci-4 .cdy-load-check { animation-delay: 4.05s; }
+    .cdy-load-item.ci-1 .cdy-load-check { animation-delay: 2.05s; }
+    .cdy-load-item.ci-2 .cdy-load-check { animation-delay: 2.85s; }
+    .cdy-load-item.ci-3 .cdy-load-check { animation-delay: 3.65s; }
+    .cdy-load-item.ci-4 .cdy-load-check { animation-delay: 4.45s; }
     @keyframes cdy-load-check-in {
       from { transform:scale(0); }
       to   { transform:scale(1); }
@@ -199,8 +199,8 @@
       color: transparent;
       opacity: 0;
       animation:
-        cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 4.4s both,
-        cdy-shimmer 1.8s linear 4.9s infinite;
+        cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 5.4s both,
+        cdy-shimmer 1.8s linear 5.9s infinite;
     }
     @keyframes cdy-shimmer {
       0%   { background-position: 100% 0; }
@@ -1102,7 +1102,7 @@
           });
         }, 1300);
       }
-    }, 5800);
+    }, 7000);
   }
 
   function mobCloseIE() {
