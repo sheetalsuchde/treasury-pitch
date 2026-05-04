@@ -186,10 +186,7 @@
       from { transform:scale(0); }
       to   { transform:scale(1); }
     }
-    .cdy-load-row { flex:1; display:flex; justify-content:space-between; align-items:baseline; gap:8px; min-width:0; }
-    .cdy-load-label { font-size:12.5px; color:#676d7a; }
-    .cdy-load-value { font-size:13px; font-weight:600; color:#181d29; text-align:right; }
-    .cdy-load-value.cdy-status-default { color:#dc2626; }
+    .cdy-load-label { flex:1; font-size:13.5px; font-weight:500; color:#181d29; }
     /* Final calculating line */
     .cdy-load-final {
       font-size:13px; color:#265ddc; font-weight:500; text-align:center; margin-top:4px; line-height:1.5;
@@ -413,51 +410,39 @@
     <!-- Title + intro -->
     <div class="cdy-load-head">
       <h2 class="cdy-load-title">Reviewing your loans</h2>
-      <p class="cdy-load-intro">Pulling your loan details from the Department of Education's loan system</p>
+      <p class="cdy-load-intro">Connected to the Department of Education to pull your loan details</p>
     </div>
 
-    <!-- Progressive checklist — each row reveals as Cait fetches it -->
+    <!-- Progressive checklist — labels only; values stay private -->
     <ul class="cdy-load-list">
       <li class="cdy-load-item ci-1">
         <span class="cdy-load-check">
           <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 10.5l3 3 7-7" stroke="#027a42" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
-        <span class="cdy-load-row">
-          <span class="cdy-load-label">Loan type</span>
-          <span class="cdy-load-value">Direct Unsubsidized</span>
-        </span>
+        <span class="cdy-load-label">Loan type</span>
       </li>
       <li class="cdy-load-item ci-2">
         <span class="cdy-load-check">
           <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 10.5l3 3 7-7" stroke="#027a42" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
-        <span class="cdy-load-row">
-          <span class="cdy-load-label">Total balance</span>
-          <span class="cdy-load-value">$5,284</span>
-        </span>
+        <span class="cdy-load-label">Total balance</span>
       </li>
       <li class="cdy-load-item ci-3">
         <span class="cdy-load-check">
           <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 10.5l3 3 7-7" stroke="#027a42" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
-        <span class="cdy-load-row">
-          <span class="cdy-load-label">Interest rate</span>
-          <span class="cdy-load-value">6.8%</span>
-        </span>
+        <span class="cdy-load-label">Interest rate</span>
       </li>
       <li class="cdy-load-item ci-4">
         <span class="cdy-load-check">
           <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 10.5l3 3 7-7" stroke="#027a42" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
-        <span class="cdy-load-row">
-          <span class="cdy-load-label">Status</span>
-          <span class="cdy-load-value cdy-status-default">In default</span>
-        </span>
+        <span class="cdy-load-label">Repayment status</span>
       </li>
     </ul>
 
     <!-- Final calculating message -->
-    <p class="cdy-load-final">Calculating your lowest possible payment for Loan Rehabilitation<span class="cdy-load-dots">…</span></p>
+    <p class="cdy-load-final">Finding your lowest Loan Rehabilitation payment<span class="cdy-load-dots">…</span></p>
 
   </div>
 </div>
