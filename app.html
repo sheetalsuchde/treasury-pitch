@@ -3798,7 +3798,7 @@
       .fn-pbb-dot { width:8px; height:8px; border-radius:50%; background:#d6dce6; transition:all 0.2s; }
       .fn-pbb-dot.active { background:${FN_TEAL}; transform:scale(1.2); }
       .fn-pbb-dot.done { background:${FN_NAVY}; }
-      .fn-spinner { width:36px; height:36px; border:3px solid #EFF4FF; border-top-color:#265DDC; border-radius:50%; animation:fn-spin 0.85s linear infinite; }
+      .fn-spinner { width:44px; height:44px; border:4px solid #EFF4FF; border-top-color:#265DDC; border-radius:50%; animation:fn-spin 0.85s linear infinite; }
       @keyframes fn-spin { to{ transform:rotate(360deg); } }
       /* Celebration hero (success screen) */
       .fn-celebrate { position:relative; width:100%; border-radius:20px; padding:30px 22px 26px; color:#fff; text-align:center; overflow:hidden;
@@ -4156,7 +4156,7 @@
                 <h2 style="font-size:17px;font-weight:700;color:${FN_NAVY};margin-top:14px;">Initiating instant payment…</h2>
                 <p style="font-size:13px;color:#676d7a;line-height:1.5;max-width:280px;">${bank.name} authorized · routing $${autopayPayment} through Pay.gov.</p>
               </div>`;
-            setTimeout(() => { fnPbbSub = 1; mobAutopayNext(); }, 1600);
+            setTimeout(() => { fnPbbSub = 1; mobAutopayNext(); }, 2400);
           }
           fadeIn(body);
           return;
