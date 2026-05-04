@@ -107,54 +107,37 @@
     .typing-dots { display: flex; align-items: center; gap: 4px; padding: 2px 0; width: fit-content; }
 
     /* Cait "reviewing" loading screen — progressive-reveal checklist
-       with Cait AI logo pulse + soft gradient aura. */
+       with Cait AI logo pulse + soft gradient aura.
+       All animations are scoped to #mob-loading-screen.active so they
+       only run when the screen is shown (not on page load). */
     #mob-loading-screen { transition: opacity 0.4s ease; }
     .cdy-load-wrap {
       flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
       padding:32px 24px 48px; gap:20px; max-width:380px; margin:0 auto; width:100%;
     }
-    /* Logo with soft aura + breathing pulse — dissolves in (no scale pop) */
+
+    /* Initial (resting) states — applied always so the screen is blank
+       before .active triggers the cascade. */
     .cdy-load-logo {
       position:relative; width:80px; height:80px;
       display:inline-flex; align-items:center; justify-content:center;
-      animation: cdy-load-dissolve 0.7s ease both;
+      opacity:0;
     }
-    @keyframes cdy-load-dissolve {
-      from { opacity:0; }
-      to   { opacity:1; }
-    }
-    .cdy-load-logo svg {
-      width:56px; height:56px; position:relative; z-index:2;
-      animation: cdy-load-pulse 2.4s ease-in-out 0.5s infinite;
-    }
-    @keyframes cdy-load-pulse {
-      0%,100% { transform:scale(1); }
-      50%     { transform:scale(1.07); }
-    }
+    .cdy-load-logo svg { width:56px; height:56px; position:relative; z-index:2; }
     .cdy-load-aura {
       position:absolute; inset:-12px; border-radius:50%; pointer-events:none;
       background: radial-gradient(circle, rgba(38,93,220,0.22) 0%, rgba(203,153,213,0.14) 45%, rgba(255,255,255,0) 75%);
-      animation: cdy-load-glow 2.6s ease-in-out infinite;
+      opacity:0;
     }
-    @keyframes cdy-load-glow {
-      0%,100% { transform:scale(1);    opacity:0.55; }
-      50%     { transform:scale(1.18); opacity:1;    }
-    }
-    /* Title + intro */
     .cdy-load-head { text-align:center; display:flex; flex-direction:column; gap:6px; }
     .cdy-load-title {
       font-size:20px; font-weight:700; color:#181d29; letter-spacing:-0.4px; line-height:1.25;
-      opacity:0; animation: cdy-load-dissolve 0.7s ease 0.25s both;
+      opacity:0;
     }
     .cdy-load-intro {
       font-size:13px; color:#676d7a; line-height:1.55; max-width:300px; margin:0 auto;
-      opacity:0; animation: cdy-load-dissolve 0.7s ease 0.5s both;
+      opacity:0;
     }
-    @keyframes cdy-load-fadeup {
-      from { opacity:0; transform:translateY(6px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    /* Progressive checklist */
     .cdy-load-list {
       list-style:none; padding:0; margin:8px 0 0; width:100%;
       display:flex; flex-direction:column; gap:10px;
@@ -163,32 +146,13 @@
       display:flex; align-items:center; gap:12px;
       padding:11px 14px; background:#fafbfc; border:1px solid #f0f2f5; border-radius:12px;
       opacity:0; transform:translateX(-10px);
-      animation: cdy-load-item-in 0.6s cubic-bezier(0.2,0.8,0.2,1) both;
-    }
-    .cdy-load-item.ci-1 { animation-delay: 1.9s; }
-    .cdy-load-item.ci-2 { animation-delay: 2.7s; }
-    .cdy-load-item.ci-3 { animation-delay: 3.5s; }
-    .cdy-load-item.ci-4 { animation-delay: 4.3s; }
-    @keyframes cdy-load-item-in {
-      from { opacity:0; transform:translateX(-10px); }
-      to   { opacity:1; transform:translateX(0); }
     }
     .cdy-load-check {
       width:22px; height:22px; border-radius:50%; background:#ecfbf5;
       display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
-      transform:scale(0); animation: cdy-load-check-in 0.45s cubic-bezier(0.2,1.4,0.4,1) both;
-    }
-    .cdy-load-item.ci-1 .cdy-load-check { animation-delay: 2.25s; }
-    .cdy-load-item.ci-2 .cdy-load-check { animation-delay: 3.05s; }
-    .cdy-load-item.ci-3 .cdy-load-check { animation-delay: 3.85s; }
-    .cdy-load-item.ci-4 .cdy-load-check { animation-delay: 4.65s; }
-    @keyframes cdy-load-check-in {
-      from { transform:scale(0); }
-      to   { transform:scale(1); }
+      transform:scale(0);
     }
     .cdy-load-label { flex:1; font-size:13.5px; font-weight:500; color:#181d29; }
-    /* Final calculating line — fast typing reveal via clip-path, then runs
-       a slow subtle skeleton shimmer with animated trailing dots. */
     .cdy-load-final {
       font-size:13px; font-weight:500; text-align:center; margin-top:6px; line-height:1.5;
       background: linear-gradient(90deg, #c5cdd9 0%, #c5cdd9 35%, #6f8ec4 50%, #c5cdd9 65%, #c5cdd9 100%);
@@ -199,9 +163,68 @@
       -webkit-text-fill-color: transparent;
       color: transparent;
       clip-path: inset(0 100% 0 0);
+    }
+    .cdy-load-dots-trail { display:inline-block; width:22px; text-align:left; }
+    .cdy-load-dots-trail::after { content:''; }
+
+    /* Animations only kick in once the loading screen activates */
+    #mob-loading-screen.active .cdy-load-logo {
+      animation: cdy-load-dissolve 0.7s ease forwards;
+    }
+    #mob-loading-screen.active .cdy-load-logo svg {
+      animation: cdy-load-pulse 2.4s ease-in-out 0.5s infinite;
+    }
+    #mob-loading-screen.active .cdy-load-aura {
+      animation: cdy-load-glow 2.6s ease-in-out 0.2s infinite;
+    }
+    #mob-loading-screen.active .cdy-load-title {
+      animation: cdy-load-dissolve 0.7s ease 0.25s forwards;
+    }
+    #mob-loading-screen.active .cdy-load-intro {
+      animation: cdy-load-dissolve 0.7s ease 0.5s forwards;
+    }
+    #mob-loading-screen.active .cdy-load-item {
+      animation: cdy-load-item-in 0.6s cubic-bezier(0.2,0.8,0.2,1) forwards;
+    }
+    #mob-loading-screen.active .cdy-load-item.ci-1 { animation-delay: 1.9s; }
+    #mob-loading-screen.active .cdy-load-item.ci-2 { animation-delay: 2.7s; }
+    #mob-loading-screen.active .cdy-load-item.ci-3 { animation-delay: 3.5s; }
+    #mob-loading-screen.active .cdy-load-item.ci-4 { animation-delay: 4.3s; }
+    #mob-loading-screen.active .cdy-load-check {
+      animation: cdy-load-check-in 0.45s cubic-bezier(0.2,1.4,0.4,1) forwards;
+    }
+    #mob-loading-screen.active .ci-1 .cdy-load-check { animation-delay: 2.25s; }
+    #mob-loading-screen.active .ci-2 .cdy-load-check { animation-delay: 3.05s; }
+    #mob-loading-screen.active .ci-3 .cdy-load-check { animation-delay: 3.85s; }
+    #mob-loading-screen.active .ci-4 .cdy-load-check { animation-delay: 4.65s; }
+    #mob-loading-screen.active .cdy-load-final {
       animation:
         cdy-load-type    1.0s steps(48, end) 5.4s forwards,
         cdy-shimmer      3.2s linear 6.5s infinite;
+    }
+    #mob-loading-screen.active .cdy-load-dots-trail::after {
+      animation: cdy-load-dots 1.4s steps(5, end) 6.6s infinite;
+    }
+
+    @keyframes cdy-load-dissolve {
+      from { opacity:0; }
+      to   { opacity:1; }
+    }
+    @keyframes cdy-load-pulse {
+      0%,100% { transform:scale(1); }
+      50%     { transform:scale(1.07); }
+    }
+    @keyframes cdy-load-glow {
+      0%,100% { transform:scale(1);    opacity:0.55; }
+      50%     { transform:scale(1.18); opacity:1;    }
+    }
+    @keyframes cdy-load-item-in {
+      from { opacity:0; transform:translateX(-10px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes cdy-load-check-in {
+      from { transform:scale(0); }
+      to   { transform:scale(1); }
     }
     @keyframes cdy-load-type {
       from { clip-path: inset(0 100% 0 0); }
@@ -210,12 +233,6 @@
     @keyframes cdy-shimmer {
       0%   { background-position: 100% 0; }
       100% { background-position: -130% 0; }
-    }
-    /* Trailing dots — animate after the typing reveal completes */
-    .cdy-load-dots-trail { display:inline-block; width:22px; text-align:left; }
-    .cdy-load-dots-trail::after {
-      content:'';
-      animation: cdy-load-dots 1.4s steps(5, end) 6.6s infinite;
     }
     @keyframes cdy-load-dots {
       0%        { content:''; }
