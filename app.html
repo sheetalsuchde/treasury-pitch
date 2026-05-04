@@ -113,15 +113,15 @@
       flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
       padding:32px 24px 48px; gap:20px; max-width:380px; margin:0 auto; width:100%;
     }
-    /* Logo with soft aura + breathing pulse */
+    /* Logo with soft aura + breathing pulse — dissolves in (no scale pop) */
     .cdy-load-logo {
       position:relative; width:80px; height:80px;
       display:inline-flex; align-items:center; justify-content:center;
-      animation: cdy-load-pop 0.55s cubic-bezier(0.2,1.2,0.4,1) both;
+      animation: cdy-load-dissolve 0.7s ease both;
     }
-    @keyframes cdy-load-pop {
-      from { opacity:0; transform:scale(0.55); }
-      to   { opacity:1; transform:scale(1); }
+    @keyframes cdy-load-dissolve {
+      from { opacity:0; }
+      to   { opacity:1; }
     }
     .cdy-load-logo svg {
       width:56px; height:56px; position:relative; z-index:2;
@@ -144,11 +144,11 @@
     .cdy-load-head { text-align:center; display:flex; flex-direction:column; gap:6px; }
     .cdy-load-title {
       font-size:20px; font-weight:700; color:#181d29; letter-spacing:-0.4px; line-height:1.25;
-      opacity:0; animation: cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.4s both;
+      opacity:0; animation: cdy-load-dissolve 0.7s ease 0.25s both;
     }
     .cdy-load-intro {
       font-size:13px; color:#676d7a; line-height:1.55; max-width:300px; margin:0 auto;
-      opacity:0; animation: cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 0.75s both;
+      opacity:0; animation: cdy-load-dissolve 0.7s ease 0.5s both;
     }
     @keyframes cdy-load-fadeup {
       from { opacity:0; transform:translateY(6px); }
@@ -165,10 +165,10 @@
       opacity:0; transform:translateX(-10px);
       animation: cdy-load-item-in 0.6s cubic-bezier(0.2,0.8,0.2,1) both;
     }
-    .cdy-load-item.ci-1 { animation-delay: 2.6s; }
-    .cdy-load-item.ci-2 { animation-delay: 3.4s; }
-    .cdy-load-item.ci-3 { animation-delay: 4.2s; }
-    .cdy-load-item.ci-4 { animation-delay: 5.0s; }
+    .cdy-load-item.ci-1 { animation-delay: 1.9s; }
+    .cdy-load-item.ci-2 { animation-delay: 2.7s; }
+    .cdy-load-item.ci-3 { animation-delay: 3.5s; }
+    .cdy-load-item.ci-4 { animation-delay: 4.3s; }
     @keyframes cdy-load-item-in {
       from { opacity:0; transform:translateX(-10px); }
       to   { opacity:1; transform:translateX(0); }
@@ -178,16 +178,17 @@
       display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
       transform:scale(0); animation: cdy-load-check-in 0.45s cubic-bezier(0.2,1.4,0.4,1) both;
     }
-    .cdy-load-item.ci-1 .cdy-load-check { animation-delay: 2.95s; }
-    .cdy-load-item.ci-2 .cdy-load-check { animation-delay: 3.75s; }
-    .cdy-load-item.ci-3 .cdy-load-check { animation-delay: 4.55s; }
-    .cdy-load-item.ci-4 .cdy-load-check { animation-delay: 5.35s; }
+    .cdy-load-item.ci-1 .cdy-load-check { animation-delay: 2.25s; }
+    .cdy-load-item.ci-2 .cdy-load-check { animation-delay: 3.05s; }
+    .cdy-load-item.ci-3 .cdy-load-check { animation-delay: 3.85s; }
+    .cdy-load-item.ci-4 .cdy-load-check { animation-delay: 4.65s; }
     @keyframes cdy-load-check-in {
       from { transform:scale(0); }
       to   { transform:scale(1); }
     }
     .cdy-load-label { flex:1; font-size:13.5px; font-weight:500; color:#181d29; }
-    /* Final calculating line — fades up then runs a slow, subtle skeleton shimmer */
+    /* Final calculating line — fast typing reveal via clip-path, then runs
+       a slow subtle skeleton shimmer with animated trailing dots. */
     .cdy-load-final {
       font-size:13px; font-weight:500; text-align:center; margin-top:6px; line-height:1.5;
       background: linear-gradient(90deg, #c5cdd9 0%, #c5cdd9 35%, #6f8ec4 50%, #c5cdd9 65%, #c5cdd9 100%);
@@ -197,14 +198,31 @@
       background-clip: text;
       -webkit-text-fill-color: transparent;
       color: transparent;
-      opacity: 0;
+      clip-path: inset(0 100% 0 0);
       animation:
-        cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 6.3s both,
-        cdy-shimmer 2.8s linear 6.8s infinite;
+        cdy-load-type    1.0s steps(48, end) 5.4s forwards,
+        cdy-shimmer      3.2s linear 6.5s infinite;
+    }
+    @keyframes cdy-load-type {
+      from { clip-path: inset(0 100% 0 0); }
+      to   { clip-path: inset(0 0 0 0); }
     }
     @keyframes cdy-shimmer {
       0%   { background-position: 100% 0; }
       100% { background-position: -130% 0; }
+    }
+    /* Trailing dots — animate after the typing reveal completes */
+    .cdy-load-dots-trail { display:inline-block; width:22px; text-align:left; }
+    .cdy-load-dots-trail::after {
+      content:'';
+      animation: cdy-load-dots 1.4s steps(5, end) 6.6s infinite;
+    }
+    @keyframes cdy-load-dots {
+      0%        { content:''; }
+      20%       { content:'.'; }
+      40%       { content:'..'; }
+      60%       { content:'...'; }
+      80%, 100% { content:'....'; }
     }
     .typing-dots span { width: 5px; height: 5px; border-radius: 50%; background: #9ca3af; animation: dot-pulse 1.4s infinite ease-in-out; }
     .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
@@ -444,8 +462,8 @@
       </li>
     </ul>
 
-    <!-- Final calculating message — skeleton shimmer text -->
-    <p class="cdy-load-final">Finding your lowest Loan Rehabilitation payment…</p>
+    <!-- Final calculating message — typing reveal + shimmer + animated dots -->
+    <p class="cdy-load-final">Finding your lowest Loan Rehabilitation payment<span class="cdy-load-dots-trail"></span></p>
 
   </div>
 </div>
@@ -1102,7 +1120,7 @@
           });
         }, 1300);
       }
-    }, 9500);
+    }, 9000);
   }
 
   function mobCloseIE() {
