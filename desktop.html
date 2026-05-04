@@ -4233,7 +4233,8 @@
     window.fnDeskPbbAutofill = function() {
       const u = document.getElementById('fn-desk-user');
       const p = document.getElementById('fn-desk-pass');
-      if (u && !u.value) { u.value = 'jennifer.t'; }
+      const _fnUser = _fnFlow === 'save' ? 'marcus.webb' : 'jennifer.bahl';
+      if (u && !u.value) { u.value = _fnUser; }
       if (p && !p.value) { p.value = '••••••••••••'; }
     };
 
