@@ -3766,7 +3766,7 @@
       .fn-bank-row:hover { border-color:${FN_TEAL}; background:${FN_TEAL_TINT}; }
       .fn-bank-row.selected { border-color:${FN_TEAL}; background:${FN_TEAL_TINT}; box-shadow:0 0 0 3px rgba(0,169,157,0.15); }
       .fn-bank-logo { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:11px; letter-spacing:0.5px; flex-shrink:0; }
-      .fn-bank-name { flex:1; font-size:14px; font-weight:600; color:${FN_NAVY}; }
+      .fn-bank-name { flex:1; font-size:14px; font-weight:500; color:${FN_NAVY}; }
       .fn-bank-tag { font-size:10px; font-weight:700; color:${FN_TEAL_DARK}; background:${FN_TEAL_TINT}; padding:2px 6px; border-radius:4px; letter-spacing:0.3px; text-transform:uppercase; }
       .fn-bank-row.selected .fn-bank-tag { background:#fff; }
       .fn-pending-phone { width:200px; height:280px; border-radius:24px; background:linear-gradient(180deg, #f5f7fb 0%, #fff 100%); border:8px solid #1a1f2e; box-shadow:0 8px 30px rgba(10,44,94,0.18); margin:8px auto 0; position:relative; overflow:hidden; }
@@ -3829,7 +3829,7 @@
       .fn-confirm-pill { display:flex; align-items:center; gap:12px; background:#ecfbf5; border:1px solid #b6eeda; border-radius:12px; padding:12px 14px; }
       .fn-confirm-check { width:26px; height:26px; border-radius:50%; background:#fff; border:1.5px solid #027a42; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
       .fn-confirm-primary { font-size:13px; font-weight:700; color:#027a42; line-height:1.4; }
-      .fn-confirm-secondary { font-size:11.5px; color:#4a5d52; line-height:1.4; margin-top:2px; }
+      .fn-confirm-secondary { font-size:11.5px; color:#111827; line-height:1.4; margin-top:2px; }
       .fn-next-section { margin-top:18px; padding-top:18px; border-top:1px solid #f0f2f5; }
       .fn-next-heading { font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:${FN_NAVY}; opacity:0.75; margin-bottom:14px; }
       .fn-next-item { display:flex; align-items:flex-start; gap:12px; }
@@ -4239,7 +4239,7 @@
             </div>
 
             <div class="fn-rehab-msg">
-              <p class="fn-rehab-msg-headline">${_fnFlow === 'save' ? 'Your repayment plan is locked in. <span aria-hidden="true">🌱</span>' : 'Your path to becoming debt-free starts today. <span aria-hidden="true">🌱</span>'}</p>
+              <p class="fn-rehab-msg-headline">${_fnFlow === 'save' ? 'Your repayment plan is locked in.' : 'Your path to becoming debt-free starts today.'}</p>
               <p class="fn-rehab-msg-body">${_fnFlow === 'save' ? 'Your monthly payment adjusts with your income, your balance is protected from runaway interest, and forgiveness arrives at the end of the term — no extra effort required.' : '9 payments. 9 months. A default permanently erased from your credit report — and a future where your money works for you, not against you.'}</p>
               <div class="fn-confirm-pill">
                 <svg width="24" height="24" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;" aria-hidden="true"><path d="M8.92146 11.1636L7.5273 9.79008C7.41188 9.6748 7.28764 9.61578 7.15459 9.613C7.02167 9.61036 6.8948 9.66939 6.77396 9.79008C6.65327 9.91092 6.59292 10.0399 6.59292 10.1772C6.59292 10.3144 6.65327 10.4434 6.77396 10.5642L8.45667 12.247C8.59348 12.3836 8.74841 12.452 8.92146 12.452C9.09452 12.452 9.24945 12.3836 9.38626 12.247L13.21 8.42321C13.3253 8.30779 13.3843 8.18008 13.3871 8.04008C13.3897 7.90022 13.3307 7.76987 13.21 7.64904C13.0892 7.52835 12.9636 7.468 12.8333 7.468C12.7031 7.468 12.5775 7.52835 12.4567 7.64904L8.92146 11.1636ZM10.0015 17.5834C8.96202 17.5834 7.98139 17.3861 7.05959 16.9913C6.13778 16.5966 5.33098 16.0535 4.63917 15.362C3.94737 14.6704 3.40396 13.864 3.00896 12.9426C2.6141 12.0212 2.41667 11.0408 2.41667 10.0015C2.41667 8.94821 2.61403 7.96411 3.00876 7.04925C3.40348 6.13439 3.9466 5.33105 4.63813 4.63925C5.32966 3.94744 6.13612 3.40404 7.05751 3.00904C7.97889 2.61418 8.95924 2.41675 9.99855 2.41675C11.0519 2.41675 12.036 2.61411 12.9508 3.00883C13.8657 3.40355 14.669 3.94668 15.3608 4.63821C16.0526 5.32973 16.596 6.13272 16.991 7.04716C17.3859 7.96161 17.5833 8.94543 17.5833 9.99862C17.5833 11.0381 17.386 12.0187 16.9913 12.9405C16.5965 13.8623 16.0534 14.6691 15.3619 15.3609C14.6704 16.0527 13.8674 16.5961 12.9529 16.9911C12.0385 17.386 11.0547 17.5834 10.0015 17.5834Z" fill="#027a42"/></svg>
