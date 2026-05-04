@@ -116,6 +116,31 @@
     /* ── SAVE desktop — exact same specs as mobile ── */
     /* Typing dots (identical to mobile dot-pulse) */
     .typing-dots{display:flex;align-items:center;gap:4px;padding:2px 0;width:fit-content}
+
+    /* Cait "reviewing" loading screen — Candidly mark with breathing pulse + AirDrop-style ripples */
+    .cdy-loading { display:flex; flex-direction:column; align-items:center; text-align:center; gap:20px; padding:18px 12px;
+      animation: cdy-load-in 0.4s ease both; }
+    @keyframes cdy-load-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .cdy-loading-mark { position:relative; width:64px; height:64px; display:inline-flex; align-items:center; justify-content:center; }
+    .cdy-loading-mark svg { width:100%; height:100%; position:relative; z-index:2;
+      animation: cdy-breathe 2.4s ease-in-out infinite; }
+    @keyframes cdy-breathe {
+      0%,100% { transform:scale(1);    filter: drop-shadow(0 2px 6px rgba(38,93,220,0.18)); }
+      50%     { transform:scale(1.06); filter: drop-shadow(0 8px 22px rgba(38,93,220,0.40)); }
+    }
+    .cdy-loading-mark::before, .cdy-loading-mark::after {
+      content:""; position:absolute; inset:0; border-radius:50%;
+      border:1.5px solid rgba(38,93,220,0.4); pointer-events:none;
+      animation: cdy-ripple 2.4s cubic-bezier(0.2,0.8,0.2,1) infinite;
+    }
+    .cdy-loading-mark::after { animation-delay: 1.2s; }
+    @keyframes cdy-ripple {
+      0%   { transform:scale(0.95); opacity:0.6; }
+      100% { transform:scale(2.2);  opacity:0;   }
+    }
+    .cdy-loading-text { font-size:14px; line-height:1.6; color:#4a5161; max-width:420px; margin:0 auto;
+      animation: cdy-fade-up 0.5s ease 0.3s both; }
+    @keyframes cdy-fade-up { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
     .typing-dots span{width:5px;height:5px;border-radius:50%;background:#9ca3af;animation:dot-pulse 1.4s infinite ease-in-out}
     .typing-dots span:nth-child(2){animation-delay:0.2s}
     .typing-dots span:nth-child(3){animation-delay:0.4s}
@@ -2084,7 +2109,29 @@
     // Stage 1 (0ms): typing dots
     staticMsg.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
 
-    // Stage 2 (1500ms): clear dots → word-stream Cait response
+    // Stage 1.5 (700ms): Candidly logo "reviewing" loading screen
+    setTimeout(() => {
+      staticMsg.innerHTML = `
+        <div class="cdy-loading">
+          <div class="cdy-loading-mark">
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M30.0001 5.46019V5.55926C30.0001 7.46979 28.3865 9.01945 26.3971 9.01945H15.3891C13.3997 9.01945 11.7861 7.46979 11.7861 5.55926V5.46019C11.7861 3.54966 13.3997 2 15.3891 2H26.3971C28.3865 2 30.0001 3.54966 30.0001 5.46019Z" fill="#265DDC"/>
+              <path d="M15.3927 19.4707C17.4116 19.4707 19.0473 17.8999 19.0473 15.961C19.0473 14.0222 17.4116 12.4513 15.3927 12.4513H5.65458C3.63572 12.4548 2 14.0257 2 15.9646C2 16.0459 2.00368 16.1273 2.01105 16.2087V26.1788C2.00368 26.2567 2 26.3381 2 26.4194C2 26.5397 2.00737 26.6636 2.01842 26.7803C2.14736 28.5776 3.70571 29.9999 5.61037 29.9999H5.71352C5.96772 29.9999 15.3927 29.9256 15.3927 29.9256C17.4116 29.9256 19.0473 28.3547 19.0473 26.4159C19.0473 24.4771 17.4116 22.9062 15.3927 22.9062H8.53344V19.4672H15.3927V19.4707Z" fill="#265DDC"/>
+              <path d="M5.76047 9.01592C7.77273 9.01592 9.40399 7.44932 9.40399 5.51681C9.40399 3.5843 7.77273 2.0177 5.76047 2.0177C3.74821 2.0177 2.11694 3.5843 2.11694 5.51681C2.11694 7.44932 3.74821 9.01592 5.76047 9.01592Z" fill="url(#cdy-load-desk-g0)"/>
+              <path d="M26.3452 29.9894C28.3574 29.9894 29.9887 28.4228 29.9887 26.4903C29.9887 24.5578 28.3574 22.9912 26.3452 22.9912C24.3329 22.9912 22.7017 24.5578 22.7017 26.4903C22.7017 28.4228 24.3329 29.9894 26.3452 29.9894Z" fill="url(#cdy-load-desk-g1)"/>
+              <path d="M26.3452 19.4708C28.3574 19.4708 29.9887 17.9041 29.9887 15.9716C29.9887 14.0391 28.3574 12.4725 26.3452 12.4725C24.3329 12.4725 22.7017 14.0391 22.7017 15.9716C22.7017 17.9041 24.3329 19.4708 26.3452 19.4708Z" fill="url(#cdy-load-desk-g2)"/>
+              <defs>
+                <linearGradient id="cdy-load-desk-g0" x1="2.114" y1="5.515" x2="9.404" y2="5.515" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
+                <linearGradient id="cdy-load-desk-g1" x1="22.701" y1="26.491" x2="29.992" y2="26.491" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
+                <linearGradient id="cdy-load-desk-g2" x1="22.701" y1="15.971" x2="29.992" y2="15.971" gradientUnits="userSpaceOnUse"><stop stop-color="#CB99D5"/><stop offset="0.9957" stop-color="#E9B39D"/></linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <p class="cdy-loading-text">I am reviewing your student loans — type of loan, balance, interest rates, and more — due to my connectivity to the Department of Education's loan system. Give me one sec and I'll come back to you with more information about the Loan Rehabilitation program with the lowest possible payment option for you.</p>
+        </div>`;
+    }, 700);
+
+    // Stage 2 (4500ms): clear loading → word-stream Cait response
     setTimeout(() => {
       staticMsg.innerHTML = `<p id="rehab-stream-el" class="text-base text-[#676d7a] leading-7"></p>`;
       const streamEl = document.getElementById('rehab-stream-el');
@@ -2113,7 +2160,7 @@
           setTimeout(() => updateChatChips('resolution'), 1200);
         }, 40);
       });
-    }, 1500);
+    }, 4500);
   }
 
   /* ══════════════════════════════════════════════════════════════
