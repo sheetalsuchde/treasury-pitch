@@ -1935,6 +1935,71 @@
     document.getElementById('screen-home').classList.remove('hidden');
   }
 
+  /* ── Cait answers used by chip clicks (fn: null falls through to dCaitAsk) ── */
+  const CAIT_ANSWERS_DESK = {
+    'Which option removes default from my credit?': '<strong>Loan rehabilitation</strong> is the only option that permanently removes the default from your credit report. Consolidation can stop collections but the default stays visible for up to 7 years.',
+    'How long does loan rehab take?': 'Loan rehabilitation takes <strong>9 consecutive on-time monthly payments</strong> within a 10-month window. After that, the default is removed and your loan returns to good standing.',
+    'How is discretionary income calculated?': 'Your discretionary income is your AGI minus 225% of the federal poverty line for your family size. RAP uses 5% of that figure, divided by 12, as your monthly payment.',
+    'How is 5% discretionary calculated?': 'RAP uses 5% of your discretionary income — that\'s your AGI minus 225% of the federal poverty line for your family size — divided by 12. The result is your capped monthly payment.',
+    'What counts as a dependent?': 'A dependent is anyone you claim on your federal tax return — typically children under 19 (or under 24 if a full-time student) and other qualifying relatives.',
+    'What counts as income?': 'Income includes wages, self-employment earnings, taxable benefits (unemployment, retirement), and other taxable sources. Use the AGI from your most recent tax return as the baseline.',
+    'Can I use last year\'s taxes?': 'Yes — your most recent tax return is the standard reference. If your income has changed materially since then, Cait can document the change so your payment reflects today\'s reality.',
+    'What if I miss a payment?': 'Auto-pay is designed to prevent missed payments. If a draft fails, you have a <strong>15-day grace period</strong> to make it up before it counts against your standing. Contact your servicer immediately if you anticipate an issue.',
+    'Can I change my payment amount?': 'Your payment is recalculated each year at recertification. You can also request a recalculation any time your income changes by 10% or more.',
+    'Can I change my payment later?': 'Yes — RAP recalculates each year at recertification, and you can request an off-cycle recalculation any time your income shifts materially.',
+    'How quickly will collections stop?': 'Collections activity (wage garnishment, tax-refund offsets) stops as soon as your rehabilitation agreement is on file with your servicer — typically within 5–7 business days.',
+    'What happens next?': 'Candidly confirms your enrollment with your servicer within 5–7 business days. Auto-pay handles each monthly payment automatically — nothing for you to remember.',
+    'How will this help my credit?': 'Once rehabilitation completes, the default is removed from all 3 credit bureaus. Most borrowers see their score rebound <strong>50–100+ points</strong> within a few months.',
+    'Can I make extra payments?': 'Absolutely. Extra payments go straight to your principal and reduce both your balance and total interest paid. There\'s no prepayment penalty.',
+    'Can I pay extra to catch up faster?': 'You can make extra payments any time, but for rehabilitation specifically, the 9-payment plan still requires 9 consecutive on-time monthly payments — extras don\'t shorten that count.',
+    'Can I pay extra to finish sooner?': 'Yes — extra principal payments shorten your repayment timeline and reduce total interest. Your monthly minimum and auto-pay schedule stay the same.',
+    'Celebrate this win 🎉': 'You earned it 🎉 — completing rehabilitation is one of the biggest financial milestones a borrower can hit. Default is one of the hardest chapters to close, and you just did it.',
+    'What is RAP?': 'The <strong>Repayment Assistance Program</strong> is the new federal income-driven repayment plan replacing SAVE. It uses 5% of your discretionary income, includes an interest subsidy so your balance can\'t grow, and forgives any remaining balance after 30 years.',
+    'Will my payment change?': 'Your payment is recalculated each year at recertification based on your most recent AGI. It can go up or down, but it\'s always capped at 5% of your discretionary income.',
+    'Can I recalculate?': 'Yes — RAP recalculates each year at recertification, and you can request an off-cycle recalculation any time your income changes by 10% or more.',
+    'What happens to my forgiveness timeline?': 'Switching to RAP preserves any qualifying payments you\'ve already made. Your forgiveness clock continues forward — you don\'t restart at zero.',
+    'Is RAP the same as IBR?': 'No — RAP uses 5% of discretionary income (vs. IBR\'s 10%) and adds an interest subsidy so your balance never grows. Forgiveness comes after 30 years; PSLF still applies if you qualify.',
+    'Will my interest capitalize?': 'No — RAP\'s interest subsidy covers any unpaid interest each month, so it never capitalizes onto your principal. This is one of RAP\'s biggest advantages over older IDR plans.',
+    'What happens after I enroll?': 'Candidly submits your enrollment to your loan servicer within 5–7 business days. Auto-pay starts on your scheduled draft date and handles every payment from there.',
+    'How does 30-year forgiveness work?': 'After 30 years of qualifying RAP payments, any remaining balance is forgiven. PSLF can shorten this to 10 years if you work in qualifying public service.',
+    'Is this legally binding?': 'Yes — your e-signature and consent today form a binding agreement with the Department of Education through Candidly. You can cancel auto-pay any time, but the underlying repayment-plan obligation remains.',
+    'How does forgiveness work?': 'Stay enrolled in RAP, make your monthly payments (auto-pay handles this), and any remaining balance is forgiven at the end of the term — 30 years standard, 10 years for PSLF.',
+    'Will my balance grow?': 'No — RAP includes an interest subsidy that covers any unpaid interest each month. Your balance is protected from runaway growth, even on a $0 payment.',
+    'What if my income changes?': 'You can request a recalculation any time your income changes by 10% or more. Otherwise, RAP automatically recalculates each year at recertification.',
+    'Will this hurt my credit?': 'Switching plans through Candidly does <strong>not</strong> hurt your credit — it\'s a routine repayment-plan change with your servicer. What hurts your credit is missing payments, which is exactly what auto-pay prevents.',
+    'When will my account be current?': 'Your loan returns to <strong>good standing</strong> after 9 consecutive on-time monthly payments. The default is then permanently removed from all 3 credit bureaus.',
+    'How does this protect my credit?': 'Once rehabilitation completes, the default is permanently removed from all 3 credit bureaus and your loan returns to good standing. Most borrowers see their score rebound 50–100+ points.',
+    'What happens if I default?': 'Default (270+ days delinquent) triggers <strong>full balance due</strong>, wage garnishment, tax-refund seizure, and damage to your credit for up to 7 years. Enrolling now prevents all of this.',
+  };
+
+  /* Append a user bubble + Cait response to the desktop chat history.
+     Wired up by updateChatChips when a chip has fn: null. */
+  function dCaitAsk(question) {
+    const chatHistory = document.querySelector('#screen-chat .py-6.flex.flex-col.gap-6');
+    if (!chatHistory) return;
+    const answer = CAIT_ANSWERS_DESK[question] || 'Let me look into that for you.';
+
+    const userDiv = document.createElement('div');
+    userDiv.className = 'flex justify-end pl-12';
+    userDiv.innerHTML = `<div class="bg-white rounded-lg px-4 py-3 shadow-sm border border-border-subtle"><p class="text-base text-neutral-subtle leading-7">${question}</p></div>`;
+    chatHistory.appendChild(userDiv);
+
+    const caitDiv = document.createElement('div');
+    caitDiv.className = 'pr-12 flex flex-col gap-3';
+    caitDiv.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
+    chatHistory.appendChild(caitDiv);
+    caitDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+    setTimeout(() => {
+      caitDiv.innerHTML = `<p class="cait-line text-base text-[#676d7a] leading-7"></p>`;
+      const p = caitDiv.querySelector('p');
+      dStreamText(p, answer, 28, () => {
+        caitDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      });
+    }, 700);
+  }
+  window.dCaitAsk = dCaitAsk;
+
   /* ── Contextual chips ── */
   const CHAT_CHIPS = {
     resolution: [
@@ -1960,18 +2025,21 @@
     ],
   };
 
-  // Accepts a context key (string) OR a direct array of {label, fn} objects
+  // Accepts a context key (string) OR a direct array of {label, fn} objects.
+  // Chips with fn: null fall through to dCaitAsk(label) so every chip answers.
   function updateChatChips(contextOrChips) {
     const container = document.getElementById('chat-chips');
     if (!container) return;
     const chips = Array.isArray(contextOrChips)
       ? contextOrChips
       : (CHAT_CHIPS[contextOrChips] || []);
-    container.innerHTML = chips.map(c => `
-      <button ${c.fn ? `onclick="${c.fn.replace(/"/g,"'")}"` : ''}
+    container.innerHTML = chips.map(c => {
+      const fn = c.fn || `dCaitAsk('${c.label.replace(/'/g, "\\'")}')`;
+      return `<button onclick="${fn.replace(/"/g,"'")}"
         class="border border-[#b3c6f7] rounded-full px-4 py-2 text-sm font-medium text-[#3a57c8] hover:bg-[#eff4ff] transition-colors whitespace-nowrap">
         ${c.label}
-      </button>`).join('');
+      </button>`;
+    }).join('');
   }
 
   function showChatScreen() {
