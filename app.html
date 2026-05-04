@@ -165,10 +165,10 @@
       opacity:0; transform:translateX(-10px);
       animation: cdy-load-item-in 0.6s cubic-bezier(0.2,0.8,0.2,1) both;
     }
-    .cdy-load-item.ci-1 { animation-delay: 1.7s; }
-    .cdy-load-item.ci-2 { animation-delay: 2.5s; }
-    .cdy-load-item.ci-3 { animation-delay: 3.3s; }
-    .cdy-load-item.ci-4 { animation-delay: 4.1s; }
+    .cdy-load-item.ci-1 { animation-delay: 2.6s; }
+    .cdy-load-item.ci-2 { animation-delay: 3.4s; }
+    .cdy-load-item.ci-3 { animation-delay: 4.2s; }
+    .cdy-load-item.ci-4 { animation-delay: 5.0s; }
     @keyframes cdy-load-item-in {
       from { opacity:0; transform:translateX(-10px); }
       to   { opacity:1; transform:translateX(0); }
@@ -178,20 +178,20 @@
       display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
       transform:scale(0); animation: cdy-load-check-in 0.45s cubic-bezier(0.2,1.4,0.4,1) both;
     }
-    .cdy-load-item.ci-1 .cdy-load-check { animation-delay: 2.05s; }
-    .cdy-load-item.ci-2 .cdy-load-check { animation-delay: 2.85s; }
-    .cdy-load-item.ci-3 .cdy-load-check { animation-delay: 3.65s; }
-    .cdy-load-item.ci-4 .cdy-load-check { animation-delay: 4.45s; }
+    .cdy-load-item.ci-1 .cdy-load-check { animation-delay: 2.95s; }
+    .cdy-load-item.ci-2 .cdy-load-check { animation-delay: 3.75s; }
+    .cdy-load-item.ci-3 .cdy-load-check { animation-delay: 4.55s; }
+    .cdy-load-item.ci-4 .cdy-load-check { animation-delay: 5.35s; }
     @keyframes cdy-load-check-in {
       from { transform:scale(0); }
       to   { transform:scale(1); }
     }
     .cdy-load-label { flex:1; font-size:13.5px; font-weight:500; color:#181d29; }
-    /* Final calculating line — fades up then runs a continuous skeleton shimmer */
+    /* Final calculating line — fades up then runs a slow, subtle skeleton shimmer */
     .cdy-load-final {
       font-size:13px; font-weight:500; text-align:center; margin-top:6px; line-height:1.5;
-      background: linear-gradient(90deg, #c7d2e9 0%, #c7d2e9 30%, #265ddc 50%, #c7d2e9 70%, #c7d2e9 100%);
-      background-size: 220% 100%;
+      background: linear-gradient(90deg, #c5cdd9 0%, #c5cdd9 35%, #6f8ec4 50%, #c5cdd9 65%, #c5cdd9 100%);
+      background-size: 240% 100%;
       background-position: 100% 0;
       -webkit-background-clip: text;
       background-clip: text;
@@ -199,12 +199,12 @@
       color: transparent;
       opacity: 0;
       animation:
-        cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 5.4s both,
-        cdy-shimmer 1.8s linear 5.9s infinite;
+        cdy-load-fadeup 0.5s cubic-bezier(0.2,0.8,0.2,1) 6.3s both,
+        cdy-shimmer 2.8s linear 6.8s infinite;
     }
     @keyframes cdy-shimmer {
       0%   { background-position: 100% 0; }
-      100% { background-position: -120% 0; }
+      100% { background-position: -130% 0; }
     }
     .typing-dots span { width: 5px; height: 5px; border-radius: 50%; background: #9ca3af; animation: dot-pulse 1.4s infinite ease-in-out; }
     .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
@@ -1102,7 +1102,7 @@
           });
         }, 1300);
       }
-    }, 7000);
+    }, 9500);
   }
 
   function mobCloseIE() {
