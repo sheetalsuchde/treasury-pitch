@@ -2318,6 +2318,10 @@
   ;(function() {
     if (new URLSearchParams(location.search).get('flow') !== 'save') return;
 
+    // Flow-aware copy on the shared #screen-loading final line
+    const _saveFinal = document.querySelector('#screen-loading .cdy-load-final');
+    if (_saveFinal) _saveFinal.innerHTML = 'Finding your lowest RAP payment<span class="cdy-load-dots-trail"></span>';
+
     let _dRap = { monthly: 66, termYears: 30, totalPaid: 23760, forgiven: 36560, agi: 38400 };
     window._dRap = _dRap;
 
@@ -2359,67 +2363,84 @@
 
     // ── Override showChatScreen — full mobile-style sequence ──
     window.showChatScreen = function() {
-      document.getElementById('screen-home').classList.add('hidden');
-      document.getElementById('screen-chat').classList.remove('hidden');
-      updateChatChips([]); // chips hidden while typing
+      const homeEl    = document.getElementById('screen-home');
+      const loadingEl = document.getElementById('screen-loading');
 
-      // Update user bubble text → SAVE
-      const userBubbleTxt = document.querySelector('#screen-chat .flex.justify-end p');
-      if (userBubbleTxt) userBubbleTxt.textContent = 'Switch me to RAP';
-
-      // Card header copy
-      const cardTitle = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-base.font-bold');
-      if (cardTitle) cardTitle.textContent = 'Your loan & recommended plan';
-      const cardSub = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-sm');
-      if (cardSub) cardSub.textContent = 'Review your balance and switch to RAP to protect your payments.';
-
-      // Footer CTA
-      const btnNext = document.getElementById('btn-next');
-      if (btnNext) { btnNext.textContent = 'Switch to RAP →'; btnNext.onclick = () => openFormPanel(); }
-
-      // ── Hide the entire flow card instantly (no transition yet) ──
-      const flowCard = document.getElementById('step-body')?.closest('.rounded-lg');
-      if (flowCard) {
-        flowCard.style.transition = 'none';
-        flowCard.style.opacity    = '0';
-        flowCard.style.transform  = 'translateY(14px)';
-        flowCard.style.pointerEvents = 'none';
+      // Step 1: home → full-screen Cait reviewing loading takeover
+      homeEl.classList.add('hidden');
+      if (loadingEl) {
+        loadingEl.classList.remove('hidden');
+        requestAnimationFrame(() => loadingEl.classList.add('is-active'));
       }
 
-      const staticMsg = document.getElementById('static-cait-msg');
-      if (!staticMsg) return;
-      staticMsg.dataset.animated = '';
-
-      // ── Stage 1 (0ms): typing dots — exact mobile component ──
-      staticMsg.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
-
-      // ── Stage 2 (1500ms): clear dots → word-stream Cait response ──
+      // Step 2: after ~9s (full reveal sequence), swap loading → chat
       setTimeout(() => {
-        staticMsg.innerHTML = `<p id="save-stream-el" class="text-base text-[#676d7a] leading-relaxed"></p>`;
-        const streamEl = document.getElementById('save-stream-el');
-        const msg = 'The SAVE plan is officially ending, and borrowers in SAVE forbearance must exit this forbearance and select a new repayment plan by <strong>September 30, 2026.</strong> <strong>RAP</strong> is the newest income-driven repayment plan, and may offer an affordable monthly payment. I can help you apply today!';
-        dStreamText(streamEl, msg, 42, () => {
-          // ── Stage 3: inject content first (sections start opacity:0 via ds-sec),
-          // then reveal card — CTA footer never shows on an empty body ──
-          if (btnNext) { btnNext.style.opacity = '0'; btnNext.style.transition = 'none'; }
-          renderStep();
-          setTimeout(() => {
-            if (flowCard) {
-              flowCard.style.cssText = '';
-              flowCard.classList.add('card-revealed');
-            }
-            // Reveal CTA after last section has appeared (~980ms stagger + card fade)
+        if (loadingEl) {
+          loadingEl.classList.remove('is-active');
+          loadingEl.classList.add('hidden');
+        }
+
+        document.getElementById('screen-chat').classList.remove('hidden');
+        updateChatChips([]); // chips hidden while typing
+
+        // Update user bubble text → SAVE
+        const userBubbleTxt = document.querySelector('#screen-chat .flex.justify-end p');
+        if (userBubbleTxt) userBubbleTxt.textContent = 'Switch me to RAP';
+
+        // Card header copy
+        const cardTitle = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-base.font-bold');
+        if (cardTitle) cardTitle.textContent = 'Your loan & recommended plan';
+        const cardSub = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-sm');
+        if (cardSub) cardSub.textContent = 'Review your balance and switch to RAP to protect your payments.';
+
+        // Footer CTA
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) { btnNext.textContent = 'Switch to RAP →'; btnNext.onclick = () => openFormPanel(); }
+
+        // ── Hide the entire flow card instantly (no transition yet) ──
+        const flowCard = document.getElementById('step-body')?.closest('.rounded-lg');
+        if (flowCard) {
+          flowCard.style.transition = 'none';
+          flowCard.style.opacity    = '0';
+          flowCard.style.transform  = 'translateY(14px)';
+          flowCard.style.pointerEvents = 'none';
+        }
+
+        const staticMsg = document.getElementById('static-cait-msg');
+        if (!staticMsg) return;
+        staticMsg.dataset.animated = '';
+
+        // ── Stage 1 (0ms): typing dots — exact mobile component ──
+        staticMsg.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
+
+        // ── Stage 2 (1500ms): clear dots → word-stream Cait response ──
+        setTimeout(() => {
+          staticMsg.innerHTML = `<p id="save-stream-el" class="text-base text-[#676d7a] leading-relaxed"></p>`;
+          const streamEl = document.getElementById('save-stream-el');
+          const msg = 'The SAVE plan is officially ending, and borrowers in SAVE forbearance must exit this forbearance and select a new repayment plan by <strong>September 30, 2026.</strong> <strong>RAP</strong> is the newest income-driven repayment plan, and may offer an affordable monthly payment. I can help you apply today!';
+          dStreamText(streamEl, msg, 42, () => {
+            // ── Stage 3: inject content first (sections start opacity:0 via ds-sec),
+            // then reveal card — CTA footer never shows on an empty body ──
+            if (btnNext) { btnNext.style.opacity = '0'; btnNext.style.transition = 'none'; }
+            renderStep();
             setTimeout(() => {
-              if (btnNext) {
-                btnNext.style.transition = 'opacity 0.3s ease';
-                btnNext.style.opacity = '1';
-                setTimeout(() => btnNext.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 350);
+              if (flowCard) {
+                flowCard.style.cssText = '';
+                flowCard.classList.add('card-revealed');
               }
-            }, 1100);
-            setTimeout(() => updateChatChips('save_resolution'), 1200);
-          }, 40);
-        });
-      }, 1500);
+              // Reveal CTA after last section has appeared (~980ms stagger + card fade)
+              setTimeout(() => {
+                if (btnNext) {
+                  btnNext.style.transition = 'opacity 0.3s ease';
+                  btnNext.style.opacity = '1';
+                  setTimeout(() => btnNext.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 350);
+                }
+              }, 1100);
+              setTimeout(() => updateChatChips('save_resolution'), 1200);
+            }, 40);
+          });
+        }, 1500);
+      }, 9000);
     };
 
     // ── Override renderStep → staged progressive reveal ──
@@ -3162,6 +3183,10 @@
   ;(function() {
     if (new URLSearchParams(location.search).get('flow') !== 'delinquency') return;
 
+    // Flow-aware copy on the shared #screen-loading final line
+    const _delinqFinal = document.querySelector('#screen-loading .cdy-load-final');
+    if (_delinqFinal) _delinqFinal.innerHTML = 'Finding your best repayment plan<span class="cdy-load-dots-trail"></span>';
+
     let _dRap = { monthly: 66, termYears: 30, totalPaid: 23760, forgiven: 36560, agi: 38400 };
     window._dRap = _dRap;
 
@@ -3205,67 +3230,84 @@
 
     // ── Override showChatScreen — full mobile-style sequence ──
     window.showChatScreen = function() {
-      document.getElementById('screen-home').classList.add('hidden');
-      document.getElementById('screen-chat').classList.remove('hidden');
-      updateChatChips([]); // chips hidden while typing
+      const homeEl    = document.getElementById('screen-home');
+      const loadingEl = document.getElementById('screen-loading');
 
-      // Update user bubble text → delinquency
-      const userBubbleTxt = document.querySelector('#screen-chat .flex.justify-end p');
-      if (userBubbleTxt) userBubbleTxt.textContent = 'Help me avoid default';
-
-      // Card header copy
-      const cardTitle = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-base.font-bold');
-      if (cardTitle) cardTitle.textContent = 'Your delinquent loan & recommended plan';
-      const cardSub = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-sm');
-      if (cardSub) cardSub.textContent = 'Review your loan status and enroll in RAP to stop delinquency.';
-
-      // Footer CTA
-      const btnNext = document.getElementById('btn-next');
-      if (btnNext) { btnNext.textContent = 'Prevent Default →'; btnNext.onclick = () => openFormPanel(); }
-
-      // ── Hide the entire flow card instantly (no transition yet) ──
-      const flowCard = document.getElementById('step-body')?.closest('.rounded-lg');
-      if (flowCard) {
-        flowCard.style.transition = 'none';
-        flowCard.style.opacity    = '0';
-        flowCard.style.transform  = 'translateY(14px)';
-        flowCard.style.pointerEvents = 'none';
+      // Step 1: home → full-screen Cait reviewing loading takeover
+      homeEl.classList.add('hidden');
+      if (loadingEl) {
+        loadingEl.classList.remove('hidden');
+        requestAnimationFrame(() => loadingEl.classList.add('is-active'));
       }
 
-      const staticMsg = document.getElementById('static-cait-msg');
-      if (!staticMsg) return;
-      staticMsg.dataset.animated = '';
-
-      // ── Stage 1 (0ms): typing dots — exact mobile component ──
-      staticMsg.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
-
-      // ── Stage 2 (1500ms): clear dots → word-stream Cait response ──
+      // Step 2: after ~9s (full reveal sequence), swap loading → chat
       setTimeout(() => {
-        staticMsg.innerHTML = `<p id="delinq-stream-el" class="text-base text-[#676d7a] leading-relaxed"></p>`;
-        const streamEl = document.getElementById('delinq-stream-el');
-        const msg = 'The SAVE plan is officially ending, and borrowers in SAVE forbearance must exit this forbearance and select a new repayment plan by <strong>September 30, 2026.</strong> <strong>RAP</strong> is the newest income-driven repayment plan, and may offer an affordable monthly payment. I can help you apply today!';
-        dStreamText(streamEl, msg, 42, () => {
-          // ── Stage 3: inject content first (sections start opacity:0 via ds-sec),
-          // then reveal card — CTA footer never shows on an empty body ──
-          if (btnNext) { btnNext.style.opacity = '0'; btnNext.style.transition = 'none'; }
-          renderStep();
-          setTimeout(() => {
-            if (flowCard) {
-              flowCard.style.cssText = '';
-              flowCard.classList.add('card-revealed');
-            }
-            // Reveal CTA after last section has appeared (~980ms stagger + card fade)
+        if (loadingEl) {
+          loadingEl.classList.remove('is-active');
+          loadingEl.classList.add('hidden');
+        }
+
+        document.getElementById('screen-chat').classList.remove('hidden');
+        updateChatChips([]); // chips hidden while typing
+
+        // Update user bubble text → delinquency
+        const userBubbleTxt = document.querySelector('#screen-chat .flex.justify-end p');
+        if (userBubbleTxt) userBubbleTxt.textContent = 'Help me avoid default';
+
+        // Card header copy
+        const cardTitle = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-base.font-bold');
+        if (cardTitle) cardTitle.textContent = 'Your delinquent loan & recommended plan';
+        const cardSub = document.querySelector('#screen-chat .px-5.pt-5.pb-4.border-b p.text-sm');
+        if (cardSub) cardSub.textContent = 'Review your loan status and enroll in RAP to stop delinquency.';
+
+        // Footer CTA
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) { btnNext.textContent = 'Prevent Default →'; btnNext.onclick = () => openFormPanel(); }
+
+        // ── Hide the entire flow card instantly (no transition yet) ──
+        const flowCard = document.getElementById('step-body')?.closest('.rounded-lg');
+        if (flowCard) {
+          flowCard.style.transition = 'none';
+          flowCard.style.opacity    = '0';
+          flowCard.style.transform  = 'translateY(14px)';
+          flowCard.style.pointerEvents = 'none';
+        }
+
+        const staticMsg = document.getElementById('static-cait-msg');
+        if (!staticMsg) return;
+        staticMsg.dataset.animated = '';
+
+        // ── Stage 1 (0ms): typing dots — exact mobile component ──
+        staticMsg.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
+
+        // ── Stage 2 (1500ms): clear dots → word-stream Cait response ──
+        setTimeout(() => {
+          staticMsg.innerHTML = `<p id="delinq-stream-el" class="text-base text-[#676d7a] leading-relaxed"></p>`;
+          const streamEl = document.getElementById('delinq-stream-el');
+          const msg = 'The SAVE plan is officially ending, and borrowers in SAVE forbearance must exit this forbearance and select a new repayment plan by <strong>September 30, 2026.</strong> <strong>RAP</strong> is the newest income-driven repayment plan, and may offer an affordable monthly payment. I can help you apply today!';
+          dStreamText(streamEl, msg, 42, () => {
+            // ── Stage 3: inject content first (sections start opacity:0 via ds-sec),
+            // then reveal card — CTA footer never shows on an empty body ──
+            if (btnNext) { btnNext.style.opacity = '0'; btnNext.style.transition = 'none'; }
+            renderStep();
             setTimeout(() => {
-              if (btnNext) {
-                btnNext.style.transition = 'opacity 0.3s ease';
-                btnNext.style.opacity = '1';
-                setTimeout(() => btnNext.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 350);
+              if (flowCard) {
+                flowCard.style.cssText = '';
+                flowCard.classList.add('card-revealed');
               }
-            }, 1100);
-            setTimeout(() => updateChatChips('delinq_resolution'), 1200);
-          }, 40);
-        });
-      }, 1500);
+              // Reveal CTA after last section has appeared (~980ms stagger + card fade)
+              setTimeout(() => {
+                if (btnNext) {
+                  btnNext.style.transition = 'opacity 0.3s ease';
+                  btnNext.style.opacity = '1';
+                  setTimeout(() => btnNext.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 350);
+                }
+              }, 1100);
+              setTimeout(() => updateChatChips('delinq_resolution'), 1200);
+            }, 40);
+          });
+        }, 1500);
+      }, 9000);
     };
 
     // ── Override renderStep → staged progressive reveal ──

@@ -2605,6 +2605,10 @@
   ;(function() {
     if (new URLSearchParams(location.search).get('flow') !== 'save') return;
 
+    // Flow-aware copy on the shared #mob-loading-screen final line
+    const _saveFinal = document.querySelector('#mob-loading-screen .cdy-load-final');
+    if (_saveFinal) _saveFinal.innerHTML = 'Finding your lowest RAP payment<span class="cdy-load-dots-trail"></span>';
+
     /* 1 ── Home screen personalisation ──────────────────────────── */
     function saveInitHome() {
       // Alert banner → amber SAVE alert
@@ -3214,6 +3218,10 @@
   // ════════════════════════════════════════════════════════════════
   ;(function() {
     if (new URLSearchParams(location.search).get('flow') !== 'delinquency') return;
+
+    // Flow-aware copy on the shared #mob-loading-screen final line
+    const _delinqFinal = document.querySelector('#mob-loading-screen .cdy-load-final');
+    if (_delinqFinal) _delinqFinal.innerHTML = 'Finding your best repayment plan<span class="cdy-load-dots-trail"></span>';
 
     /* 1 ── Home screen personalisation ──────────────────────────── */
     function delinqInitHome() {
