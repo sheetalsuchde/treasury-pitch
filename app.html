@@ -3968,7 +3968,8 @@
     window.fnPbbAutofill = function() {
       const u = document.getElementById('fn-pbb-user');
       const p = document.getElementById('fn-pbb-pass');
-      if (u) { u.value = 'jennifer.t'; u.dispatchEvent(new Event('input', { bubbles:true })); }
+      const _fnUser = _fnFlow === 'save' ? 'marcus.webb' : 'jennifer.bahl';
+      if (u) { u.value = _fnUser; u.dispatchEvent(new Event('input', { bubbles:true })); }
       if (p) { p.value = '••••••••••••'; p.dispatchEvent(new Event('input', { bubbles:true })); }
     };
 
