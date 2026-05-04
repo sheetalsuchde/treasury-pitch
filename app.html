@@ -3968,7 +3968,7 @@
     window.fnPbbAutofill = function() {
       const u = document.getElementById('fn-pbb-user');
       const p = document.getElementById('fn-pbb-pass');
-      const _fnUser = _fnFlow === 'save' ? 'marcus.webb' : 'jennifer.bahl';
+      const _fnUser = (_fnFlow === 'save' || _fnFlow === 'delinquency') ? 'marcus.webb' : 'jennifer.bahl';
       if (u) { u.value = _fnUser; u.dispatchEvent(new Event('input', { bubbles:true })); }
       if (p) { p.value = '••••••••••••'; p.dispatchEvent(new Event('input', { bubbles:true })); }
     };
@@ -4495,7 +4495,7 @@
               <div class="fn-celebrate-dot" style="left:22%;bottom:18%;width:6px;height:6px;background:#ffffff;"></div>
               <div class="fn-celebrate-dot" style="right:26%;bottom:24%;width:8px;height:8px;background:#b6eeda;"></div>
               <span class="fn-popper" role="img" aria-label="celebration">🎉</span>
-              <p class="fn-celebrate-title">You did it, Jennifer!</p>
+              <p class="fn-celebrate-title">You did it, ${(_fnFlow === 'save' || _fnFlow === 'delinquency') ? 'Marcus' : 'Jennifer'}!</p>
               <p class="fn-celebrate-sub">${_fnFlow === 'save' ? 'You just locked in a sustainable payment plan that adjusts with your income — protected from the SAVE plan ending and on track for forgiveness.' : 'This is the most important step you could have taken toward breaking the cycle of delinquency and getting back on your feet.'}</p>
             </div>
 
