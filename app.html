@@ -2647,41 +2647,52 @@
 
     /* 2 ── Chat: SAVE Cait response ─────────────────────────────── */
     window.mobShowChat = function(label) {
-      const chatEl = document.getElementById('mob-chat');
-      const homeEl = document.getElementById('mob-home');
+      const chatEl    = document.getElementById('mob-chat');
+      const homeEl    = document.getElementById('mob-home');
+      const loadingEl = document.getElementById('mob-loading-screen');
+
+      // Step 1: home fades out → full-screen Cait reviewing loading takeover
       homeEl.classList.add('fading');
-      chatEl.classList.add('active');
-      if (!chatEl.dataset.animated) {
-        chatEl.dataset.animated = '1';
-        const typing    = document.getElementById('mob-typing');
-        const staticMsg = document.getElementById('mob-static-msg');
-        const streamEl  = document.getElementById('mob-stream-text');
-        const flowCard  = document.getElementById('mob-flow-card');
-        const bubble    = document.getElementById('mob-user-bubble');
-        const bubbleTxt = document.getElementById('mob-user-bubble-text');
-        bubbleTxt.textContent = label || 'Switch me to RAP';
-        bubble.classList.remove('hidden');
-        setTimeout(() => typing.classList.remove('hidden'), 400);
-        setTimeout(() => {
-          typing.classList.add('hidden');
-          staticMsg.classList.remove('hidden');
-          const msg = "The SAVE plan is officially ending, and borrowers in SAVE forbearance must exit this forbearance and select a new repayment plan by <strong>September 30, 2026.</strong> <strong>RAP</strong> is the newest income-driven repayment plan, and may offer an affordable monthly payment. I can help you apply today!";
-          mobStreamText(streamEl, msg, 55, () => {
-            mobBuildStepBody();
-            flowCard.classList.remove('hidden');
-            flowCard.classList.add('card-revealed');
-            const ctaBtn = document.getElementById('mob-btn-next');
-            if (ctaBtn) ctaBtn.innerHTML = 'Switch to RAP →';
-            const alertBox = flowCard.querySelector('.bg-red-50');
-            if (alertBox) alertBox.parentElement.style.display = 'none';
-            mobUpdateChips('save_resolution');
-            setTimeout(() => {
-              const btn = document.getElementById('mob-btn-next');
-              if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }, 500);
-          });
-        }, 1800);
-      }
+      if (loadingEl) loadingEl.classList.add('active');
+
+      // Step 2: after the progressive reveal completes (~9s), swap loading
+      // screen for chat (which then runs typing → SAVE response).
+      setTimeout(() => {
+        if (loadingEl) loadingEl.classList.remove('active');
+        chatEl.classList.add('active');
+
+        if (!chatEl.dataset.animated) {
+          chatEl.dataset.animated = '1';
+          const typing    = document.getElementById('mob-typing');
+          const staticMsg = document.getElementById('mob-static-msg');
+          const streamEl  = document.getElementById('mob-stream-text');
+          const flowCard  = document.getElementById('mob-flow-card');
+          const bubble    = document.getElementById('mob-user-bubble');
+          const bubbleTxt = document.getElementById('mob-user-bubble-text');
+          bubbleTxt.textContent = label || 'Switch me to RAP';
+          bubble.classList.remove('hidden');
+          setTimeout(() => typing.classList.remove('hidden'), 300);
+          setTimeout(() => {
+            typing.classList.add('hidden');
+            staticMsg.classList.remove('hidden');
+            const msg = "The SAVE plan is officially ending, and borrowers in SAVE forbearance must exit this forbearance and select a new repayment plan by <strong>September 30, 2026.</strong> <strong>RAP</strong> is the newest income-driven repayment plan, and may offer an affordable monthly payment. I can help you apply today!";
+            mobStreamText(streamEl, msg, 55, () => {
+              mobBuildStepBody();
+              flowCard.classList.remove('hidden');
+              flowCard.classList.add('card-revealed');
+              const ctaBtn = document.getElementById('mob-btn-next');
+              if (ctaBtn) ctaBtn.innerHTML = 'Switch to RAP →';
+              const alertBox = flowCard.querySelector('.bg-red-50');
+              if (alertBox) alertBox.parentElement.style.display = 'none';
+              mobUpdateChips('save_resolution');
+              setTimeout(() => {
+                const btn = document.getElementById('mob-btn-next');
+                if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
+              }, 500);
+            });
+          }, 1300);
+        }
+      }, 9000);
     };
 
     /* 3 ── Balance card + How RAP Works ─────────────────────────── */
@@ -3261,41 +3272,52 @@
 
     /* 2 ── Chat: Delinquency Cait response ──────────────────────── */
     window.mobShowChat = function(label) {
-      const chatEl = document.getElementById('mob-chat');
-      const homeEl = document.getElementById('mob-home');
+      const chatEl    = document.getElementById('mob-chat');
+      const homeEl    = document.getElementById('mob-home');
+      const loadingEl = document.getElementById('mob-loading-screen');
+
+      // Step 1: home fades out → full-screen Cait reviewing loading takeover
       homeEl.classList.add('fading');
-      chatEl.classList.add('active');
-      if (!chatEl.dataset.animated) {
-        chatEl.dataset.animated = '1';
-        const typing    = document.getElementById('mob-typing');
-        const staticMsg = document.getElementById('mob-static-msg');
-        const streamEl  = document.getElementById('mob-stream-text');
-        const flowCard  = document.getElementById('mob-flow-card');
-        const bubble    = document.getElementById('mob-user-bubble');
-        const bubbleTxt = document.getElementById('mob-user-bubble-text');
-        bubbleTxt.textContent = label || 'Help me avoid default';
-        bubble.classList.remove('hidden');
-        setTimeout(() => typing.classList.remove('hidden'), 400);
-        setTimeout(() => {
-          typing.classList.add('hidden');
-          staticMsg.classList.remove('hidden');
-          const msg = "The SAVE plan is officially ending, and borrowers in SAVE forbearance must exit this forbearance and select a new repayment plan by <strong>September 30, 2026.</strong> <strong>RAP</strong> is the newest income-driven repayment plan, and may offer an affordable monthly payment. I can help you apply today!";
-          mobStreamText(streamEl, msg, 55, () => {
-            mobBuildStepBody();
-            flowCard.classList.remove('hidden');
-            flowCard.classList.add('card-revealed');
-            const ctaBtn = document.getElementById('mob-btn-next');
-            if (ctaBtn) ctaBtn.innerHTML = 'Prevent Default →';
-            const alertBox = flowCard.querySelector('.bg-red-50');
-            if (alertBox) alertBox.parentElement.style.display = 'none';
-            mobUpdateChips('delinq_resolution');
-            setTimeout(() => {
-              const btn = document.getElementById('mob-btn-next');
-              if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }, 500);
-          });
-        }, 1800);
-      }
+      if (loadingEl) loadingEl.classList.add('active');
+
+      // Step 2: after the progressive reveal completes (~9s), swap loading
+      // screen for chat (which then runs typing → Delinquency response).
+      setTimeout(() => {
+        if (loadingEl) loadingEl.classList.remove('active');
+        chatEl.classList.add('active');
+
+        if (!chatEl.dataset.animated) {
+          chatEl.dataset.animated = '1';
+          const typing    = document.getElementById('mob-typing');
+          const staticMsg = document.getElementById('mob-static-msg');
+          const streamEl  = document.getElementById('mob-stream-text');
+          const flowCard  = document.getElementById('mob-flow-card');
+          const bubble    = document.getElementById('mob-user-bubble');
+          const bubbleTxt = document.getElementById('mob-user-bubble-text');
+          bubbleTxt.textContent = label || 'Help me avoid default';
+          bubble.classList.remove('hidden');
+          setTimeout(() => typing.classList.remove('hidden'), 300);
+          setTimeout(() => {
+            typing.classList.add('hidden');
+            staticMsg.classList.remove('hidden');
+            const msg = "The SAVE plan is officially ending, and borrowers in SAVE forbearance must exit this forbearance and select a new repayment plan by <strong>September 30, 2026.</strong> <strong>RAP</strong> is the newest income-driven repayment plan, and may offer an affordable monthly payment. I can help you apply today!";
+            mobStreamText(streamEl, msg, 55, () => {
+              mobBuildStepBody();
+              flowCard.classList.remove('hidden');
+              flowCard.classList.add('card-revealed');
+              const ctaBtn = document.getElementById('mob-btn-next');
+              if (ctaBtn) ctaBtn.innerHTML = 'Prevent Default →';
+              const alertBox = flowCard.querySelector('.bg-red-50');
+              if (alertBox) alertBox.parentElement.style.display = 'none';
+              mobUpdateChips('delinq_resolution');
+              setTimeout(() => {
+                const btn = document.getElementById('mob-btn-next');
+                if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
+              }, 500);
+            });
+          }, 1300);
+        }
+      }, 9000);
     };
 
     /* 3 ── Balance card + How RAP Works ─────────────────────────── */
